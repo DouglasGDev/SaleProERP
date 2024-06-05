@@ -1,0 +1,60 @@
+unit cCepService;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, System.Json;
+
+type
+  TCepService = class
+  private
+    FEndereco: string;
+    FBairro: string;
+    FCEP: string;
+    FCidade: string;
+    FEstado: string;
+    procedure ParseJson(const JsonString: string);
+  public
+    function Consultar(const CEP: string): Boolean;
+    property Endereco: string read FEndereco;
+    property Bairro: string read FBairro;
+    property CEP: string read FCEP;
+    property Cidade: string read FCidade;
+    property Estado: string read FEstado;
+  end;
+
+implementation
+
+{ TCepService }
+
+function TCepService.Consultar(const CEP: string): Boolean;
+var
+  JsonString: string;
+begin
+  // Simula a consulta ao serviço de CEP
+  // Substitua essa parte pelo código real que faz a requisição HTTP para obter o JSON
+  JsonString := '{"street":"Rua ABC","neighborhood":"Bairro XYZ","cep":"' + CEP + '","city":"Cidade","state":"Estado"}';
+
+  // Analisa o JSON retornado
+  ParseJson(JsonString);
+
+  Result := True; // Simula o sucesso na consulta
+end;
+
+procedure TCepService.ParseJson(const JsonString: string);
+var
+  JsonObj: TJSONObject;
+begin
+  JsonObj := TJSONObject.ParseJSONValue(JsonString) as TJSONObject;
+  try
+    FEndereco := JsonObj.GetValue('street').Value;
+    FBairro := JsonObj.GetValue('neighborhood').Value;
+    FCEP := JsonObj.GetValue('cep').Value;
+    FCidade := JsonObj.GetValue('city').Value;
+    FEstado := JsonObj.GetValue('state').Value;
+  finally
+    JsonObj.Free;
+  end;
+end;
+
+end.

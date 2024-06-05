@@ -1,0 +1,56 @@
+inherited frmConsultaFornecedor: TfrmConsultaFornecedor
+  Caption = ''
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    inherited lblTitulo: TLabel
+      Width = 1041
+      Caption = 'CONSULTA DE FORNECEDOR'
+      ExplicitWidth = 255
+    end
+  end
+  inherited pnlBody: TPanel
+    inherited grdPesquisa: TDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'fornecedorId'
+          Width = 114
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'razaosocial'
+          Width = 350
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'cnpj'
+          Width = 261
+          Visible = True
+        end>
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT fornecedorId,'
+      '             razaosocial,'
+      '             cnpj'
+      'FROM fornecedores')
+    object QryListagemfornecedorId: TZIntegerField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'fornecedorId'
+      Required = True
+    end
+    object QryListagemrazaosocial: TZUnicodeStringField
+      DisplayLabel = 'Raz'#227'o Social'
+      FieldName = 'razaosocial'
+      Size = 255
+    end
+    object QryListagemcnpj: TZUnicodeStringField
+      DisplayLabel = 'CNPJ'
+      FieldName = 'cnpj'
+      Size = 18
+    end
+  end
+end

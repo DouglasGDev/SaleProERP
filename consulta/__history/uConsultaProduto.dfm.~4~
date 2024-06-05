@@ -1,0 +1,17 @@
+inherited frmConsultaProduto: TfrmConsultaProduto
+  Caption = 'frmConsultaProduto'
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    inherited lblTitulo: TLabel
+      Caption = 'CONSULTA DE PRODUTOS'
+      ExplicitWidth = 233
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT produtoId,'
+      '             nome,'
+      '             codbarras'
+      'FROM produtos')
+  end
+end

@@ -1,0 +1,4 @@
+inherited frmTelaHerancaConsulta1: TfrmTelaHerancaConsulta1
+  Caption = 'frmTelaHerancaConsulta1'
+  TextHeight = 15
+end

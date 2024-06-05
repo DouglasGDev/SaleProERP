@@ -1,0 +1,6 @@
+﻿[RLPDFFilter1]
+LayerNames=
+
+[Module Settings]
+ModelLayerNames="{$Q-} and {$R-}";{$Q-};{$R-};"{$R-};{$Q-};"
+

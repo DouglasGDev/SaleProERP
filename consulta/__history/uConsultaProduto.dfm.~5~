@@ -1,0 +1,32 @@
+inherited frmConsultaProduto: TfrmConsultaProduto
+  Caption = 'frmConsultaProduto'
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    inherited lblTitulo: TLabel
+      Caption = 'CONSULTA DE PRODUTOS'
+      ExplicitWidth = 233
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT produtoId,'
+      '             nome,'
+      '             codbarras'
+      'FROM produtos')
+    object QryListagemprodutoId: TZIntegerField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'produtoId'
+      Required = True
+    end
+    object QryListagemnome: TZUnicodeStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'nome'
+      Size = 60
+    end
+    object QryListagemcodbarras: TZUnicodeStringField
+      DisplayLabel = 'Cod.Barras'
+      FieldName = 'codbarras'
+      Size = 13
+    end
+  end
+end

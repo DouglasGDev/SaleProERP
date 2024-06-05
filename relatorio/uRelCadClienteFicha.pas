@@ -1,0 +1,93 @@
+unit uRelCadClienteFicha;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, uDTMConexao, RLReport, RLFilters, RLPDFFilter,
+  RLRichText, RLPreviewForm, RLXLSXFilter, RLHTMLFilter, RLXLSFilter,
+  Vcl.Imaging.pngimage;
+
+type
+  TfrmRelCadClienteFicha = class(TForm)
+    QryCliente: TZQuery;
+    dtsCliente: TDataSource;
+    Relatorio: TRLReport;
+    Cabecalho: TRLBand;
+    RLLabel1: TRLLabel;
+    RLDraw1: TRLDraw;
+    Rodape: TRLBand;
+    RLDraw2: TRLDraw;
+    RLSystemInfo1: TRLSystemInfo;
+    RLSystemInfo2: TRLSystemInfo;
+    RLSystemInfo3: TRLSystemInfo;
+    RLLabel2: TRLLabel;
+    RLLabel3: TRLLabel;
+    RLBand1: TRLBand;
+    RLDBText1: TRLDBText;
+    RLDBText2: TRLDBText;
+    RLPDFFilter1: TRLPDFFilter;
+    RLXLSXFilter1: TRLXLSXFilter;
+    RLHTMLFilter1: TRLHTMLFilter;
+    RLDBText3: TRLDBText;
+    RLDBText4: TRLDBText;
+    QryClienteclienteId: TZIntegerField;
+    QryClientenome: TZUnicodeStringField;
+    QryClientedataNascimento: TZDateTimeField;
+    QryClientecpf: TZUnicodeStringField;
+    QryClienteemail: TZUnicodeStringField;
+    QryClientetelefone: TZUnicodeStringField;
+    QryClienteendereco: TZUnicodeStringField;
+    QryClientebairro: TZUnicodeStringField;
+    QryClientecidade: TZUnicodeStringField;
+    QryClienteestado: TZUnicodeStringField;
+    QryClientecep: TZUnicodeStringField;
+    RLLabel4: TRLLabel;
+    RLLabel5: TRLLabel;
+    RLLabel6: TRLLabel;
+    RLLabel7: TRLLabel;
+    RLLabel8: TRLLabel;
+    RLDBText5: TRLDBText;
+    RLLabel9: TRLLabel;
+    RLDBText6: TRLDBText;
+    RLLabel10: TRLLabel;
+    RLDBText7: TRLDBText;
+    RLLabel11: TRLLabel;
+    RLDBText8: TRLDBText;
+    RLLabel12: TRLLabel;
+    RLDBText9: TRLDBText;
+    RLLabel13: TRLLabel;
+    RLDBText10: TRLDBText;
+    RLLabel14: TRLLabel;
+    RLDBText11: TRLDBText;
+    RLDraw3: TRLDraw;
+    RLImage1: TRLImage;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmRelCadClienteFicha: TfrmRelCadClienteFicha;
+
+implementation
+
+{$R *.dfm}
+
+
+
+procedure TfrmRelCadClienteFicha.FormCreate(Sender: TObject);
+begin
+  QryCliente.Open;
+end;
+
+procedure TfrmRelCadClienteFicha.FormDestroy(Sender: TObject);
+begin
+   QryCliente.Close;
+end;
+
+end.

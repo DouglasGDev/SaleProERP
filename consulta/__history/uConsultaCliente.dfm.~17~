@@ -1,0 +1,42 @@
+inherited frmConsultaCliente: TfrmConsultaCliente
+  Caption = 'frmConsultaCliente'
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    inherited lblTitulo: TLabel
+      Caption = 'CONSULTA DE CLIENTES'
+      ExplicitWidth = 217
+    end
+  end
+  inherited pnlBody: TPanel
+    inherited grdPesquisa: TDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'clienteId'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'nome'
+          Visible = True
+        end>
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT clienteId,'
+      '             nome,'
+      '             cpf'
+      'FROM clientes')
+    object QryListagemclienteId: TZIntegerField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'clienteId'
+      Required = True
+    end
+    object QryListagemnome: TZUnicodeStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'nome'
+      Size = 60
+    end
+  end
+end

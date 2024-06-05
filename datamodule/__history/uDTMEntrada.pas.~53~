@@ -1,0 +1,56 @@
+unit uDTMEntrada;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, Datasnap.DBClient;
+
+type
+  TdtmEntrada = class(TDataModule)
+    cdsGridEntradaProdutoVirtual: TClientDataSet;
+    dtsGridEntradaProdutoVirtual: TDataSource;
+    cdsGridEntradaProdutoVirtualprodutoId: TIntegerField;
+    cdsGridEntradaProdutoVirtualnome: TStringField;
+    cdsGridEntradaProdutoVirtualquantidade: TFloatField;
+    cdsGridEntradaProdutoVirtualentradaId: TStringField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure cdsGridEntradaProdutoVirtualAfterDelete(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dtmEntrada: TdtmEntrada;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TdtmEntrada.cdsGridEntradaProdutoVirtualAfterDelete(
+  DataSet: TDataSet);
+begin
+  // Verifica se o dataset está vazio após a remoção
+  if dtmEntrada.cdsGridEntradaProdutoVirtual.IsEmpty then
+  begin
+    // Desbloqueia o campo lkpFornecedor
+    lkpFornecedor.Enabled := True;
+  end;
+
+end;
+
+procedure TdtmEntrada.DataModuleCreate(Sender: TObject);
+begin
+    cdsGridEntradaProdutoVirtual.CreateDataSet;
+end;
+
+procedure TdtmEntrada.DataModuleDestroy(Sender: TObject);
+begin
+   cdsGridEntradaProdutoVirtual.Close;
+end;
+
+end.

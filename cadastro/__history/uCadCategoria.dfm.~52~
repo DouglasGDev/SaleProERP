@@ -1,0 +1,106 @@
+inherited frmCadCategoria: TfrmCadCategoria
+  Caption = 'Cadastro de categorias'
+  ClientHeight = 406
+  ClientWidth = 781
+  ExplicitWidth = 793
+  ExplicitHeight = 444
+  TextHeight = 15
+  inherited pgcPrincipal: TPageControl
+    Width = 781
+    Height = 339
+    ActivePage = tabManutencao
+    ExplicitWidth = 777
+    ExplicitHeight = 338
+    inherited tabListagem: TTabSheet
+      ExplicitWidth = 773
+      ExplicitHeight = 309
+      inherited pnlListagemTopo: TPanel
+        Width = 773
+        ExplicitWidth = 769
+      end
+      inherited grdListagem: TDBGrid
+        Width = 773
+        Height = 228
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'categoriaId'
+            Width = 109
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'descricao'
+            Visible = True
+          end>
+      end
+    end
+    inherited tabManutencao: TTabSheet
+      ExplicitWidth = 773
+      ExplicitHeight = 309
+      object edtCategoriaId: TLabeledEdit
+        Tag = 1
+        Left = 0
+        Top = 32
+        Width = 121
+        Height = 23
+        EditLabel.Width = 39
+        EditLabel.Height = 15
+        EditLabel.Caption = 'C'#243'digo'
+        MaxLength = 11
+        NumbersOnly = True
+        TabOrder = 0
+        Text = ''
+      end
+      object edtDescricao: TLabeledEdit
+        Tag = 2
+        Left = 0
+        Top = 96
+        Width = 421
+        Height = 23
+        EditLabel.Width = 51
+        EditLabel.Height = 15
+        EditLabel.Caption = 'Descri'#231#227'o'
+        MaxLength = 100
+        TabOrder = 1
+        Text = ''
+      end
+    end
+  end
+  inherited pnlRodape: TPanel
+    Top = 339
+    Width = 781
+    ExplicitTop = 338
+    ExplicitWidth = 777
+    DesignSize = (
+      781
+      67)
+    inherited btnGravar: TBitBtn
+      Left = 260
+      ExplicitLeft = 260
+    end
+    inherited btnFechar: TBitBtn
+      Left = 665
+      ExplicitLeft = 661
+    end
+    inherited btnNavigator: TDBNavigator
+      Top = 22
+      Hints.Strings = ()
+      ExplicitTop = 22
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'select categoriaId, descricao from categorias')
+    object QryListagemcategoriaId: TZIntegerField
+      DisplayLabel = 'Codigo'
+      FieldName = 'categoriaId'
+      Required = True
+    end
+    object QryListagemdescricao: TZUnicodeStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'descricao'
+      Size = 100
+    end
+  end
+end

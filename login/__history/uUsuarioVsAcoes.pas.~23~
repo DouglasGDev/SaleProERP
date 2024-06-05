@@ -1,0 +1,109 @@
+unit uUsuarioVsAcoes;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Data.DB, Vcl.Grids,
+  Vcl.DBGrids, ZAbstractRODataset, ZAbstractDataset, ZDataset, uDTMConexao,
+  Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TfrmUsuarioVsAcoes = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    Splitter1: TSplitter;
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    QryUsuario: TZQuery;
+    QryAcoes: TZQuery;
+    DtsUsuario: TDataSource;
+    DtsAcoes: TDataSource;
+    QryUsuariousuarioId: TZIntegerField;
+    QryUsuarionome: TZUnicodeStringField;
+    QryAcoesusuarioId: TZIntegerField;
+    QryAcoesacaoAcessoId: TZIntegerField;
+    QryAcoesdescricao: TZUnicodeStringField;
+    QryAcoesativo: TZBooleanField;
+    btnFechar: TBitBtn;
+    procedure btnFecharClick(Sender: TObject);
+    procedure QryUsuarioAfterScroll(DataSet: TDataSet);
+    procedure FormShow(Sender: TObject);
+    procedure DBGrid2DblClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure SelecionarAcoesAcessoPorUsuario;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUsuarioVsAcoes: TfrmUsuarioVsAcoes;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmUsuarioVsAcoes.btnFecharClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TfrmUsuarioVsAcoes.DBGrid2DblClick(Sender: TObject); // no duplo click no campo ele muda de ativo pra inativo ou true pra false
+var Qry:TZQuery;
+    bmRegistroAtual:TBookmark;
+begin
+  try
+    //bmRegistroAtual := QryAcoes.GetBookMark; //Marcar o Registro Selecionado
+    Qry:=TZQuery.Create(nil);
+    Qry.Connection:=DtmPrincipal.ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('UPDATE usuariosAcaoAcesso '+
+                '   SET ativo=:ativo '+
+                ' WHERE usuarioId=:usuarioId '+
+                '   AND acaoAcessoId=:acaoAcessoId ');
+    Qry.ParamByName('usuarioId').AsInteger    :=QryAcoes.FieldByName('usuarioId').AsInteger;
+    Qry.ParamByName('acaoAcessoId').AsInteger :=QryAcoes.FieldByName('acaoAcessoId').AsInteger;
+    Qry.ParamByName('ativo').AsBoolean        :=not QryAcoes.FieldByName('ativo').AsBoolean;
+    Try
+
+      DtmPrincipal.ConexaoDB.StartTransaction;
+      Qry.ExecSQL;
+      DtmPrincipal.ConexaoDB.Commit;
+    Except
+      DtmPrincipal.ConexaoDB.Rollback;
+    End;
+
+  finally
+    SelecionarAcoesAcessoPorUsuario;
+    //QryAcoes.GotoBookMark(bmRegistroAtual);  //Faz o Retorno do Registro depois que a query foi fechada e aberta
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+procedure TfrmUsuarioVsAcoes.FormShow(Sender: TObject);
+begin
+   Try
+    QryUsuario.DisableControls;// desabilita o afterscroll para cada usuário que puxa todos os controles da query
+    QryUsuario.Open; // abre a query
+    SelecionarAcoesAcessoPorUsuario; // seleciona o usuário
+  Finally
+    QryUsuario.EnableControls;// habilita novamente, e isso pra cada usuário
+  End;
+end;
+
+procedure TfrmUsuarioVsAcoes.QryUsuarioAfterScroll(DataSet: TDataSet);
+begin
+    SelecionarAcoesAcessoPorUsuario;
+end;
+
+procedure TfrmUsuarioVsAcoes.SelecionarAcoesAcessoPorUsuario;
+begin
+  QryAcoes.Close;
+  QryAcoes.ParamByName('usuarioId').AsInteger := QryUsuario.FieldByName('usuarioID').AsInteger;
+  QryAcoes.Open;
+end;
+
+end.

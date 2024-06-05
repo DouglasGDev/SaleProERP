@@ -1,0 +1,237 @@
+unit cEntrada;
+
+interface
+uses System.Classes,
+     System.SysUtils,
+     Vcl.Controls,
+     Vcl.ExtCtrls,
+     Vcl.Dialogs,
+     ZAbstractConnection,
+     ZConnection,
+     ZAbstractRODataset,
+     ZAbstractDataset,
+     ZDataset,
+     System.StrUtils,
+     Vcl.Imaging.jpeg,
+     Vcl.Graphics;// lista de Units
+type
+  TEntrada = class // Declaração do tipo de Classe
+  private
+      // Variaveis Privada somente dentro da classe
+      ConexaoDB : TZConnection;
+      F_entradaId : Integer; // no banco é int
+      F_fornecedorId: Integer;
+      F_numNota : String;
+      F_numPedido : Integer;
+      F_dataEntrada : TDateTime;
+      F_produtoId: Integer;
+      F_quantidade : Double;
+    class var ProximoID: Integer;
+    class var ProximoIDInicializado: Boolean;
+    class procedure InicializarProximoID; static;
+    class function GerarID: Integer; static;
+
+  public
+    constructor Create(aConexao:TZConnection; aEntradaId: Integer); //Construtor de Classe
+    destructor Destroy; override; //Destroi a Classe usar o override por causa
+                                  // de Sobrescrever
+    function Inserir : Boolean;
+    function Atualizar : Boolean;
+    function Apagar : Boolean;
+    function Selecionar(id:Integer) : Boolean;
+      // Variaveis Publicas que pode ser trabalhadas fora da classe
+  published
+      // Variaveis Publicas utilizadas para propriedade da classe
+      // para fornecer informações runtime
+      property  codigo     : Integer   read F_entradaId   write F_entradaId;
+      property  fornecedorId: Integer  read F_fornecedorId write F_fornecedorId;
+      property  numNota    : string    read F_numNota     write F_numNota;
+      property  numPedido  : Integer   read F_numPedido   write F_numPedido;
+      property  dataEntrada: TDateTime read F_dataEntrada write F_dataEntrada;
+      property  produtoId  : Integer   read F_produtoId   write F_produtoId;
+      property  quantidade : Double    read F_quantidade  write F_quantidade;
+  end;
+
+implementation
+{$region 'Construtor e Destruidor'}
+constructor TEntrada.Create(aConexao:TZConnection; aEntradaId: Integer);
+begin
+  F_entradaId := aEntradaId;
+  ConexaoDB := aConexao;
+end;
+destructor TEntrada.Destroy;
+begin
+
+  inherited;
+end;
+{$endregion}
+{$region 'CRUD'}
+
+class function TEntrada.GerarID: Integer;
+begin
+  Result := ProximoID;
+  Inc(ProximoID); // Incrementa o próximo ID para a próxima chamada
+end;
+
+class procedure TEntrada.InicializarProximoID;
+begin
+  if not ProximoIDInicializado then // Verifica se o ProximoID já foi inicializado
+  begin
+    ProximoID := 0;
+    ProximoIDInicializado := True; // Define que o ProximoID foi inicializado
+  end;
+end;
+
+
+
+function TEntrada.Apagar : Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
+begin
+   if MessageDlg('Apagar o Registro: '+#13+#13+  // pergunta se quer apagar o registro selecionado e quebra em 2 linha
+                 'Codigo: '+IntToStr(F_entradaId)+#13+
+                 'Número de pedido : '+IntToStr(F_numPedido),TMsgDlgType.mtConfirmation,[TMsgDlgBtn.mbYes,TMsgDlgBtn.mbNo],0)=mrNo then begin
+                   Result:= False; // caso não ele da como false e aborta
+                   Abort;
+   end;
+   try
+     Result:= True;
+     Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+     Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+     Qry.SQL.Clear;// limpa pra evitar impureza
+     Qry.SQL.Add('DELETE FROM entradanota '+
+                 ' WHERE entradaId =:entradaId ');
+     Qry.ParamByName('entradaId').AsInteger :=F_entradaId;// aqui armazena a informação no parametro com o tipo permitido
+     Try
+       ConexaoDB.StartTransaction;
+       Qry.ExecSQL;
+       ConexaoDB.Commit;
+     Except
+       ConexaoDB.Rollback;
+       Result := False;
+     End;
+   finally
+     if Assigned(Qry) then
+        FreeAndNil(Qry);
+   end;
+end;
+function TEntrada.Atualizar: Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
+begin
+  try
+    Result:= True;
+    Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+    Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+    Qry.SQL.Clear;// limpa pra evitar impureza
+    Qry.SQL.Add('UPDATE entradanota ' +
+                 ' SET dataentrada  =:dataentrada ' +
+                 '    ,numnotafiscal  =:numnotafiscal ' +
+                 '    ,numpedido =:numpedido '+
+                 '    ,fornecedorId =:fornecedorId ' +
+                 '    ,produtoId  =:produtoId ' +
+                 '    ,quantidade  =:quantidade ' +
+                 ' WHERE entradaId =:entradaId ');// recebe os campos com o parametro :produtoId
+    Qry.ParamByName('entradaId').AsInteger       :=Self.F_entradaId;// aqui armazena a informação no parametro com o tipo permitido
+    Qry.ParamByName('dataentrada').AsDateTime    :=Self.F_dataEntrada;
+    Qry.ParamByName('numnotafiscal').AsString    :=Self.F_numNota;
+    Qry.ParamByName('numpedido').AsInteger       :=Self.F_numPedido;
+    Qry.ParamByName('fornecedorId').AsInteger    :=Self.F_fornecedorId;
+    Qry.ParamByName('produtoId').AsInteger       :=Self.F_produtoId;
+    Qry.ParamByName('quantidade').AsDouble       :=Self.F_quantidade;
+
+     Try
+       ConexaoDB.StartTransaction;
+       Qry.ExecSQL;
+       ConexaoDB.Commit;
+     Except
+       ConexaoDB.Rollback;
+       Result := False;
+     End;
+  finally
+     if Assigned(Qry) then
+        FreeAndNil(Qry);
+  end;
+end;
+
+function TEntrada.Inserir: Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
+begin
+  Self.F_entradaId := GerarID;
+  try
+    Result:= True;
+    Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+    Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+    Qry.SQL.Clear;// limpa pra evitar impureza
+    Qry.SQL.Add('INSERT INTO entradanota (entradaId, '+
+                 '                     dataentrada, '     +
+                 '                     numnotafiscal, ' +
+                 '                     numpedido, ' +
+                 '                     fornecedorId, '   +
+                 '                     produtoId, '   +
+                 '                     quantidade )' +
+                 ' VALUES            (:entradaId, ' +
+                 '                    :dataentrada, '     +
+                 '                    :numnotafiscal, ' +
+                 '                    :numpedido, '   +
+                 '                    :fornecedorId, '   +
+                 '                    :produtoId, '   +
+                 '                    :quantidade ) ' );
+    Qry.ParamByName('entradaId').AsInteger       :=Self.F_entradaId;// aqui armazena a informação no parametro com o tipo permitido
+    Qry.ParamByName('dataentrada').AsDateTime    :=Self.F_dataEntrada;
+    Qry.ParamByName('numnotafiscal').AsString    :=Self.F_numNota;
+    Qry.ParamByName('numpedido').AsInteger       :=Self.F_numPedido;
+    Qry.ParamByName('fornecedorId').AsInteger    :=Self.F_fornecedorId;
+    Qry.ParamByName('produtoId').AsInteger       :=Self.F_produtoId;
+    Qry.ParamByName('quantidade').AsDouble       :=Self.F_quantidade;
+
+     Try
+       ConexaoDB.StartTransaction;
+       Qry.ExecSQL;
+       ConexaoDB.Commit;
+     Except
+       ConexaoDB.Rollback;
+       Result := False;
+     End;
+  finally
+     if Assigned(Qry) then
+        FreeAndNil(Qry);
+  end;
+end;
+
+function TEntrada.Selecionar(id: Integer): Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
+begin
+  try
+    Result:= True;
+    Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+    Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+    Qry.SQL.Clear;// limpa pra evitar impureza
+    Qry.SQL.Add('SELECT entradaId, '+
+                 '     dataentrada, '     +
+                 '     numnotafiscal, ' +
+                 '     numpedido, ' +
+                 '     fornecedorId, '   +
+                 '     produtoId, '   +
+                 '     quantidade ' +
+    ' FROM notaentrada '+
+    ' WHERE entradaId =:entradaId');// recebe os campos com o parametro :produtoId
+    Qry.ParamByName('entradaId').AsInteger:=id;// aqui armazena a informação no parametro que pega do id la encima do selecionar
+    try
+      Qry.Open;// tenta abrir a conexão
+      Self.F_entradaId := Qry.FieldByName('entradaId').AsInteger;// pega o id do campo(interface) e atribui a query com o campo categoriaid e com o tipo em inteiro
+      Self.F_dataEntrada  := Qry.FieldByName('dataentrada').AsDateTime;
+      Self.F_numNota   := Qry.FieldByName('numnotafiscal').AsString;
+      Self.F_numPedido    := Qry.FieldByName('numpedido').AsInteger;
+      Self.F_fornecedorId := Qry.FieldByName('fornecedorId').AsInteger;
+      Self.F_produtoId    := Qry.FieldByName('produtoId').AsInteger;
+      Self.F_quantidade := Qry.FieldByName('quantidade').AsFloat;
+    Except
+      Result:= False; // se não der vai retornar false, vai dar erro
+    end;
+  finally
+     if Assigned(Qry) then // destroi a query da memoria e limpa
+        FreeAndNil(Qry);
+     end;
+  end;
+{$endregion}
+
+end.

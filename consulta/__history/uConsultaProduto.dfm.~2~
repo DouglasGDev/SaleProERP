@@ -1,0 +1,4 @@
+inherited frmConsultaProduto: TfrmConsultaProduto
+  Caption = 'frmConsultaProduto'
+  TextHeight = 15
+end

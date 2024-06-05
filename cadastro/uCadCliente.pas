@@ -1,0 +1,277 @@
+unit uCadCliente;
+interface
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHeranca, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, Vcl.DBCtrls, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls,
+  RxToolEdit, cCadCliente, uDTMConexao, uEnum, cFuncao, System.Net.HttpClient, System.Net.HttpClientComponent, IdHTTP,
+  System.Json, REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope;
+type
+  TfrmCadCliente = class(TfrmTelaHeranca)
+    edtClienteId: TLabeledEdit;
+    edtNome: TLabeledEdit;
+    edtCEP: TMaskEdit;
+    lblCEP: TLabel;
+    edtEndereco: TLabeledEdit;
+    edtBairro: TLabeledEdit;
+    edtCidade: TLabeledEdit;
+    edtTelefone: TMaskEdit;
+    lblTelefone: TLabel;
+    edtEmail: TLabeledEdit;
+    edtDataNascimento: TDateEdit;
+    lblDataNascimento: TLabel;
+    edtCPF: TMaskEdit;
+    lblCPF: TLabel;
+    edtEstado: TLabeledEdit;
+    QryListagemclienteId: TZIntegerField;
+    QryListagemnome: TZUnicodeStringField;
+    QryListagemendereco: TZUnicodeStringField;
+    QryListagemcidade: TZUnicodeStringField;
+    QryListagembairro: TZUnicodeStringField;
+    QryListagemestado: TZUnicodeStringField;
+    QryListagemcep: TZUnicodeStringField;
+    QryListagemtelefone: TZUnicodeStringField;
+    QryListagememail: TZUnicodeStringField;
+    QryListagemcpf: TZUnicodeStringField;
+    QryListagemdataNascimento: TZDateTimeField;
+    btnPesquisarCep: TSpeedButton;
+    RESTClient: TRESTClient;
+    RESTRequest: TRESTRequest;
+    RESTResponse: TRESTResponse;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure edtCPFExit(Sender: TObject);
+    procedure btnPesquisarCepClick(Sender: TObject);
+    procedure edtCEPExit(Sender: TObject);
+  private
+    { Private declarations }
+    oCliente:TCliente;
+    function Apagar:Boolean; override;
+    function Gravar(EstadoDoCadastro:TEstadoDoCadastro):Boolean; override;
+  public
+    { Public declarations }
+    const
+      _URL_CONSULTAR_CEP = 'https://brasilapi.com.br/api/cep/v1/%s';
+  end;
+var
+  frmCadCliente: TfrmCadCliente;
+implementation
+{$R *.dfm}
+
+uses UPrincipal, uConsultarCEP;
+
+
+{$region 'Validação'}
+function Cpf(CPF_Text: string): Boolean;
+var n1,n2,n3,n4,n5,n6,n7,n8,n9: integer;
+
+   	d1,d2: integer;
+
+   	digitado, calculado: string;
+
+begin
+
+   n1:=StrToInt(CPF_Text[1]);
+
+   n2:=StrToInt(CPF_Text[2]);
+
+   n3:=StrToInt(CPF_Text[3]);
+
+   n4:=StrToInt(CPF_Text[5]);
+
+   n5:=StrToInt(CPF_Text[6]);
+
+   n6:=StrToInt(CPF_Text[7]);
+
+   n7:=StrToInt(CPF_Text[9]);
+
+   n8:=StrToInt(CPF_Text[10]);
+
+   n9:=StrToInt(CPF_Text[11]);
+
+                 	d1:=n9*2+n8*3+n7*4+n6*5+n5*6+n4*7+n3*8+n2*9+n1*10;
+
+  d1:=11-(d1 mod 11);
+
+   if d1>=10 then d1:=0;
+
+    	d2:=d1*2+n9*3+n8*4+n7*5+n6*6+n5*7+n4*8+n3*9+n2*10+n1*11;
+
+	d2:=11-(d2 mod 11);
+
+	if d2>=10 then
+
+   	d2:=0;
+
+	calculado:=inttostr(d1)+inttostr(d2);
+
+   digitado:=CPF_Text[13]+CPF_Text[14];
+
+   if calculado=digitado then
+
+   	Cpf:=true
+
+   else
+
+   	Cpf:=false;
+
+end;
+{$endregion}
+{$region 'override'}
+
+function TfrmCadCliente.Apagar: Boolean;
+begin
+    if oCliente.Selecionar(QryListagem.FieldByName('clienteId').AsInteger) then begin
+       Result := oCliente.Apagar;
+    end;
+end;
+
+procedure TfrmCadCliente.btnAlterarClick(Sender: TObject);
+begin
+    if oCliente.Selecionar(QryListagem.FieldByName('clienteId').AsInteger) then begin
+    edtClienteId.Text :=IntToStr(oCliente.codigo);
+    edtNome.Text   := oCliente.nome;
+    edtNome.Text   := oCliente.nome;
+    edtEndereco.Text :=  oCliente.endereco;
+    edtCidade.Text := oCliente.cidade;
+    edtBairro.Text := oCliente.bairro;
+    edtEstado.Text := oCliente.estado;
+    edtCEP.Text    := oCliente.cep;
+    edtTelefone.Text := oCliente.telefone;
+    edtEmail.Text  := oCliente.email;
+    edtCPF.Text    :=  oCliente.cpf;
+    edtDataNascimento.Date := oCliente.dataNascimento;
+  end
+  else begin
+    btnCancelar.Click;
+    Abort;
+  end;
+  inherited;
+end;
+
+procedure TfrmCadCliente.FormCreate(Sender: TObject);
+begin
+  inherited;
+   oCliente := TCliente.Create(dtmPrincipal.ConexaoDB);
+   IndiceAtual := 'nome';// apenas para mostrar o campo label da pesquisa em categoria, ele puxa do banc
+end;
+
+function TfrmCadCliente.Gravar(EstadoDoCadastro: TEstadoDoCadastro): Boolean;
+begin
+  if edtClienteId.Text<>EmptyStr then // se o campo do id for diferente de vazio
+         oCliente.codigo:=StrToInt(edtClienteId.Text)// atribui pro campo código o texto convertido em numero inteiro
+  else
+     oCliente.codigo:=0;
+     oCliente.nome:= edtNome.Text;
+     oCliente.endereco:= edtEndereco.Text;
+     oCliente.cidade:= edtCidade.Text;
+     oCliente.bairro:= edtBairro.Text;
+     oCliente.estado:= edtEstado.Text;
+     oCliente.cep:= edtCEP.Text;
+     oCliente.telefone:= edtTelefone.Text;
+     oCliente.email:= edtEmail.Text;
+     oCliente.cpf:= edtCPF.Text;
+     oCliente.dataNascimento:= edtDataNascimento.Date;
+
+    if (EstadoDoCadastro=ecInserir) then
+        Result := oCliente.Inserir
+    else if(EstadoDoCadastro=ecAlterar) then
+        Result := oCliente.Atualizar;
+end;
+
+procedure TfrmCadCliente.btnNovoClick(Sender: TObject);
+begin
+  inherited;
+  edtDataNascimento.Date:= Date;
+  edtNome.SetFocus;// toda vez que abrir novo ele abre no nome
+end;
+
+procedure TfrmCadCliente.btnPesquisarCepClick(Sender: TObject);
+begin
+  inherited;
+  TFuncao.CriarForm(TfrmConsultarCEP, oUsuarioLogado, dtmPrincipal.ConexaoDB);
+end;
+
+procedure TfrmCadCliente.edtCEPExit(Sender: TObject); // so sair do campo cep ele busca pelo cep e atualiza nos campos informados
+var
+  LCEP: String;
+  JSONObject: TJSONObject;
+begin
+  LCEP := Trim(edtCEP.Text);
+
+  RESTClient.BaseURL := Format(_URL_CONSULTAR_CEP, [LCEP]);
+  RESTClient.SecureProtocols := [THTTPSecureProtocol.TLS12];
+  RESTRequest.Method := rmGet;
+
+  try
+    try
+      RESTRequest.Execute;
+
+      case RESTResponse.StatusCode of
+        200: begin
+               JSONObject := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(RESTResponse.Content), 0) as TJSONObject;
+               try
+                 edtEndereco.Text := JSONObject.GetValue('street').Value;
+                 edtBairro.Text := JSONObject.GetValue('neighborhood').Value;
+                 edtCEP.Text := JSONObject.GetValue('cep').Value;
+                 edtCidade.Text := JSONObject.GetValue('city').Value;
+                 edtEstado.Text := JSONObject.GetValue('state').Value;
+
+                 // Forçar a atualização da máscara
+                 edtCEP.Refresh;
+               finally
+                 JSONObject.Free;
+               end;
+             end;
+        404: MessageDlg('CEP não encontrado.', mtInformation, [mbOK], 0);
+        else
+          MessageDlg('Erro HTTP: ' + IntToStr(RESTResponse.StatusCode) + ' - ' + RESTResponse.StatusText, mtError, [mbOK], 0);
+      end;
+      if RESTResponse.StatusCode = 404 then
+        begin
+         edtEndereco.Text := '';
+         edtBairro.Text := '';
+         edtCEP.Text := '';
+         edtCidade.Text := '';
+         edtEstado.Text := '';
+        end
+    except
+      on E: EIdHTTPProtocolException do
+        MessageDlg('Erro na requisição HTTP: ' + E.Message, mtError, [mbOK], 0);
+      on E: Exception do
+        MessageDlg('Erro ao executar a requisição: ' + E.Message, mtError, [mbOK], 0);
+    end;
+  finally
+    RESTClient.ResetToDefaults;
+  end;
+end;
+
+procedure TfrmCadCliente.edtCPFExit(Sender: TObject);
+begin
+  inherited;
+  If edtCPF.Text<>'' Then
+
+	If Cpf(edtCPF.Text)=False Then
+
+	Begin
+
+  	MessageDlg('CPF informado é incorreto!',TMsgDlgType.mtWarning, [mbOk],0);
+
+  	edtCPF.SetFocus;
+
+  end;
+
+end;
+
+procedure TfrmCadCliente.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+    if Assigned(oCliente) then
+     FreeAndNil(oCliente); // Verifica se tem alguma variavel instanciada na memoria e limpa da memoria a informação
+end;
+{$endregion}
+
+end.

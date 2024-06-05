@@ -1,0 +1,21 @@
+object dtmPrincipal: TdtmPrincipal
+  Height = 200
+  Width = 155
+  object ConexaoDB: TZConnection
+    ControlsCodePage = cCP_UTF16
+    Catalog = ''
+    Properties.Strings = (
+      'RawStringEncoding=DB_CP')
+    TransactIsolationLevel = tiReadCommitted
+    DesignConnection = True
+    HostName = 'localhost'
+    Port = 3306
+    Database = 'vendas'
+    User = 'root'
+    Password = ''
+    Protocol = 'mysql'
+    LibraryLocation = 'E:\ADS\quinto_semestre\projetos4\Estoque\libmysql.dll'
+    Left = 56
+    Top = 56
+  end
+end

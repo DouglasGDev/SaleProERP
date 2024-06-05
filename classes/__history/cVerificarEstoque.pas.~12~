@@ -1,0 +1,82 @@
+unit cVerificarEstoque;
+
+interface
+
+uses
+  SysUtils,
+  Classes,
+  ZConnection,
+  ZDataset,
+  ExtCtrls,
+  uNotificacao;
+
+type
+  TVerificarEstoque = class(TObject)
+  private
+    Conexao: TZConnection;
+    Tempo: TTimer;
+    Notificacao: TfrmNotificacao; // Adicionando uma referência para o formulário de notificação
+    procedure VerificarEstoqueBaixo(Sender: TObject);
+  public
+    constructor Create(AConexao: TZConnection; ANotificacao: TfrmNotificacao; AInterval: Integer);
+    destructor Destroy; override;
+    procedure Iniciar;
+    procedure Parar;
+  end;
+
+implementation
+
+constructor TVerificarEstoque.Create(AConexao: TZConnection; ANotificacao: TfrmNotificacao; AInterval: Integer);
+begin
+  inherited Create;
+  Conexao := AConexao;
+  Notificacao := ANotificacao; // Atribuindo a referência do formulário de notificação
+
+  // Configurar o timer
+  Tempo := TTimer.Create(nil);
+  Tempo.Interval := AInterval;
+  Tempo.OnTimer := VerificarEstoqueBaixo;
+end;
+
+destructor TVerificarEstoque.Destroy;
+begin
+  Tempo.Free;
+  inherited Destroy;
+end;
+
+procedure TVerificarEstoque.Iniciar;
+begin
+  Tempo.Enabled := True;
+end;
+
+procedure TVerificarEstoque.Parar;
+begin
+  Tempo.Enabled := False;
+end;
+
+procedure TVerificarEstoque.VerificarEstoqueBaixo(Sender: TObject);
+var
+  Query: TZQuery;
+begin
+  Query := TZQuery.Create(nil);
+  try
+    Query.Connection := Conexao;
+    Query.SQL.Text := 'SELECT produtoId, nome, quantidade FROM produtos WHERE quantidade <= 10';
+    Query.Open;
+
+    while not Query.EOF do
+    begin
+      Notificacao.MostrarNotificacao('Produto com Estoque Baixo',
+                                      Format('Produto: %s (ID: %d) está com quantidade baixa (%d unidades).',
+                                      [Query.FieldByName('nome').AsString,
+                                       Query.FieldByName('produtoId').AsInteger,
+                                       Query.FieldByName('quantidade').AsInteger]));
+      Query.Next;
+    end;
+  finally
+    Query.Free;
+  end;
+end;
+
+end.
+

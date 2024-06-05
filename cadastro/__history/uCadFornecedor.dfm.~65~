@@ -1,0 +1,345 @@
+inherited frmCadFornecedor: TfrmCadFornecedor
+  Caption = 'frmCadFornecedor'
+  TextHeight = 15
+  inherited pgcPrincipal: TPageControl
+    ActivePage = tabManutencao
+    inherited tabListagem: TTabSheet
+      inherited grdListagem: TDBGrid
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'fornecedorId'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'razaosocial'
+            Width = 300
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'cnpj'
+            Width = 300
+            Visible = True
+          end>
+      end
+      inherited pnlTitulo: TPanel
+        Caption = 'Cadastro de fornecedores'
+      end
+    end
+    inherited tabManutencao: TTabSheet
+      object lblTelefone: TLabel
+        Left = 465
+        Top = 175
+        Width = 49
+        Height = 17
+        Caption = 'Telefone'
+      end
+      object lblTelefone2: TLabel
+        Left = 683
+        Top = 175
+        Width = 60
+        Height = 17
+        Caption = 'Telefone 2'
+      end
+      object lblInscricaoEstadual: TLabel
+        Left = 803
+        Top = 126
+        Width = 104
+        Height = 17
+        Caption = 'Inscri'#231#227'o Estadual'
+      end
+      object lblObservacoes: TLabel
+        Left = 3
+        Top = 281
+        Width = 76
+        Height = 17
+        Caption = 'Observa'#231#245'es'
+      end
+      object lblCEP: TLabel
+        Left = 647
+        Top = 126
+        Width = 22
+        Height = 17
+        Caption = 'CEP'
+      end
+      object lblIEAtivo: TLabel
+        Left = 923
+        Top = 126
+        Width = 46
+        Height = 17
+        Caption = 'I.E Ativo'
+      end
+      object lblMotivo: TLabel
+        Left = 656
+        Top = 281
+        Width = 101
+        Height = 17
+        Caption = 'Motivo da St.Cad'
+      end
+      object edtFornecedorId: TLabeledEdit
+        Tag = 1
+        Left = 3
+        Top = 32
+        Width = 118
+        Height = 25
+        EditLabel.Width = 43
+        EditLabel.Height = 17
+        EditLabel.Caption = 'C'#243'digo'
+        MaxLength = 11
+        NumbersOnly = True
+        TabOrder = 0
+        Text = ''
+      end
+      object edtRazaoSocial: TLabeledEdit
+        Tag = 2
+        Left = 3
+        Top = 95
+        Width = 315
+        Height = 25
+        EditLabel.Width = 74
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Raz'#227'o Social'
+        TabOrder = 1
+        Text = ''
+      end
+      object edtEndereco: TLabeledEdit
+        Left = 3
+        Top = 144
+        Width = 418
+        Height = 25
+        EditLabel.Width = 55
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Endere'#231'o'
+        TabOrder = 2
+        Text = ''
+      end
+      object edtBairro: TLabeledEdit
+        Left = 429
+        Top = 144
+        Width = 212
+        Height = 25
+        EditLabel.Width = 35
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Bairro'
+        TabOrder = 3
+        Text = ''
+      end
+      object edtCidade: TLabeledEdit
+        Left = 3
+        Top = 192
+        Width = 165
+        Height = 25
+        EditLabel.Width = 41
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Cidade'
+        TabOrder = 4
+        Text = ''
+      end
+      object edtEstado: TLabeledEdit
+        Left = 174
+        Top = 192
+        Width = 81
+        Height = 25
+        EditLabel.Width = 63
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Estado(UF)'
+        MaxLength = 2
+        TabOrder = 5
+        Text = ''
+      end
+      object edtTelefone: TMaskEdit
+        Left = 465
+        Top = 192
+        Width = 212
+        Height = 25
+        TabOrder = 6
+        Text = ''
+      end
+      object edtEmail: TLabeledEdit
+        Left = 3
+        Top = 246
+        Width = 419
+        Height = 25
+        EditLabel.Width = 31
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Email'
+        TabOrder = 7
+        Text = ''
+      end
+      object edtCNPJ: TLabeledEdit
+        Left = 696
+        Top = 95
+        Width = 212
+        Height = 25
+        EditLabel.Width = 29
+        EditLabel.Height = 17
+        EditLabel.Caption = 'CNPJ'
+        EditMask = '99.999.999/9999-99'
+        MaxLength = 18
+        TabOrder = 8
+        Text = '  .   .   /    -  '
+      end
+      object edtTelefone2: TMaskEdit
+        Left = 683
+        Top = 192
+        Width = 212
+        Height = 25
+        TabOrder = 9
+        Text = ''
+      end
+      object edtIE: TMaskEdit
+        Left = 803
+        Top = 144
+        Width = 114
+        Height = 25
+        TabOrder = 10
+        Text = ''
+      end
+      object btnBuscarCNPJ: TBitBtn
+        Left = 918
+        Top = 95
+        Width = 92
+        Height = 25
+        Caption = 'BUSCAR CNPJ'
+        TabOrder = 11
+        OnClick = btnBuscarCNPJClick
+      end
+      object edtRamoAtividade: TLabeledEdit
+        Left = 428
+        Top = 246
+        Width = 609
+        Height = 25
+        EditLabel.Width = 110
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Ramo de atividade'
+        TabOrder = 12
+        Text = ''
+      end
+      object memObservacoes: TMemo
+        Left = 3
+        Top = 304
+        Width = 638
+        Height = 153
+        Lines.Strings = (
+          '')
+        TabOrder = 13
+      end
+      object edtFantasia: TLabeledEdit
+        Left = 328
+        Top = 95
+        Width = 359
+        Height = 25
+        EditLabel.Width = 47
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Fantasia'
+        TabOrder = 14
+        Text = ''
+      end
+      object edtCEP: TMaskEdit
+        Left = 647
+        Top = 144
+        Width = 149
+        Height = 25
+        TabOrder = 15
+        Text = ''
+      end
+      object edtComplemento: TLabeledEdit
+        Left = 261
+        Top = 192
+        Width = 195
+        Height = 25
+        EditLabel.Width = 82
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Complemento'
+        TabOrder = 16
+        Text = ''
+      end
+      object edtIEAtivo: TMaskEdit
+        Left = 923
+        Top = 144
+        Width = 114
+        Height = 25
+        TabOrder = 17
+        Text = ''
+      end
+      object edtSituacaoCadastral: TLabeledEdit
+        Left = 901
+        Top = 192
+        Width = 136
+        Height = 25
+        EditLabel.Width = 108
+        EditLabel.Height = 17
+        EditLabel.Caption = 'Situa'#231#227'o Cadastral'
+        TabOrder = 18
+        Text = ''
+      end
+      object edtMotivo: TMemo
+        Left = 656
+        Top = 304
+        Width = 381
+        Height = 153
+        Lines.Strings = (
+          '')
+        ReadOnly = True
+        TabOrder = 19
+      end
+    end
+  end
+  inherited pnlRodape: TPanel
+    inherited btnFechar: TBitBtn
+      Left = 981
+      ExplicitLeft = 981
+    end
+    inherited btnNavigator: TDBNavigator
+      Hints.Strings = ()
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT fornecedorId,'
+      '             razaosocial,'
+      '             cnpj'
+      'FROM fornecedores')
+    Left = 708
+    Top = 34
+    object QryListagemfornecedorId: TZIntegerField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'fornecedorId'
+      Required = True
+    end
+    object QryListagemrazaosocial: TZUnicodeStringField
+      DisplayLabel = 'Raz'#227'o Social'
+      FieldName = 'razaosocial'
+      Size = 255
+    end
+    object QryListagemcnpj: TZUnicodeStringField
+      DisplayLabel = 'CNPJ'
+      FieldName = 'cnpj'
+      Size = 18
+    end
+  end
+  inherited dtsListagem: TDataSource
+    Left = 788
+    Top = 34
+  end
+  object RESTClient: TRESTClient
+    Params = <>
+    SynchronizedEvents = False
+    Left = 128
+    Top = 347
+  end
+  object RESTRequest: TRESTRequest
+    Client = RESTClient
+    Params = <>
+    Response = RESTResponse
+    SynchronizedEvents = False
+    Left = 224
+    Top = 347
+  end
+  object RESTResponse: TRESTResponse
+    Left = 320
+    Top = 347
+  end
+end

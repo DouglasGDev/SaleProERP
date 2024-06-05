@@ -1,0 +1,18 @@
+inherited frmTelaHerancaConsulta1: TfrmTelaHerancaConsulta1
+  Caption = 'frmConsultaFornecedor'
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    inherited lblTitulo: TLabel
+      Width = 1041
+      Caption = 'CONSULTA DE FORNECEDOR'
+      ExplicitWidth = 255
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT fornecedorId,'
+      '             razaosocial,'
+      '             cnpj'
+      'FROM fornecedores')
+  end
+end

@@ -1,0 +1,66 @@
+inherited frmConsultaCategoria: TfrmConsultaCategoria
+  Caption = 'CONSULTA DE CATEGORIAS'
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    ExplicitWidth = 1041
+    inherited lblIndice: TLabel
+      Color = clWhite
+      ParentColor = False
+    end
+    inherited mskPesquisa: TMaskEdit
+      ExplicitWidth = 1039
+    end
+  end
+  inherited pnlFooter: TPanel
+    ExplicitTop = 501
+    ExplicitWidth = 1041
+    DesignSize = (
+      1041
+      67)
+    inherited btnFechar: TBitBtn
+      Left = 951
+      Top = 19
+      ExplicitLeft = 951
+      ExplicitTop = 19
+    end
+  end
+  inherited pnlBody: TPanel
+    ExplicitWidth = 1041
+    ExplicitHeight = 412
+    inherited grdPesquisa: TDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'categoriaId'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'descricao'
+          Visible = True
+        end>
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT categoriaId,'
+      '             descricao'
+      'FROM categorias')
+    Left = 540
+    Top = 90
+    object QryListagemcategoriaId: TZIntegerField
+      DisplayLabel = 'C'#243'digo'
+      FieldName = 'categoriaId'
+      Required = True
+    end
+    object QryListagemdescricao: TZUnicodeStringField
+      DisplayLabel = 'Descri'#231#227'o'
+      FieldName = 'descricao'
+      Size = 100
+    end
+  end
+  inherited dtsListagem: TDataSource
+    Left = 596
+    Top = 90
+  end
+end

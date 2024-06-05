@@ -1,0 +1,295 @@
+unit uEntradaNota;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uTelaHeranca, Data.DB,
+  ZAbstractRODataset, ZAbstractDataset, ZDataset, Vcl.DBCtrls, Vcl.Grids,
+  Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls,
+  RxToolEdit, RxCurrEdit, uDTMEntrada, cEntradaNota, uEnum, uDTMConexao;
+
+type
+  TfrmEntradaNota = class(TfrmTelaHeranca)
+    edtEntradaId: TLabeledEdit;
+    lblDataVenda: TLabel;
+    edtDataEntrada: TDateEdit;
+    lblCategoria: TLabel;
+    lkpFornecedor: TDBLookupComboBox;
+    edtNotaFiscal: TEdit;
+    Label1: TLabel;
+    btnAdicionarFornecedor: TSpeedButton;
+    btnPesquisarFornecedor: TSpeedButton;
+    lblProduto: TLabel;
+    lkpProduto: TDBLookupComboBox;
+    btnAdicionarProduto: TSpeedButton;
+    btnPesquisarProduto: TSpeedButton;
+    lblQuantidade: TLabel;
+    edtQuantidade: TCurrencyEdit;
+    btnAdicionarItem: TBitBtn;
+    btnApagarItem: TBitBtn;
+    dbgridEntradaNota: TDBGrid;
+    edtPedido: TLabeledEdit;
+    QryListagementradaId: TZIntegerField;
+    QryListagemdataentrada: TZDateTimeField;
+    QryListagemnumnotafiscal: TZUnicodeStringField;
+    QryListagemnumpedido: TZIntegerField;
+    QryListagemfornecedorId: TZIntegerField;
+    QryListagemrazaosocial: TZUnicodeStringField;
+    QryListagemprodutoId: TZIntegerField;
+    QryListagemnome: TZUnicodeStringField;
+    QryListagemquantidade: TZFMTBCDField;
+    procedure edtDataEntradaExit(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure btnAdicionarItemClick(Sender: TObject);
+    procedure dbgridEntradaNotaDblClick(Sender: TObject);
+    procedure btnApagarItemClick(Sender: TObject);
+    procedure btnNovoClick(Sender: TObject);
+    procedure btnAlterarClick(Sender: TObject);
+    procedure btnGravarClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormShow(Sender: TObject);
+  private
+    oEntrada   : TEntrada;
+    function Apagar:Boolean; override;
+    function Gravar(EstadoDoCadastro:TEstadoDoCadastro):Boolean; override;
+    procedure CarregarRegistroSelecionado;
+    procedure LimparComponenteItem;
+    procedure LimparCds;
+    function ProdutoExiste(ProdutoId: Integer): Boolean;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmEntradaNota: TfrmEntradaNota;
+
+implementation
+
+{$R *.dfm}
+
+function TfrmEntradaNota.Apagar: Boolean;
+begin
+    if oEntrada.Selecionar(QryListagem.FieldByName('entradaId').AsInteger, dtmEntrada.cdsEntradaNota) then begin
+       Result := oEntrada.Apagar;
+    end;
+end;
+
+procedure TfrmEntradaNota.btnAdicionarItemClick(Sender: TObject);
+begin
+  inherited;
+
+  if VarIsNull(lkpProduto.KeyValue) then
+  begin
+    MessageDlg('Produto é um campo Obrigatório', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    lkpProduto.SetFocus;
+    Exit;
+  end;
+
+  if VarIsNull(lkpFornecedor.KeyValue) then
+  begin
+    MessageDlg('Fornecedor é um campo obrigatório', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    lkpFornecedor.SetFocus;
+    Exit;
+  end;
+
+  if edtQuantidade.Value <= 0 then
+  begin
+    MessageDlg('Quantidade não pode ser Zero', TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    edtQuantidade.SetFocus;
+    Exit;
+  end;
+
+  // Verificar se o produto já está no dataset
+  if dtmEntrada.cdsEntradaNota.Locate('produtoId', lkpProduto.KeyValue, []) then
+  begin
+    // Atualizar quantidade
+    dtmEntrada.cdsEntradaNota.Edit;
+    dtmEntrada.cdsEntradaNota.FieldByName('quantidade').AsFloat :=
+      dtmEntrada.cdsEntradaNota.FieldByName('quantidade').AsFloat + edtQuantidade.Value;
+    dtmEntrada.cdsEntradaNota.Post;
+  end
+  else
+  begin
+    // Novo produto, adicionar ao dataset
+    dtmEntrada.cdsEntradaNota.Append;
+    dtmEntrada.cdsEntradaNota.FieldByName('produtoId').AsInteger := lkpProduto.KeyValue;
+    dtmEntrada.cdsEntradaNota.FieldByName('quantidade').AsFloat := edtQuantidade.Value;
+    dtmEntrada.cdsEntradaNota.Post;
+  end;
+
+  LimparComponenteItem;
+  lkpProduto.SetFocus;
+end;
+
+
+procedure TfrmEntradaNota.edtDataEntradaExit(Sender: TObject);
+begin
+  inherited;
+  if edtDataEntrada.Date <> Date then
+  begin
+    if edtDataEntrada.Date < Date then
+      MessageDlg('Data inferior a atual', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0)
+    else
+      MessageDlg('Data superior a atual', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
+
+    edtDataEntrada.SetFocus;
+  end;
+end;
+
+procedure TfrmEntradaNota.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+    if Assigned(dtmEntrada) then
+     FreeAndNil(dtmEntrada);
+end;
+
+procedure TfrmEntradaNota.FormCreate(Sender: TObject);
+begin
+  inherited;
+   dtmEntrada := TdtmEntrada.Create(Self);
+   oEntrada:=TEntrada.Create(dtmPrincipal.ConexaoDB);
+   IndiceAtual :=  'nome';
+end;
+
+procedure TfrmEntradaNota.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+   BloqueiaCTRL_DEL_DBGrid(Key,Shift);
+end;
+
+procedure TfrmEntradaNota.FormShow(Sender: TObject);
+begin
+  QryListagem.Open;
+  inherited;
+
+end;
+function TfrmEntradaNota.ProdutoExiste(ProdutoId: Integer): Boolean;
+var
+  Qry: TZQuery;
+begin
+  Result := False;
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := dtmPrincipal.ConexaoDB;
+    Qry.SQL.Text := 'SELECT COUNT(*) FROM produtos WHERE produtoId = :ProdutoId';
+    Qry.ParamByName('ProdutoId').AsInteger := ProdutoId;
+    Qry.Open;
+    Result := (Qry.Fields[0].AsInteger > 0);
+  finally
+    Qry.Free;
+  end;
+end;
+
+function TfrmEntradaNota.Gravar(EstadoDoCadastro: TEstadoDoCadastro): Boolean;
+begin
+  Result := False;
+
+  // Se o estado do cadastro for "Inserir", vamos adicionar os produtos da entrada ao dataset
+  if EstadoDoCadastro = ecInserir then
+  begin
+    dtmEntrada.cdsEntradaNota.First;
+    while not dtmEntrada.cdsEntradaNota.Eof do
+    begin
+      // Adicionar os produtos ao objeto de entrada
+      oEntrada.DataEntrada := edtDataEntrada.Date;
+      oEntrada.NumNotaFiscal := edtNotaFiscal.Text;
+      oEntrada.NumPedido := StrToIntDef(edtPedido.Text, 0); // Use StrToIntDef para evitar exceções se o texto não for um número
+      oEntrada.FornecedorId := lkpFornecedor.KeyValue;
+      oEntrada.ProdutoId := dtmEntrada.cdsEntradaNota.FieldByName('produtoId').AsInteger;
+      oEntrada.Quantidade := dtmEntrada.cdsEntradaNota.FieldByName('quantidade').AsFloat;
+
+      // Inserir no banco de dados
+      oEntrada.Inserir(dtmEntrada.cdsEntradaNota);
+
+      dtmEntrada.cdsEntradaNota.Next;
+    end;
+  end;
+
+  // Limpar os componentes após gravar
+  LimparCds;
+
+  Result := True;
+end;
+
+
+
+
+
+
+procedure TfrmEntradaNota.dbgridEntradaNotaDblClick(Sender: TObject);
+begin
+  inherited;
+  CarregarRegistroSelecionado;
+end;
+
+procedure TfrmEntradaNota.LimparComponenteItem;
+begin
+  lkpProduto.KeyValue := null;    // pra limpar os campos depois de terem sido selecionados
+  edtQuantidade.Value := 0.00;
+end;
+
+procedure TfrmEntradaNota.LimparCds;
+begin
+  dtmEntrada.cdsEntradaNota.First;
+  while not dtmEntrada.cdsEntradaNota.Eof do
+    dtmEntrada.cdsEntradaNota.Delete;
+end;
+
+procedure TfrmEntradaNota.btnAlterarClick(Sender: TObject);
+begin
+  if oEntrada.Selecionar(QryListagem.FieldByName('entradaId').AsInteger, dtmEntrada.cdsEntradaNota) then begin
+     edtEntradaId.Text    := IntToStr(oEntrada.EntradaId);
+     edtDataEntrada.Date  := oEntrada.DataEntrada;
+     edtNotaFiscal.Text   := oEntrada.NumNotaFiscal;
+     edtPedido.Text       := IntToStr(oEntrada.NumPedido);
+     lkpFornecedor.KeyValue       := oEntrada.FornecedorId;
+     lkpProduto.KeyValue          := oEntrada.ProdutoId;
+     edtQuantidade.Value  := oEntrada.Quantidade;
+  end
+  else begin
+    btnCancelar.Click;
+    Abort;
+  end;
+  inherited;
+end;
+
+procedure TfrmEntradaNota.btnApagarItemClick(Sender: TObject);
+begin
+  inherited;
+   if lkpProduto.KeyValue=Null then begin     // verifica se tem produto selecionado e se não tiver vai dar esse aviso
+    MessageDlg('Selecione o Produto a ser excluído' , TMsgDlgType.mtInformation, [TMsgDlgBtn.mbOK], 0);
+    dbgridEntradaNota.SetFocus;
+    abort;
+  end;
+  if dtmEntrada.cdsEntradaNota.Locate('produtoId', lkpProduto.KeyValue, []) then begin  // localiza o item selecionado a ser removido da lista de produtos comprados, deleta e depois limpa o item de lá
+     dtmEntrada.cdsEntradaNota.Delete;
+     LimparComponenteItem;
+  end;
+end;
+
+procedure TfrmEntradaNota.btnGravarClick(Sender: TObject);
+begin
+  inherited;
+  LimparCds;
+end;
+
+procedure TfrmEntradaNota.btnNovoClick(Sender: TObject);
+begin
+  inherited;
+   edtDataEntrada.Date := Date;
+   lkpFornecedor.SetFocus;
+   LimparCds;
+end;
+// pra carregar na tela nova entrada quando selecionado ele pega esses 2 campos
+procedure TfrmEntradaNota.CarregarRegistroSelecionado;
+begin
+  lkpProduto.KeyValue := dtmEntrada.cdsEntradaNota.FieldByName('produtoId').AsString;
+  edtQuantidade.Value := dtmEntrada.cdsEntradaNota.FieldByName('quantidade').AsFloat;
+  end;
+
+end.
+

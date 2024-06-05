@@ -1,0 +1,369 @@
+unit cEntradaNota;
+
+interface
+
+uses System.Classes,
+     Vcl.Controls,
+     Vcl.ExtCtrls,
+     Vcl.Dialogs,
+     ZAbstractConnection,
+     ZConnection,
+     ZAbstractRODataset,
+     ZAbstractDataset,
+     ZDataset,
+     System.SysUtils,
+     Data.DB,
+     cControleEstoque,
+     uEnum,
+     Datasnap.DBClient;
+
+type
+  TEntrada = class
+  private
+    ConexaoDB:TZConnection;
+    F_entradaId:Integer;
+    F_dataentrada:TDateTime;
+    F_numnotafiscal:String;
+    F_numpedido: Integer;
+    F_fornecedorId:Integer;
+    F_produtoId:Integer;
+    F_quantidade: Double;
+
+    function AtualizarItem(cds: TClientDataSet): Boolean;
+    function ApagaItens(cds: TClientDataSet): Boolean;
+    function InserirItens(cds: TClientDataSet; IdEntrada: Integer): Boolean;
+
+  public
+    constructor Create(aConexao:TZConnection);
+    destructor Destroy; override;
+    function Inserir(cds:TClientDataSet):Integer;
+    function Atualizar(cds:TClientDataSet):Boolean;
+    function Apagar:Boolean;
+    function Selecionar(id:Integer; var cds:TClientDataSet):Boolean;
+  published
+    property EntradaId:Integer     read F_entradaId     write F_entradaId;
+    property DataEntrada:TDateTime read F_dataentrada   write F_dataentrada;
+    property NumNotaFiscal:String  read F_numnotafiscal write F_numnotafiscal;
+    property NumPedido:Integer     read F_numpedido     write F_numpedido;
+    property FornecedorId:Integer  read F_fornecedorId  write F_fornecedorId;
+    property ProdutoId:Integer     read F_produtoId     write F_produtoId;
+    property Quantidade:Double     read F_quantidade    write F_quantidade;
+  end;
+
+implementation
+
+
+{ TCategoria }
+
+{$region 'Constructor and Destructor'}
+constructor TEntrada.Create(aConexao:TZConnection);
+begin
+  ConexaoDB:=aConexao;
+end;
+
+destructor TEntrada.Destroy;
+begin
+
+  inherited;
+end;
+{$endRegion}
+
+{$region 'CRUD'}
+function TEntrada.Apagar: Boolean;
+var
+  Qry: TZQuery;
+begin
+  Result := False;
+  if MessageDlg('Apagar o Registro: '+#13+#13+
+                'Entrada Nro: '+IntToStr(F_entradaId), mtConfirmation, [mbYes, mbNo], 0) = mrNo then Exit;
+
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := ConexaoDB;
+    ConexaoDB.StartTransaction;
+    try
+      Qry.SQL.Clear;
+      Qry.SQL.Add('DELETE FROM entradanota WHERE entradaId=:entradaId');
+      Qry.ParamByName('entradaId').AsInteger := F_entradaId;
+      Qry.ExecSQL;
+      ConexaoDB.Commit;
+      Result := True;
+    except
+      on E: Exception do
+      begin
+        ConexaoDB.Rollback;
+        ShowMessage('Erro ao apagar o registro: ' + E.Message);
+      end;
+    end;
+  finally
+    Qry.Free;
+  end;
+end;
+
+function TEntrada.Atualizar(cds:TClientDataSet): Boolean;
+var Qry:TZQuery;
+begin
+  try
+    Result:=true;
+    ConexaoDB.StartTransaction;
+    Qry:=TZQuery.Create(nil);
+    Qry.Connection:=ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('UPDATE entradanota '+
+                '   SET entradaId=:entradaId '+
+                '      ,dataEntrada =:dataEntrada '+
+                '      ,numnotafiscal =:numnotafiscal '+
+                '      ,numpedido =:numpedido '+
+                '      ,fornecedorId =:fornecedorId '+
+                '      ,produtoId=:produtoId '+
+                '      ,quantidade=:quantidade '+
+                ' WHERE entradaId=:entradaId ');
+    Qry.ParamByName('entradaId').AsInteger    :=Self.F_entradaId;
+    Qry.ParamByName('dataEntrada').AsDateTime :=Self.F_dataentrada;
+    Qry.ParamByName('numnotafiscal').AsString :=Self.F_numnotafiscal;
+    Qry.ParamByName('numpedido').AsInteger    :=Self.F_numpedido;
+    Qry.ParamByName('fornecedorId').AsInteger :=Self.F_fornecedorId;
+    Qry.ParamByName('produtoId').AsInteger    :=Self.F_produtoId;
+    Qry.ParamByName('quantidade').AsFloat     :=Self.F_quantidade;
+
+    Try
+      //Update
+      Qry.ExecSQL;
+
+      //Apagar Itens no banco que foram apagados na tela
+      ApagaItens(cds);
+
+      cds.First;
+      
+      ConexaoDB.Commit;
+    Except
+      Result:=false;
+      ConexaoDB.Rollback;
+    End;
+
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+function TEntrada.AtualizarItem(cds:TClientDataSet): Boolean;
+var Qry:TZQuery;
+begin
+  try
+    Result:=true;
+    Qry:=TZQuery.Create(nil);
+    Qry.Connection:=ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('UPDATE notaentrada '+
+                '   SET fornecedorId=:fornecedorId '+
+                '       ,produtoId=:produtoId '+
+                '      ,quantidade=:quantidade '+
+                ' WHERE fornecedorId=:fornecedorId AND produtoId=:produtoId ');
+    Qry.ParamByName('fornecedorId').AsInteger    :=Self.F_fornecedorId;
+    Qry.ParamByName('produtoId').AsInteger  :=cds.FieldByName('produtoId').AsInteger;
+    Qry.ParamByName('quantidade').AsFloat   :=cds.FieldByName('quantidade').AsFloat;
+
+    Try
+      ConexaoDB.StartTransaction;
+      Qry.ExecSQL;
+      ConexaoDB.Commit;
+    Except
+      ConexaoDB.Rollback;
+      Result:=false;
+    End;
+
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+
+
+function TEntrada.ApagaItens(cds:TClientDataSet): Boolean;
+var Qry:TZQuery;
+    sCodNoCds:String;
+begin
+  try
+    Result:=true;
+    //Pega os codigos que estão no Cliente para Selecionar o In Not no Banco de Dados
+
+    Qry:=TZQuery.Create(nil);
+    Qry.Connection:=ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add(' DELETE '+
+                '   FROM entradanota '+
+                '  WHERE entradaId=:entradaId '+
+                '    AND entradaId NOT IN ('+sCodNoCds+') ');
+    Qry.ParamByName('entradaId').AsInteger    :=Self.F_entradaId;
+
+     Try
+       ConexaoDB.StartTransaction;
+       Qry.ExecSQL;
+       ConexaoDB.Commit;
+     Except
+       ConexaoDB.Rollback;
+       Result := False;
+     End;
+
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+function TEntrada.Inserir(cds: TClientDataSet): Integer;
+var
+  Qry: TZQuery;
+  IdEntradaGerada: Integer;
+begin
+  Result := -1; // Default to an error result
+  try
+    ConexaoDB.StartTransaction;
+    Qry := TZQuery.Create(nil);
+    Qry.Connection := ConexaoDB;
+
+    try
+      // Faz a Inclusão no Banco de Dados
+      Qry.SQL.Clear;
+      Qry.SQL.Add('INSERT INTO entradanota (dataentrada, numnotafiscal, numpedido, fornecedorId, produtoId, quantidade) ' +
+                  'VALUES (:dataentrada, :numnotafiscal, :numpedido, :fornecedorId, :produtoId, :quantidade)');
+      Qry.ParamByName('dataentrada').AsDateTime := Self.F_dataentrada;
+      Qry.ParamByName('numnotafiscal').AsString := Self.F_numnotafiscal;
+      Qry.ParamByName('numpedido').AsInteger := Self.F_numpedido;
+      Qry.ParamByName('fornecedorId').AsInteger := Self.F_fornecedorId;
+      Qry.ParamByName('produtoId').AsInteger := Self.F_produtoId;
+      Qry.ParamByName('quantidade').AsFloat := Self.F_quantidade;
+
+      Qry.ExecSQL;
+
+      // Recupera o ID Gerado no Insert
+      Qry.SQL.Clear;
+      Qry.SQL.Add('SELECT LAST_INSERT_ID() AS ID');
+      Qry.Open;
+      IdEntradaGerada := Qry.FieldByName('ID').AsInteger;
+
+      // Gravar na tabela VendasItens
+      cds.First;
+      while not cds.Eof do
+      begin
+        InserirItens(cds, IdEntradaGerada);
+        cds.Next;
+      end;
+
+      ConexaoDB.Commit;
+      Result := IdEntradaGerada;
+    except
+      ConexaoDB.Rollback;
+      raise; // Rethrow the exception after rolling back the transaction
+    end;
+  finally
+    Qry.Free;
+  end;
+end;
+
+
+function TEntrada.InserirItens(cds: TClientDataSet; IdEntrada: Integer): Boolean;
+var
+  Qry: TZQuery;
+begin
+  Result := False;
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := ConexaoDB;
+    ConexaoDB.StartTransaction;
+    try
+      cds.First;
+      while not cds.Eof do
+      begin
+        // Insira apenas os itens associados à entrada específica
+        Qry.SQL.Clear;
+        Qry.SQL.Add('INSERT INTO entradanota (dataentrada, numnotafiscal, numpedido, fornecedorId, produtoId, quantidade) ' +
+                     'VALUES (:dataentrada, :numnotafiscal, :numpedido, :fornecedorId, :produtoId, :quantidade)');
+        Qry.ParamByName('dataentrada').AsDateTime := cds.FieldByName('dataentrada').AsDateTime;
+        Qry.ParamByName('numnotafiscal').AsString := cds.FieldByName('numnotafiscal').AsString;
+        Qry.ParamByName('numpedido').AsInteger := cds.FieldByName('numpedido').AsInteger;
+        Qry.ParamByName('fornecedorId').AsInteger := cds.FieldByName('fornecedorId').AsInteger;
+        Qry.ParamByName('produtoId').AsInteger := cds.FieldByName('produtoId').AsInteger;
+        Qry.ParamByName('quantidade').AsFloat := cds.FieldByName('quantidade').AsFloat;
+        Qry.ExecSQL;
+        cds.Next;
+      end;
+      ConexaoDB.Commit;
+      Result := True;
+    except
+      on E: Exception do
+      begin
+        ConexaoDB.Rollback;
+        ShowMessage('Erro ao inserir itens: ' + E.Message);
+      end;
+    end;
+  finally
+    Qry.Free;
+  end;
+end;
+
+
+function TEntrada.Selecionar(id: Integer; var cds:TClientDataSet): Boolean;
+var
+  Qry:TZQuery;
+begin
+  try
+    Result:=true;
+    Qry:=TZQuery.Create(nil);
+    Qry.Connection:=ConexaoDB;
+    Qry.SQL.Clear;
+    Qry.SQL.Add('SELECT entradaId, dataentrada, numnotafiscal, numpedido, fornecedorId, produtoId, quantidade '+
+                'FROM entradanota WHERE entradaId = :entradaId');
+    Qry.ParamByName('entradaId').AsInteger := id;
+
+    Try
+      Qry.Open;
+
+      Self.F_entradaId := Qry.FieldByName('entradaId').AsInteger;
+      Self.F_dataentrada := Qry.FieldByName('dataentrada').AsDateTime;
+      Self.F_numnotafiscal := Qry.FieldByName('numnotafiscal').AsString;
+      Self.F_numpedido := Qry.FieldByName('numpedido').AsInteger;
+      Self.F_fornecedorId := Qry.FieldByName('fornecedorId').AsInteger;
+      Self.F_produtoId := Qry.FieldByName('produtoId').AsInteger;
+      Self.F_quantidade := Qry.FieldByName('quantidade').AsFloat;
+
+      // Agora vamos selecionar os itens associados a esta entrada
+
+      // Limpe o ClientDataSet
+      cds.EmptyDataSet;
+
+      Qry.Close;
+      Qry.SQL.Text := 'SELECT entradaId, dataentrada, numnotafiscal, numpedido, fornecedorId, produtoId, quantidade ' +
+                      'FROM entradanota WHERE entradaId = :entradaId';
+      Qry.ParamByName('entradaId').AsInteger := Self.F_entradaId;
+      Qry.Open;
+
+      while not Qry.Eof do begin
+        cds.Append;
+        cds.FieldByName('entradaId').AsInteger := Qry.FieldByName('entradaId').AsInteger;
+        cds.FieldByName('dataentrada').AsDateTime := Qry.FieldByName('dataentrada').AsDateTime;
+        cds.FieldByName('numnotafiscal').AsString := Qry.FieldByName('numnotafiscal').AsString;
+        cds.FieldByName('numpedido').AsInteger := Qry.FieldByName('numpedido').AsInteger;
+        cds.FieldByName('fornecedorId').AsInteger := Qry.FieldByName('fornecedorId').AsInteger;
+        cds.FieldByName('produtoId').AsInteger := Qry.FieldByName('produtoId').AsInteger;
+        cds.FieldByName('quantidade').AsFloat := Qry.FieldByName('quantidade').AsFloat;
+        cds.Post;
+        Qry.Next;
+      end;
+
+    Except
+      Result:=false;
+    End;
+  finally
+    if Assigned(Qry) then
+       FreeAndNil(Qry);
+  end;
+end;
+
+
+{$endregion}
+
+
+end.

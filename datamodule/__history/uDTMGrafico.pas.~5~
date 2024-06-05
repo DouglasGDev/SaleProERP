@@ -1,0 +1,32 @@
+unit uDTMGrafico;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, ZAbstractRODataset,
+  ZAbstractDataset, ZDataset, uDTMConexao;
+
+type
+  TDtmGrafico = class(TDataModule)
+    QryProdutoEstoque: TZQuery;
+    QryProdutoEstoqueLabel: TZUnicodeStringField;
+    QryProdutoEstoqueValue: TZFMTBCDField;
+    DtsProdutoEstoque: TDataSource;
+    ZQuery1: TZQuery;
+    DataSource1: TDataSource;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  DtmGrafico: TDtmGrafico;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.
