@@ -7,7 +7,6 @@ object dtmPrincipal: TdtmPrincipal
     Properties.Strings = (
       'RawStringEncoding=DB_CP')
     TransactIsolationLevel = tiReadCommitted
-    Connected = True
     DesignConnection = True
     HostName = 'localhost'
     Port = 3306

@@ -1,0 +1,39 @@
+unit uDTMEntrada;
+interface
+uses
+  System.SysUtils, System.Classes, Data.DB, Datasnap.DBClient;
+type
+  TdtmEntrada = class(TDataModule)
+    cdsGridEntradaProdutoVirtual: TClientDataSet;
+    dtsGridEntradaProdutoVirtual: TDataSource;
+    cdsGridEntradaProdutoVirtualprodutoId: TIntegerField;
+    cdsGridEntradaProdutoVirtualnome: TStringField;
+    cdsGridEntradaProdutoVirtualquantidade: TFloatField;
+    cdsGridEntradaProdutoVirtualentradaId: TStringField;
+    cdsGridEntradaProdutoVirtualcusto: TFloatField;
+    cdsGridEntradaProdutoVirtualvalorTotal: TFloatField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+var
+  dtmEntrada: TdtmEntrada;
+implementation
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+uses uEntrada;
+{$R *.dfm}
+
+procedure TdtmEntrada.DataModuleCreate(Sender: TObject);
+begin
+    cdsGridEntradaProdutoVirtual.CreateDataSet;
+    cdsGridEntradaProdutoVirtual.FieldDefs.Add('Status', ftString, 10);
+end;
+procedure TdtmEntrada.DataModuleDestroy(Sender: TObject);
+begin
+   cdsGridEntradaProdutoVirtual.Close;
+end;
+end.

@@ -445,6 +445,9 @@ end;
 procedure TfrmEntrada.btnGravarClick(Sender: TObject);
 var
   novoEntradaId: string;
+  QryDeleteItem: TZQuery;
+  QryInsertItem: TZQuery;
+  QryUpdateItem: TZQuery;
 begin
   if not dtmEntrada.cdsGridEntradaProdutoVirtual.IsEmpty then
   begin
@@ -456,7 +459,56 @@ begin
       else
         novoEntradaId := edtEntradaId.Text;
 
-      GravarItensEntradaNota(novoEntradaId);
+      // Processar todos os itens na tabela virtual
+      dtmEntrada.cdsGridEntradaProdutoVirtual.First;
+      while not dtmEntrada.cdsGridEntradaProdutoVirtual.Eof do
+      begin
+        if dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('Status').AsString = 'Deleted' then
+        begin
+          // Remove o item do banco de dados
+          QryDeleteItem := TZQuery.Create(nil);
+          try
+            QryDeleteItem.Connection := DtmPrincipal.ConexaoDB;
+            QryDeleteItem.SQL.Text := 'CALL sp_RemoverItemEntrada(:entradaId, :produtoId)';
+            QryDeleteItem.Params.ParamByName('entradaId').AsString := novoEntradaId;
+            QryDeleteItem.Params.ParamByName('produtoId').AsInteger := dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('produtoId').AsInteger;
+            QryDeleteItem.ExecSQL;
+          finally
+            QryDeleteItem.Free;
+          end;
+        end
+        else if dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('Status').AsString = 'Modified' then
+        begin
+          // Atualiza o item no banco de dados
+          QryUpdateItem := TZQuery.Create(nil);
+          try
+            QryUpdateItem.Connection := DtmPrincipal.ConexaoDB;
+            QryUpdateItem.SQL.Text := 'CALL sp_AtualizarItemEntrada(:entradaId, :produtoId, :quantidade)';
+            QryUpdateItem.Params.ParamByName('entradaId').AsString := novoEntradaId;
+            QryUpdateItem.Params.ParamByName('produtoId').AsInteger := dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('produtoId').AsInteger;
+            QryUpdateItem.Params.ParamByName('quantidade').AsFloat := dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('quantidade').AsFloat;
+            QryUpdateItem.ExecSQL;
+          finally
+            QryUpdateItem.Free;
+          end;
+        end
+        else
+        begin
+          // Insere o novo item no banco de dados
+          QryInsertItem := TZQuery.Create(nil);
+          try
+            QryInsertItem.Connection := DtmPrincipal.ConexaoDB;
+            QryInsertItem.SQL.Text := 'CALL sp_GravarItensEntrada(:entradaId, :produtoId, :quantidade)';
+            QryInsertItem.Params.ParamByName('entradaId').AsString := novoEntradaId;
+            QryInsertItem.Params.ParamByName('produtoId').AsInteger := dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('produtoId').AsInteger;
+            QryInsertItem.Params.ParamByName('quantidade').AsFloat := dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('quantidade').AsFloat;
+            QryInsertItem.ExecSQL;
+          finally
+            QryInsertItem.Free;
+          end;
+        end;
+        dtmEntrada.cdsGridEntradaProdutoVirtual.Next;
+      end;
 
       DtmPrincipal.ConexaoDB.Commit;
 
@@ -482,6 +534,7 @@ begin
   else
     ShowMessage('Não há produtos adicionados para gravar a entrada de mercadoria.');
 end;
+
 
 
 function TfrmEntrada.GravarEntradaNota: string;
@@ -564,6 +617,7 @@ end;
 procedure TfrmEntrada.btnNovoClick(Sender: TObject);
 begin
   inherited;
+  lkpFornecedor.Enabled := True;
   LimparCampos;
   edtDataEntrada.Date := Date;
 end;
@@ -656,4 +710,3 @@ end;
 
 
 end.
-

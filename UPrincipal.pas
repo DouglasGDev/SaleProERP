@@ -9,7 +9,7 @@ uses
   Vcl.StdCtrls, Vcl.WinXPickers, IdBaseComponent, IdComponent,ZDbcIntfs,cAtualizacaoBancoDeDados, RLReport, cFuncao,
   Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, VclTee.TeeGDIPlus,
   VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.DBChart,cVerificarEstoque, uNotificacao,
-  uCadFornecedor, uEntrada, uCalculadora;
+  uCadFornecedor, uEntrada, uCalculadora, ZConnection;
 type
   TfrmPrincipal = class(TForm)
     pnlTopMenu: TPanel;
@@ -82,7 +82,6 @@ uses cArquivoIni, uCadCategoria,
   uRelCadProduto, uRelCadProdutoComGrupoCategoria, uSelecionarData,
   uRelVendaPorData, uCadUsuario, uLogin, cAcaoAcesso, uCadAcaoAcesso,
   uUsuarioVsAcoes, uTelaHeranca, uDTMGrafico, uConsultarCEP;
-
 
 
 procedure TfrmPrincipal.CategoryButtons1Categories0Items0Click(Sender: TObject);
@@ -250,10 +249,11 @@ begin
     TArquivoIni.AtualizarIni('SERVER', 'User', 'root'); // o usuário
     TArquivoIni.AtualizarIni('SERVER', 'Password', ''); // senha
     TArquivoIni.AtualizarIni('SERVER', 'Database', 'vendas'); // e qual banco de dados vai utilizar
-    MessageDlg('Arquivo '+ TArquivoIni.ArquivoIni +' Criado com sucesso' +#13+
-               'Configure o arquivo antes de inicializar aplicação',MtInformation,[mbok],0);
-
-    Application.Terminate;
+    if MessageDlg('Arquivo ' + TArquivoIni.ArquivoIni + ' criado com sucesso' + #13 +
+                  'Configure o arquivo antes de inicializar a aplicação', mtInformation, [mbOK], 0) = mrOk then
+    begin
+      Application.Terminate;
+    end;
  end
  else begin
 

@@ -5,7 +5,7 @@ interface
 uses
   System.Classes, System.SysUtils, Vcl.Controls, Vcl.ExtCtrls, Vcl.Dialogs,
   ZAbstractConnection, ZConnection, ZAbstractRODataset, ZAbstractDataset,
-  ZDataset, cAtualizacaoBancoDeDados, cCadUsuario;
+  ZDataset, cAtualizacaoBancoDeDados, cCadUsuario, uDTMConexao;
 
 type
   TAtualizacaoTableMYSQL = class(TAtualizaBancoDados)
@@ -25,6 +25,8 @@ type
     procedure Itens_EntradaNota;
     procedure seq_entrada;
     procedure CriarProcedures;
+    procedure CriarTriggersLog;
+    function TriggerExiste(aNomeTrigger: String): Boolean;
 
   public
     constructor Create(aConexao: TZConnection);
@@ -51,12 +53,40 @@ begin
   AcaoAcesso;
   UsuariosAcaoAcesso;
   CriarProcedures; // Adicionado para criar os procedimentos armazenados
+  CriarTriggersLog;
 end;
 
 destructor TAtualizacaoTableMYSQL.Destroy;
 begin
   inherited;
 end;
+
+function TAtualizacaoTableMYSQL.TriggerExiste(aNomeTrigger: String): Boolean;
+var
+  Qry: TZQuery;
+begin
+  Result := False;
+  Qry := TZQuery.Create(nil);
+  try
+    Qry.Connection := ConexaoDB;
+    Qry.SQL.Text := 'SHOW TRIGGERS';
+    Qry.Open;
+
+    while not Qry.Eof do
+    begin
+      if Qry.FieldByName('Trigger').AsString = aNomeTrigger then
+      begin
+        Result := True;
+        Break;
+      end;
+      Qry.Next;
+    end;
+  finally
+    Qry.Close;
+    Qry.Free;
+  end;
+end;
+
 
 function TAtualizacaoTableMYSQL.TabelaExiste(aNomeTabela: String): Boolean; // adaptado pro mysql
 var
@@ -169,25 +199,30 @@ begin
     );
   end;
 
-  if not ProcedureExiste('sp_RemoverItemEntrada') then
-  begin
-    ExecutaDiretoBancoDeDados(
-      'CREATE PROCEDURE sp_RemoverItemEntrada(' +
-      'IN pEntradaId VARCHAR(50), ' +
-      'IN pProdutoId INT) ' +
-      'BEGIN ' +
-      'DECLARE vQuantidade DOUBLE; ' +
-      'SELECT quantidade INTO vQuantidade ' +
-      'FROM itens_entradanota ' +
-      'WHERE entradaId = pEntradaId AND produtoId = pProdutoId; ' +
-      'DELETE FROM itens_entradanota ' +
-      'WHERE entradaId = pEntradaId AND produtoId = pProdutoId; ' +
-      'UPDATE produtos ' +
-      'SET quantidade = quantidade - vQuantidade ' +
-      'WHERE produtoId = pProdutoId; ' +
-      'END;'
-    );
-  end;
+if not ProcedureExiste('sp_RemoverItemEntrada') then
+begin
+  ExecutaDiretoBancoDeDados(
+    'CREATE PROCEDURE sp_RemoverItemEntrada( ' +
+    'IN pEntradaId VARCHAR(50), ' +
+    'IN pProdutoId INT ' +
+    ') ' +
+    'BEGIN ' +
+    'DECLARE vQuantidade DOUBLE; ' +
+
+    'SELECT quantidade INTO vQuantidade ' +
+    'FROM itens_entradanota ' +
+    'WHERE entradaId = pEntradaId AND produtoId = pProdutoId; ' +
+
+    'DELETE FROM itens_entradanota ' +
+    'WHERE entradaId = pEntradaId AND produtoId = pProdutoId; ' +
+
+    'UPDATE produtos ' +
+    'SET quantidade = quantidade - vQuantidade ' +
+    'WHERE produtoId = pProdutoId; ' +
+    'END;'
+  );
+end;
+
 
 
   if not ProcedureExiste('sp_VerificarEstoqueAntesExclusao') then
@@ -215,26 +250,22 @@ begin
 if not ProcedureExiste('sp_ExcluirEntrada') then
 begin
   ExecutaDiretoBancoDeDados(
-    'CREATE PROCEDURE sp_ExcluirEntrada( ' +
-    'IN pEntradaId VARCHAR(50)) ' +
-    'BEGIN ' +
-    // Atualiza o estoque antes de remover os itens da entrada
-    'UPDATE produtos p '+
-    'JOIN itens_entradanota ie ON p.produtoId = ie.produtoId '+
-    'SET p.quantidade = p.quantidade - ie.quantidade '+
-    'WHERE ie.entradaId = pEntradaId; '+
-
-    // Exclui os itens da entrada
-    'DELETE FROM itens_entradanota WHERE entradaId = pEntradaId; '+
-
-   // Exclui a entrada
-    'DELETE FROM entradanota WHERE entradaId = pEntradaId; '+
-    'END'
+'    CREATE PROCEDURE sp_ExcluirEntrada(  '+
+'    IN pEntradaId VARCHAR(50) '          +
+'    )  ' +
+'    BEGIN '                               +
+  // Atualiza o estoque antes de remover os itens da entrada
+'    UPDATE produtos p '                  +
+'    JOIN itens_entradanota ie ON p.produtoId = ie.produtoId  ' +
+'    SET p.quantidade = p.quantidade - ie.quantidade ' +
+'    WHERE ie.entradaId = pEntradaId; ' +
+  //   Exclui os itens da entrada
+'    DELETE FROM itens_entradanota WHERE entradaId = pEntradaId;'+
+  // Exclui a entrada
+'    DELETE FROM entradanota WHERE entradaId = pEntradaId;'+
+'  END; '
   );
 end;
-
-
-
 
 end;
 
@@ -472,6 +503,369 @@ begin
     );
   end;
 end;
+
+
+{$region 'LOGS'}
+
+procedure TAtualizacaoTableMYSQL.CriarTriggersLog;
+begin
+  // Criação da tabela de logs se não existir
+  if not TabelaExiste('alteracao_log') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TABLE alteracao_log (' +
+      'log_id INT AUTO_INCREMENT PRIMARY KEY, ' +
+      'tabela_nome VARCHAR(255), ' +
+      'operacao VARCHAR(10), ' +
+      'registro_id INT, ' +
+      'usuario VARCHAR(255), ' +
+      'data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ' +
+      'detalhes JSON);'
+    );
+  end;
+  // Criação dos triggers para a tabela categorias
+  if not TriggerExiste('trg_categorias_insert') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_categorias_insert ' +
+      'AFTER INSERT ON categorias ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''categorias'', ''INSERT'', NEW.categoriaId, @logged_in_user, JSON_OBJECT(''novo_valor'', NEW.descricao)); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_categorias_update') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_categorias_update ' +
+      'AFTER UPDATE ON categorias ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''categorias'', ''UPDATE'', NEW.categoriaId, @logged_in_user, JSON_OBJECT(''antigo_valor'', OLD.descricao, ''novo_valor'', NEW.descricao)); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_categorias_delete') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_categorias_delete ' +
+      'AFTER DELETE ON categorias ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''categorias'', ''DELETE'', OLD.categoriaId, @logged_in_user, JSON_OBJECT(''valor_deletado'', OLD.descricao)); ' +
+      'END;'
+    );
+  end;
+  // Criação dos triggers para a tabela clientes
+  if not TriggerExiste('trg_clientes_insert') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_clientes_insert ' +
+      'AFTER INSERT ON clientes ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''clientes'', ''INSERT'', NEW.clienteId, @logged_in_user, JSON_OBJECT(''novo_valor'', ' +
+      'JSON_OBJECT(''nome'', NEW.nome, ''endereco'', NEW.endereco, ''cidade'', NEW.cidade, ''bairro'', NEW.bairro, ''estado'', NEW.estado, ''cep'', NEW.cep, ''telefone'', NEW.telefone, ''email'', NEW.email, ''cpf'', NEW.cpf, ''dataNascimento'', NEW.dataNascimento))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_clientes_update') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_clientes_update ' +
+      'AFTER UPDATE ON clientes ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''clientes'', ''UPDATE'', NEW.clienteId, @logged_in_user, JSON_OBJECT(''antigo_valor'', ' +
+      'JSON_OBJECT(''nome'', OLD.nome, ''endereco'', OLD.endereco, ''cidade'', OLD.cidade, ''bairro'', OLD.bairro, ''estado'', OLD.estado, ''cep'', OLD.cep, ' +
+      ' ''telefone'', OLD.telefone, ''email'', OLD.email, ''cpf'', OLD.cpf, ''dataNascimento'', OLD.dataNascimento), ''novo_valor'', JSON_OBJECT(''nome'', NEW.nome, ' +
+      ' ''endereco'', NEW.endereco, ''cidade'', NEW.cidade, ''bairro'', NEW.bairro, ''estado'', NEW.estado, ''cep'', NEW.cep, ''telefone'', NEW.telefone, ''email'', NEW.email, ''cpf'', NEW.cpf, ''dataNascimento'', NEW.dataNascimento))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_clientes_delete') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_clientes_delete ' +
+      'AFTER DELETE ON clientes ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''clientes'', ''DELETE'', OLD.clienteId, @logged_in_user, JSON_OBJECT(''valor_deletado'', ' +
+      'JSON_OBJECT(''nome'', OLD.nome, ''endereco'', OLD.endereco, ''cidade'', OLD.cidade, ''bairro'', OLD.bairro, ''estado'', OLD.estado, ''cep'', OLD.cep, ''telefone'', OLD.telefone, ''email'', OLD.email, ''cpf'', OLD.cpf, ''dataNascimento'', OLD.dataNascimento))); ' +
+      'END;'
+    );
+  end;
+  // Criação dos triggers para a tabela produtos
+  if not TriggerExiste('trg_produtos_insert') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_produtos_insert ' +
+      'AFTER INSERT ON produtos ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''produtos'', ''INSERT'', NEW.produtoId, @logged_in_user, JSON_OBJECT(''novo_valor'', ' +
+      'JSON_OBJECT(''nome'', NEW.nome, ''descricao'', NEW.descricao, ''custo'', NEW.custo, ''valor'', NEW.valor, ' +
+      '''quantidade'', NEW.quantidade, ''qtminima'', NEW.qtminima, ''codbarras'', NEW.codbarras, ''validade'', NEW.validade, ''foto'', NEW.foto, ''categoriaId'', NEW.categoriaId))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_produtos_update') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_produtos_update ' +
+      'AFTER UPDATE ON produtos ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''produtos'', ''UPDATE'', NEW.produtoId, @logged_in_user, ' +
+      'JSON_OBJECT(''antigo_valor'', JSON_OBJECT(''nome'', OLD.nome, ''descricao'', OLD.descricao, ''custo'', OLD.custo, ''valor'', OLD.valor, ' +
+      '''quantidade'', OLD.quantidade, ''qtminima'', OLD.qtminima, ''codbarras'', OLD.codbarras, ''validade'', OLD.validade, ''foto'', OLD.foto, ''categoriaId'', OLD.categoriaId), ' +
+      '''novo_valor'', JSON_OBJECT(''nome'', NEW.nome, ''descricao'', NEW.descricao, ''custo'', NEW.custo, ''valor'', NEW.valor, ''quantidade'', NEW.quantidade, ''qtminima'', NEW.qtminima, ' +
+      '''codbarras'', NEW.codbarras, ''validade'', NEW.validade, ''foto'', NEW.foto, ''categoriaId'', NEW.categoriaId))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_produtos_delete') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_produtos_delete ' +
+      'AFTER DELETE ON produtos ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''produtos'', ''DELETE'', OLD.produtoId, @logged_in_user, JSON_OBJECT(''valor_deletado'', ' +
+      'JSON_OBJECT(''nome'', OLD.nome, ''descricao'', OLD.descricao, ''custo'', OLD.custo, ''valor'', OLD.valor, ''quantidade'', OLD.quantidade, ' +
+      '''qtminima'', OLD.qtminima, ''codbarras'', OLD.codbarras, ''validade'', OLD.validade, ''foto'', OLD.foto, ''categoriaId'', OLD.categoriaId))); ' +
+      'END;'
+    );
+  end;
+  // Criação dos triggers para a tabela fornecedores
+  if not TriggerExiste('trg_fornecedores_insert') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_fornecedores_insert ' +
+      'AFTER INSERT ON fornecedores ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''fornecedores'', ''INSERT'', NEW.fornecedorId, @logged_in_user, ' +
+      'JSON_OBJECT(''novo_valor'', JSON_OBJECT(''razaosocial'', NEW.razaosocial, ''fantasia'', NEW.fantasia, ''cnpj'', NEW.cnpj, ''endereco'', NEW.endereco, ' +
+      ' ''bairro'', NEW.bairro, ''cep'', NEW.cep, ''cidade'', NEW.cidade, ''estado'', NEW.estado, ''complemento'', NEW.complemento, ' +
+      ' ''inscricaoestadual'', NEW.inscricaoestadual, ''inscricaostatus'', NEW.inscricaostatus, ''telefone1'', NEW.telefone1, ''telefone2'', ' +
+      'NEW.telefone2, ''situacaocadastral'', NEW.situacaocadastral, ''motivoscad'', NEW.motivoscad, ''email'', NEW.email, ''ramo'', NEW.ramo, ''observacao'', NEW.observacao))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_fornecedores_update') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_fornecedores_update ' +
+      'AFTER UPDATE ON fornecedores ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''fornecedores'', ''UPDATE'', NEW.fornecedorId, @logged_in_user, ' +
+      'JSON_OBJECT(''antigo_valor'', JSON_OBJECT(''razaosocial'', OLD.razaosocial, ''fantasia'', OLD.fantasia, ' +
+      '''cnpj'', OLD.cnpj, ''endereco'', OLD.endereco, ''bairro'', OLD.bairro, ''cep'', OLD.cep, ''cidade'', OLD.cidade, ' +
+      ' ''estado'', OLD.estado, ''complemento'', OLD.complemento, ''inscricaoestadual'', OLD.inscricaoestadual, ' +
+      ' ''inscricaostatus'', OLD.inscricaostatus, ''telefone1'', OLD.telefone1, ''telefone2'', OLD.telefone2, ''situacaocadastral'', OLD.situacaocadastral, ' +
+      ' ''motivoscad'', OLD.motivoscad, ''email'', OLD.email, ''ramo'', OLD.ramo, ''observacao'', OLD.observacao), ''novo_valor'', JSON_OBJECT(''razaosocial'', NEW.razaosocial, ' +
+      '''fantasia'', NEW.fantasia, ''cnpj'', NEW.cnpj, ''endereco'', NEW.endereco, ''bairro'', NEW.bairro, ''cep'', NEW.cep, ''cidade'', NEW.cidade, ''estado'', NEW.estado, ' +
+      ' ''complemento'', NEW.complemento, ''inscricaoestadual'', NEW.inscricaoestadual, ''inscricaostatus'', NEW.inscricaostatus, ''telefone1'', NEW.telefone1, ''telefone2'', ' +
+      'NEW.telefone2, ''situacaocadastral'', NEW.situacaocadastral, ''motivoscad'', NEW.motivoscad, ''email'', NEW.email, ''ramo'', NEW.ramo, ''observacao'', NEW.observacao))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_fornecedores_delete') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_fornecedores_delete ' +
+      'AFTER DELETE ON fornecedores ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''fornecedores'', ''DELETE'', OLD.fornecedorId, @logged_in_user, ' +
+      'JSON_OBJECT(''valor_deletado'', JSON_OBJECT(''razaosocial'', OLD.razaosocial, ''fantasia'', OLD.fantasia, ' +
+      ' ''cnpj'', OLD.cnpj, ''endereco'', OLD.endereco, ''bairro'', OLD.bairro, ''cep'', OLD.cep, ''cidade'', OLD.cidade, ' +
+      ' ''estado'', OLD.estado, ''complemento'', OLD.complemento, ''inscricaoestadual'', OLD.inscricaoestadual, ''inscricaostatus'', OLD.inscricaostatus, ' +
+      ' ''telefone1'', OLD.telefone1, ''telefone2'', OLD.telefone2, ''situacaocadastral'', OLD.situacaocadastral, ''motivoscad'', OLD.motivoscad, ''email'', OLD.email, ''ramo'', OLD.ramo, ''observacao'', OLD.observacao))); ' +
+      'END;'
+    );
+  end;
+  // Criação dos triggers para a tabela entradanota
+  if not TriggerExiste('trg_entradanota_insert') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_entradanota_insert ' +
+      'AFTER INSERT ON entradanota ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''entradanota'', ''INSERT'', NEW.entradaId, @logged_in_user, JSON_OBJECT(''novo_valor'', ' +
+      'JSON_OBJECT(''dataentrada'', NEW.dataentrada, ''numnotafiscal'', NEW.numnotafiscal, ''numpedido'', NEW.numpedido, ''fornecedorId'', NEW.fornecedorId, ''valorTotalNota'', NEW.valorTotalNota))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_entradanota_update') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_entradanota_update ' +
+      'AFTER UPDATE ON entradanota ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''entradanota'', ''UPDATE'', NEW.entradaId, @logged_in_user, JSON_OBJECT(''antigo_valor'', ' +
+      'JSON_OBJECT(''dataentrada'', OLD.dataentrada, ''numnotafiscal'', OLD.numnotafiscal, ''numpedido'', OLD.numpedido, ''fornecedorId'', OLD.fornecedorId, ' +
+      ' ''valorTotalNota'', OLD.valorTotalNota), ''novo_valor'', JSON_OBJECT(''dataentrada'', NEW.dataentrada, ''numnotafiscal'', NEW.numnotafiscal, ''numpedido'', NEW.numpedido, ''fornecedorId'', NEW.fornecedorId, ''valorTotalNota'', NEW.valorTotalNota))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_entradanota_delete') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_entradanota_delete ' +
+      'AFTER DELETE ON entradanota ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''entradanota'', ''DELETE'', OLD.entradaId, @logged_in_user, JSON_OBJECT(''valor_deletado'', ' +
+      'JSON_OBJECT(''dataentrada'', OLD.dataentrada, ''numnotafiscal'', OLD.numnotafiscal, ''numpedido'', OLD.numpedido, ''fornecedorId'', OLD.fornecedorId, ''valorTotalNota'', OLD.valorTotalNota))); ' +
+      'END;'
+    );
+  end;
+  // Criação dos triggers para a tabela itens_entradanota
+  if not TriggerExiste('trg_itens_entradanota_insert') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_itens_entradanota_insert ' +
+      'AFTER INSERT ON itens_entradanota ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''itens_entradanota'', ''INSERT'', CONCAT(NEW.entradaId, ''_'', NEW.produtoId), @logged_in_user, JSON_OBJECT(''novo_valor'', JSON_OBJECT(''entradaId'', NEW.entradaId, ''produtoId'', NEW.produtoId, ''quantidade'', NEW.quantidade))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_itens_entradanota_update') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_itens_entradanota_update ' +
+      'AFTER UPDATE ON itens_entradanota ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''itens_entradanota'', ''UPDATE'', CONCAT(NEW.entradaId, ''_'', NEW.produtoId), @logged_in_user, ' +
+      'JSON_OBJECT(''antigo_valor'', JSON_OBJECT(''entradaId'', OLD.entradaId, ''produtoId'', OLD.produtoId, ''quantidade'', OLD.quantidade), ''novo_valor'', JSON_OBJECT(''entradaId'', NEW.entradaId, ''produtoId'', NEW.produtoId, ''quantidade'', NEW.quantidade))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_itens_entradanota_delete') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_itens_entradanota_delete ' +
+      'AFTER DELETE ON itens_entradanota ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''itens_entradanota'', ''DELETE'', CONCAT(OLD.entradaId, ''_'', OLD.produtoId), @logged_in_user, JSON_OBJECT(''valor_deletado'', JSON_OBJECT(''entradaId'', OLD.entradaId, ''produtoId'', OLD.produtoId, ''quantidade'', OLD.quantidade))); ' +
+      'END;'
+    );
+  end;
+  // Criação dos triggers para a tabela vendas
+  if not TriggerExiste('trg_vendas_insert') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_vendas_insert ' +
+      'AFTER INSERT ON vendas ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''vendas'', ''INSERT'', NEW.vendaId, @logged_in_user, JSON_OBJECT(''novo_valor'', ' +
+      ' JSON_OBJECT(''clienteId'', NEW.clienteId, ''pix'', NEW.pix, ''credito'', NEW.credito, ''debito'', NEW.debito, ''dinheiro'', NEW.dinheiro, ''dataVenda'', NEW.dataVenda, ''totalVenda'', NEW.totalVenda))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_vendas_update') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_vendas_update ' +
+      'AFTER UPDATE ON vendas ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''vendas'', ''UPDATE'', NEW.vendaId, @logged_in_user, JSON_OBJECT(''antigo_valor'', ' +
+      'JSON_OBJECT(''clienteId'', OLD.clienteId, ''pix'', OLD.pix, ''credito'', OLD.credito, ''debito'', OLD.debito, ''dinheiro'', OLD.dinheiro, ' +
+      '''dataVenda'', OLD.dataVenda, ''totalVenda'', OLD.totalVenda), ''novo_valor'', JSON_OBJECT(''clienteId'', NEW.clienteId, ''pix'', NEW.pix, ''credito'', NEW.credito, ' +
+      '''debito'', NEW.debito, ''dinheiro'', NEW.dinheiro, ''dataVenda'', NEW.dataVenda, ''totalVenda'', NEW.totalVenda))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_vendas_delete') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_vendas_delete ' +
+      'AFTER DELETE ON vendas ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''vendas'', ''DELETE'', OLD.vendaId, @logged_in_user, ' +
+      'JSON_OBJECT(''valor_deletado'', JSON_OBJECT(''clienteId'', OLD.clienteId, ''pix'', OLD.pix, ''credito'', OLD.credito, ''debito'', OLD.debito, ''dinheiro'', OLD.dinheiro, ''dataVenda'', OLD.dataVenda, ''totalVenda'', OLD.totalVenda))); ' +
+      'END;'
+    );
+  end;
+  // Criação dos triggers para a tabela vendasitens
+  if not TriggerExiste('trg_vendasitens_insert') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_vendasitens_insert ' +
+      'AFTER INSERT ON vendasitens ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''vendasitens'', ''INSERT'', CONCAT(NEW.vendaId, ''_'', NEW.produtoId), @logged_in_user, ' +
+      'JSON_OBJECT(''novo_valor'', JSON_OBJECT(''vendaId'', NEW.vendaId, ''produtoId'', NEW.produtoId, ''valorUnitario'', NEW.valorUnitario, ''quantidade'', NEW.quantidade, ''totalProduto'', NEW.totalProduto))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_vendasitens_update') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_vendasitens_update ' +
+      'AFTER UPDATE ON vendasitens ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''vendasitens'', ''UPDATE'', CONCAT(NEW.vendaId, ''_'', NEW.produtoId), @logged_in_user, ' +
+      'JSON_OBJECT(''antigo_valor'', JSON_OBJECT(''vendaId'', OLD.vendaId, ''produtoId'', OLD.produtoId, ''valorUnitario'', OLD.valorUnitario, ' +
+      ' ''quantidade'', OLD.quantidade, ''totalProduto'', OLD.totalProduto), ''novo_valor'', JSON_OBJECT(''vendaId'', NEW.vendaId, ''produtoId'', NEW.produtoId, ''valorUnitario'', NEW.valorUnitario, ''quantidade'', NEW.quantidade, ''totalProduto'', NEW.totalProduto))); ' +
+      'END;'
+    );
+  end;
+  if not TriggerExiste('trg_vendasitens_delete') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TRIGGER trg_vendasitens_delete ' +
+      'AFTER DELETE ON vendasitens ' +
+      'FOR EACH ROW ' +
+      'BEGIN ' +
+      'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
+      'VALUES (''vendasitens'', ''DELETE'', CONCAT(OLD.vendaId, ''_'', OLD.produtoId), @logged_in_user, ' +
+      'JSON_OBJECT(''valor_deletado'', JSON_OBJECT(''vendaId'', OLD.vendaId, ''produtoId'', OLD.produtoId, ''valorUnitario'', OLD.valorUnitario, ''quantidade'', OLD.quantidade, ''totalProduto'', OLD.totalProduto))); ' +
+      'END;'
+    );
+  end;
+end;
+
+
+{$endregion}
 
 end.
 
