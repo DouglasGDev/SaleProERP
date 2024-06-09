@@ -67,6 +67,21 @@ type
     RLDBText9: TRLDBText;
     RLLabel12: TRLLabel;
     RLDBText8: TRLDBText;
+    RLLabel14: TRLLabel;
+    RLDBResultPix: TRLDBResult;
+    RLLabel15: TRLLabel;
+    RLLabel16: TRLLabel;
+    RLDBResultCredito: TRLDBResult;
+    RLLabel17: TRLLabel;
+    RLDBResultDebito: TRLDBResult;
+    RLLabel18: TRLLabel;
+    RLDBResultDinheiro: TRLDBResult;
+    QryVendaPPIX: TZDoubleField;
+    QryVendaCCREDITO: TZDoubleField;
+    QryVendaDDEBITO: TZDoubleField;
+    QryVendaDDINHEIRO: TZDoubleField;
+    RLLabel19: TRLLabel;
+    RLLabel20: TRLLabel;
     procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }

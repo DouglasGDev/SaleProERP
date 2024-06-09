@@ -35,6 +35,7 @@ type
     PieSeries1: TPieSeries;
     DBChart1: TDBChart;
     Series3: TFastLineSeries;
+    CategoryButtonsPermissoes: TCategoryButtons;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -60,6 +61,9 @@ type
     procedure CategoryButtonsCadastroCategories0Items7Click(Sender: TObject);
     procedure CategoryButtonsMovimentacaoCategories0Items1Click(
       Sender: TObject);
+    procedure CategoryButtonsPrincipalCategories0Items3Click(Sender: TObject);
+    procedure CategoryButtonsPermissoesCategories0Items1Click(Sender: TObject);
+    procedure CategoryButtonsPermissoesCategories0Items0Click(Sender: TObject);
   private
     { Private declarations }
      TeclaEnter : TMREnter;
@@ -160,6 +164,18 @@ begin
   TFuncao.CriarForm(TfrmEntrada, oUsuarioLogado, dtmPrincipal.ConexaoDB);//
 end;
 
+procedure TfrmPrincipal.CategoryButtonsPermissoesCategories0Items0Click(
+  Sender: TObject);
+begin
+    TFuncao.CriarForm(TfrmCadAcaoAcesso, oUsuarioLogado, dtmPrincipal.ConexaoDB);
+end;
+
+procedure TfrmPrincipal.CategoryButtonsPermissoesCategories0Items1Click(
+  Sender: TObject);
+begin
+     TFuncao.CriarForm(TfrmUsuarioVsAcoes, oUsuarioLogado, dtmPrincipal.ConexaoDB);
+end;
+
 procedure TfrmPrincipal.CategoryButtonsPrincipalCategories0Items0Click(
   Sender: TObject);
 begin//aqui expande o menu de cadastro e deixa visivel os itens dele
@@ -182,6 +198,14 @@ begin
    CloseSubMenu(SVSubMenu);//aqui expande o menu de relatorios e deixa visivel os itens dele
    CategoryButtonsRelatorios.Visible := True;
    CategoryButtonsRelatorios.Enabled := True;
+end;
+
+procedure TfrmPrincipal.CategoryButtonsPrincipalCategories0Items3Click(
+  Sender: TObject);
+begin
+   CloseSubMenu(SVSubMenu);//aqui expande o menu de relatorios e deixa visivel os itens dele
+   CategoryButtonsPermissoes.Visible := True;
+   CategoryButtonsPermissoes.Enabled := True;
 end;
 
 procedure TfrmPrincipal.CategoryButtonsRelatoriosCategories0Items0Click(
@@ -372,9 +396,11 @@ begin
   CategoryButtonsCadastro.Visible     := False;
   CategoryButtonsMovimentacao.Visible := False;
   CategoryButtonsRelatorios.Visible   := False;
+  CategoryButtonsPermissoes.Visible   := False;
   CategoryButtonsCadastro.Enabled     := False;
   CategoryButtonsMovimentacao.Enabled := False;
   CategoryButtonsRelatorios.Enabled   := False;
+  CategoryButtonsPermissoes.Enabled   := False;
   if TSplitView(Sender).Opened then
      TSplitView(Sender).Close
   else

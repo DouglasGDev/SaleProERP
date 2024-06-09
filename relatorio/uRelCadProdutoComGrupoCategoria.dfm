@@ -276,7 +276,7 @@ object frmRelCadProdutoComGrupoCategoria: TfrmRelCadProdutoComGrupoCategoria
         end
         object RLDBText2: TRLDBText
           Left = 84
-          Top = 6
+          Top = 4
           Width = 36
           Height = 16
           DataField = 'nome'
@@ -285,11 +285,10 @@ object frmRelCadProdutoComGrupoCategoria: TfrmRelCadProdutoComGrupoCategoria
           Transparent = False
         end
         object RLDBText4: TRLDBText
-          Left = 684
-          Top = 0
+          Left = 679
+          Top = 4
           Width = 34
-          Height = 26
-          Align = faRight
+          Height = 16
           DataField = 'Valor'
           DataSource = dtsProdutos
           DisplayMask = '#0.00'
@@ -306,12 +305,26 @@ object frmRelCadProdutoComGrupoCategoria: TfrmRelCadProdutoComGrupoCategoria
           Text = ''
           Transparent = False
         end
+        object RLLabel12: TRLLabel
+          Left = 654
+          Top = 4
+          Width = 20
+          Height = 16
+          Caption = 'R$'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
       end
       object RLBand4: TRLBand
         Left = 0
         Top = 75
         Width = 718
-        Height = 54
+        Height = 80
         BandType = btSummary
         object RLDBResult1: TRLDBResult
           Left = 510
@@ -361,7 +374,7 @@ object frmRelCadProdutoComGrupoCategoria: TfrmRelCadProdutoComGrupoCategoria
           Transparent = False
         end
         object RLDBResult2: TRLDBResult
-          Left = 527
+          Left = 535
           Top = 28
           Width = 92
           Height = 16
@@ -370,6 +383,20 @@ object frmRelCadProdutoComGrupoCategoria: TfrmRelCadProdutoComGrupoCategoria
           DataSource = dtsProdutos
           Info = riAverage
           Text = ''
+        end
+        object RLLabel13: TRLLabel
+          Left = 510
+          Top = 28
+          Width = 20
+          Height = 16
+          Caption = 'R$'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
         end
       end
     end

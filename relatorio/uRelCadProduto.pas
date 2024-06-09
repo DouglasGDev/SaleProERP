@@ -41,6 +41,7 @@ type
     RLDBText4: TRLDBText;
     RLLabel8: TRLLabel;
     RLDBText5: TRLDBText;
+    RLLabel6: TRLLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private

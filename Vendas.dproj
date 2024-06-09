@@ -260,6 +260,7 @@
             <Form>frmCalculadora</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="classes\cProOrcamento.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -27,6 +27,8 @@ type
     procedure CriarProcedures;
     procedure CriarTriggersLog;
     function TriggerExiste(aNomeTrigger: String): Boolean;
+    procedure Orcamentos;
+    procedure Itens_orcamento;
 
   public
     constructor Create(aConexao: TZConnection);
@@ -47,6 +49,8 @@ begin
   seq_entrada;
   EntradaNota;
   Itens_EntradaNota;
+  Orcamentos;
+  Itens_orcamento;
   Vendas;
   VendasItens;
   Usuario;
@@ -445,6 +449,42 @@ begin
     );
   end;
 end;
+
+procedure TAtualizacaoTableMYSQL.Orcamentos;
+begin
+  if not TabelaExiste('orcamentos') then
+  begin
+    ExecutaDiretoBancoDeDados(
+    'CREATE TABLE orcamentos ( ' +
+    'orcamentoId INT AUTO_INCREMENT PRIMARY KEY, ' +
+    'clienteId INT NOT NULL, ' +
+    'dataOrcamento DATETIME NOT NULL, ' +
+    'totalOrcamento DECIMAL(18, 5) NOT NULL, ' +
+    'CONSTRAINT fk_cliente FOREIGN KEY (clienteId) REFERENCES clientes(clienteId))'
+    );
+  end;
+end;
+
+
+procedure TAtualizacaoTableMYSQL.Itens_orcamento;
+begin
+  if not TabelaExiste('itens_orcamento') then
+  begin
+    ExecutaDiretoBancoDeDados(
+    'CREATE TABLE itens_orcamento ( ' +
+    'itemOrcamentoId INT(11) NOT NULL AUTO_INCREMENT, ' +
+    'orcamentoId INT NOT NULL, ' +
+    'produtoId INT NOT NULL, ' +
+    'quantidade DECIMAL(18, 5) NOT NULL, ' +
+    'valorUnitario DECIMAL(18, 5) NOT NULL, ' +
+    'valorTotalProduto DECIMAL(18, 5) NOT NULL, ' +
+    'PRIMARY KEY (itemOrcamentoId), ' +
+    'CONSTRAINT fk_orcamento FOREIGN KEY (orcamentoId) REFERENCES orcamentos(orcamentoId), ' +
+    'CONSTRAINT fk_produto FOREIGN KEY (produtoId) REFERENCES produtos(produtoId))'
+    );
+  end;
+end;
+
 
 procedure TAtualizacaoTableMYSQL.Usuario;
 var

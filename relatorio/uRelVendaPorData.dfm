@@ -114,9 +114,9 @@ object frmRelVendaPorData: TfrmRelVendaPorData
     end
     object Rodape: TRLBand
       Left = 38
-      Top = 250
+      Top = 317
       Width = 718
-      Height = 50
+      Height = 47
       BandType = btFooter
       Transparent = False
       object RLDraw2: TRLDraw
@@ -183,7 +183,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
       Left = 38
       Top = 89
       Width = 718
-      Height = 112
+      Height = 228
       DataFields = 'vendaId'
       Transparent = False
       object RLBand3: TRLBand
@@ -301,7 +301,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
         Left = 0
         Top = 49
         Width = 718
-        Height = 26
+        Height = 24
         Transparent = False
         object RLDBText1: TRLDBText
           Left = 3
@@ -327,7 +327,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           Left = 649
           Top = 0
           Width = 69
-          Height = 26
+          Height = 24
           Align = faRight
           DataField = 'TotalVenda'
           DataSource = dtsVenda
@@ -338,9 +338,9 @@ object frmRelVendaPorData: TfrmRelVendaPorData
       end
       object RLBand4: TRLBand
         Left = 0
-        Top = 75
+        Top = 73
         Width = 718
-        Height = 30
+        Height = 88
         BandType = btSummary
         object RLDBResult1: TRLDBResult
           Left = 523
@@ -376,47 +376,157 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           ParentFont = False
           Transparent = False
         end
+        object RLLabel14: TRLLabel
+          Left = 0
+          Top = 6
+          Width = 118
+          Height = 16
+          Caption = 'Tipos pagamento:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLLabel15: TRLLabel
+          Left = 3
+          Top = 32
+          Width = 54
+          Height = 16
+          Caption = 'PIX : R$'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLDBResultPix: TRLDBResult
+          Left = 95
+          Top = 32
+          Width = 84
+          Height = 16
+          DataField = 'PPIX'
+          DataSource = dtsVenda
+          DisplayMask = '#0.00'
+          Text = ''
+        end
+        object RLLabel16: TRLLabel
+          Left = 0
+          Top = 54
+          Width = 89
+          Height = 16
+          Caption = 'CR'#201'DITO : R$'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLDBResultCredito: TRLDBResult
+          Left = 95
+          Top = 54
+          Width = 121
+          Height = 16
+          DataField = 'CCREDITO'
+          DataSource = dtsVenda
+          DisplayMask = '#0.00'
+          Text = ''
+        end
+        object RLLabel17: TRLLabel
+          Left = 222
+          Top = 32
+          Width = 80
+          Height = 16
+          Caption = 'D'#201'BITO : R$'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLDBResultDebito: TRLDBResult
+          Left = 322
+          Top = 32
+          Width = 112
+          Height = 16
+          DataField = 'DDEBITO'
+          DataSource = dtsVenda
+          DisplayMask = '#0.00'
+          Text = ''
+        end
+        object RLDBResultDinheiro: TRLDBResult
+          Left = 322
+          Top = 54
+          Width = 126
+          Height = 16
+          DataField = 'DDINHEIRO'
+          DataSource = dtsVenda
+          DisplayMask = '#0.00'
+          Text = ''
+        end
+        object RLLabel18: TRLLabel
+          Left = 222
+          Top = 54
+          Width = 94
+          Height = 16
+          Caption = 'DINHEIRO : R$'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
       end
-    end
-    object RLBand5: TRLBand
-      Left = 38
-      Top = 201
-      Width = 718
-      Height = 49
-      BandType = btSummary
-      object RLLabel8: TRLLabel
-        Left = 360
-        Top = 16
-        Width = 83
-        Height = 16
-        Caption = 'Total Geral :'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-        Transparent = False
-      end
-      object RLDBResult2: TRLDBResult
-        Left = 523
-        Top = 16
-        Width = 108
-        Height = 16
-        Alignment = taRightJustify
-        DataField = 'TotalVenda'
-        DataSource = dtsVenda
-        DisplayMask = 'R$ 0.00'
-        Info = riSum
-        Text = ''
-      end
-      object RLDraw4: TRLDraw
-        Left = 360
-        Top = 6
-        Width = 358
-        Height = 11
-        DrawKind = dkLine
-        Transparent = False
+      object RLBand5: TRLBand
+        Left = 0
+        Top = 161
+        Width = 718
+        Height = 58
+        BandType = btSummary
+        object RLLabel8: TRLLabel
+          Left = 360
+          Top = 16
+          Width = 83
+          Height = 16
+          Caption = 'Total Geral :'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLDBResult2: TRLDBResult
+          Left = 523
+          Top = 16
+          Width = 108
+          Height = 16
+          Alignment = taRightJustify
+          DataField = 'TotalVenda'
+          DataSource = dtsVenda
+          DisplayMask = 'R$ 0.00'
+          Info = riSum
+          Text = ''
+        end
+        object RLDraw4: TRLDraw
+          Left = 360
+          Top = 6
+          Width = 358
+          Height = 11
+          DrawKind = dkLine
+          Transparent = False
+        end
       end
     end
   end
@@ -427,7 +537,11 @@ object frmRelVendaPorData: TfrmRelVendaPorData
       '       vendas.clienteId,'
       '       clientes.nome,'
       '       vendas.dataVenda,'
-      'CAST(vendas.totalVenda AS FLOAT) AS TotalVenda'
+      'CAST(vendas.totalVenda AS FLOAT) AS TotalVenda,'
+      'CAST(vendas.pix AS FLOAT) AS PPIX,'
+      'CAST(vendas.credito AS FLOAT) AS CCREDITO,'
+      'CAST(vendas.debito AS FLOAT) AS DDEBITO,'
+      'CAST(vendas.dinheiro AS FLOAT) AS DDINHEIRO'
       'FROM vendas'
       'INNER JOIN clientes ON clientes.clienteId = vendas.clienteId'
       'WHERE vendas.dataVenda BETWEEN :DataInicio AND :DataFim'
@@ -438,14 +552,12 @@ object frmRelVendaPorData: TfrmRelVendaPorData
         Name = 'DataInicio'
         ParamType = ptInput
         SQLType = stDate
-        Value = 45413d
       end
       item
         DataType = ftDate
         Name = 'DataFim'
         ParamType = ptInput
         SQLType = stDate
-        Value = 45443d
       end>
     Left = 464
     Top = 520
@@ -455,14 +567,12 @@ object frmRelVendaPorData: TfrmRelVendaPorData
         Name = 'DataInicio'
         ParamType = ptInput
         SQLType = stDate
-        Value = 45413d
       end
       item
         DataType = ftDate
         Name = 'DataFim'
         ParamType = ptInput
         SQLType = stDate
-        Value = 45443d
       end>
     object QryVendavendaId: TZIntegerField
       FieldName = 'vendaId'
@@ -481,6 +591,22 @@ object frmRelVendaPorData: TfrmRelVendaPorData
     end
     object QryVendaTotalVenda: TZDoubleField
       FieldName = 'TotalVenda'
+      ReadOnly = True
+    end
+    object QryVendaPPIX: TZDoubleField
+      FieldName = 'PPIX'
+      ReadOnly = True
+    end
+    object QryVendaCCREDITO: TZDoubleField
+      FieldName = 'CCREDITO'
+      ReadOnly = True
+    end
+    object QryVendaDDEBITO: TZDoubleField
+      FieldName = 'DDEBITO'
+      ReadOnly = True
+    end
+    object QryVendaDDINHEIRO: TZDoubleField
+      FieldName = 'DDINHEIRO'
       ReadOnly = True
     end
   end

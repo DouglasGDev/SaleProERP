@@ -6,7 +6,7 @@ uses
   ZAbstractRODataset, ZAbstractDataset, ZDataset, Vcl.DBCtrls, Vcl.Grids,
   Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uDTMConexao, uDTMVenda,
   RxToolEdit, RxCurrEdit, uEnum, cProVenda, uRelVenda, uConsultaCliente,
-  uConsultaProduto, uCadCliente, uCadProduto, uCalculadora;
+  uConsultaProduto, uCadCliente, uCadProduto, uCalculadora, cProOrcamento;
 type
   TfrmProVenda = class(TfrmTelaHeranca)
     QryListagemvendaId: TZIntegerField;
@@ -56,6 +56,7 @@ type
     Label1: TLabel;
     edtDinheiro: TCurrencyEdit;
     btnCalculadora: TBitBtn;
+    chkOrcamento: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);

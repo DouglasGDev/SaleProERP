@@ -8,20 +8,18 @@ inherited frmCadAcaoAcesso: TfrmCadAcaoAcesso
   inherited pgcPrincipal: TPageControl
     Width = 976
     Height = 496
-    ExplicitTop = 0
-    ExplicitWidth = 806
-    ExplicitHeight = 375
+    ExplicitWidth = 976
+    ExplicitHeight = 496
     inherited tabListagem: TTabSheet
       ExplicitWidth = 968
-      ExplicitHeight = 466
+      ExplicitHeight = 464
       inherited pnlListagemTopo: TPanel
         Width = 968
-        ExplicitTop = 57
-        ExplicitWidth = 798
+        ExplicitWidth = 968
       end
       inherited grdListagem: TDBGrid
         Width = 968
-        Height = 328
+        Height = 326
         Columns = <
           item
             Expanded = False
@@ -44,21 +42,20 @@ inherited frmCadAcaoAcesso: TfrmCadAcaoAcesso
       inherited pnlTitulo: TPanel
         Width = 968
         Caption = 'Cadastro  A'#231#227'o de Acesso'
-        ExplicitTop = 0
-        ExplicitWidth = 798
+        ExplicitWidth = 968
       end
     end
     inherited tabManutencao: TTabSheet
       ExplicitWidth = 968
-      ExplicitHeight = 466
+      ExplicitHeight = 464
       object edtAcaoAcessoId: TLabeledEdit
         Tag = 1
         Left = 0
         Top = 32
         Width = 121
-        Height = 23
-        EditLabel.Width = 39
-        EditLabel.Height = 15
+        Height = 25
+        EditLabel.Width = 43
+        EditLabel.Height = 17
         EditLabel.Caption = 'C'#243'digo'
         MaxLength = 11
         NumbersOnly = True
@@ -70,9 +67,9 @@ inherited frmCadAcaoAcesso: TfrmCadAcaoAcesso
         Left = 0
         Top = 96
         Width = 663
-        Height = 23
-        EditLabel.Width = 51
-        EditLabel.Height = 15
+        Height = 25
+        EditLabel.Width = 57
+        EditLabel.Height = 17
         EditLabel.Caption = 'Descri'#231#227'o'
         MaxLength = 100
         TabOrder = 1
@@ -83,9 +80,9 @@ inherited frmCadAcaoAcesso: TfrmCadAcaoAcesso
         Left = 0
         Top = 160
         Width = 473
-        Height = 23
-        EditLabel.Width = 33
-        EditLabel.Height = 15
+        Height = 25
+        EditLabel.Width = 35
+        EditLabel.Height = 17
         EditLabel.Caption = 'Chave'
         MaxLength = 60
         TabOrder = 2
@@ -96,8 +93,8 @@ inherited frmCadAcaoAcesso: TfrmCadAcaoAcesso
   inherited pnlRodape: TPanel
     Top = 496
     Width = 976
-    ExplicitTop = 375
-    ExplicitWidth = 806
+    ExplicitTop = 496
+    ExplicitWidth = 976
     DesignSize = (
       976
       67)

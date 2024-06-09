@@ -52,7 +52,8 @@ uses
   cCadFornecedor in 'classes\cCadFornecedor.pas',
   uEntrada in 'processo\uEntrada.pas' {frmEntrada},
   uDTMEntrada in 'datamodule\uDTMEntrada.pas' {dtmEntrada: TDataModule},
-  uCalculadora in 'calculadora\uCalculadora.pas' {frmCalculadora};
+  uCalculadora in 'calculadora\uCalculadora.pas' {frmCalculadora},
+  cProOrcamento in 'classes\cProOrcamento.pas';
 
 {$R *.res}
 begin
