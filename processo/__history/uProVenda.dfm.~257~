@@ -741,6 +741,16 @@ inherited frmProVenda: TfrmProVenda
           end
         end
       end
+      object chkOrcamento: TCheckBox
+        Left = 721
+        Top = 36
+        Width = 97
+        Height = 17
+        BiDiMode = bdRightToLeft
+        Caption = 'Or'#231'amento'
+        ParentBiDiMode = False
+        TabOrder = 4
+      end
     end
   end
   inherited pnlRodape: TPanel
@@ -765,9 +775,9 @@ inherited frmProVenda: TfrmProVenda
       ExplicitLeft = 263
     end
     inherited btnApagar: TBitBtn
-      Left = 350
+      Left = 460
       TabStop = False
-      ExplicitLeft = 350
+      ExplicitLeft = 460
     end
     inherited btnFechar: TBitBtn
       Left = 1021
@@ -775,9 +785,19 @@ inherited frmProVenda: TfrmProVenda
       ExplicitLeft = 1021
     end
     inherited btnNavigator: TDBNavigator
-      Left = 455
+      Left = 663
+      Top = 30
       Hints.Strings = ()
-      ExplicitLeft = 455
+      ExplicitLeft = 663
+      ExplicitTop = 30
+    end
+    object btnGravarOrcamento: TBitBtn
+      Left = 350
+      Top = 22
+      Width = 104
+      Height = 25
+      Caption = 'Gravar Or'#231'amento'
+      TabOrder = 7
     end
   end
   inherited QryListagem: TZQuery

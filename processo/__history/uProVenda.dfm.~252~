@@ -741,6 +741,16 @@ inherited frmProVenda: TfrmProVenda
           end
         end
       end
+      object chkOrcamento: TCheckBox
+        Left = 721
+        Top = 36
+        Width = 97
+        Height = 17
+        BiDiMode = bdRightToLeft
+        Caption = 'Or'#231'amento'
+        ParentBiDiMode = False
+        TabOrder = 4
+      end
     end
   end
   inherited pnlRodape: TPanel

@@ -741,7 +741,7 @@ inherited frmProVenda: TfrmProVenda
           end
         end
       end
-      object CheckBox1: TCheckBox
+      object chkOrcamento: TCheckBox
         Left = 721
         Top = 36
         Width = 97

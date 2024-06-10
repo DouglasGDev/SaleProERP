@@ -56,6 +56,7 @@ type
     Label1: TLabel;
     edtDinheiro: TCurrencyEdit;
     btnCalculadora: TBitBtn;
+    chkOrcamento: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -84,6 +85,7 @@ type
     { Private declarations }
     dtmVenda : TdtmVenda;
     oVenda   : TVenda;
+    oOrcamento : TOrcamento;
     function Apagar:Boolean; override;
     function Gravar(EstadoDoCadastro:TEstadoDoCadastro):Boolean; override;
     function TotalizarProduto(valorUnitario, Quantidade: Double): Double;
@@ -93,6 +95,8 @@ type
     function TotalizarVenda: Double;
     function TotalPagar: Double;
     procedure CarregarFotoProdutoSelecionado;
+    function GravarOrcamento(EstadoOrcamento: TEstadoOrcamento): Boolean;
+    procedure AtualizarUI(Sender: TObject);
   public
     { Public declarations }
   end;
@@ -260,6 +264,7 @@ begin
 end;
 procedure TfrmProVenda.btnAlterarClick(Sender: TObject); //alterar
 begin
+chkOrcamento.Checked := False;
   if oVenda.Selecionar(QryListagem.FieldByName('vendaId').AsInteger, dtmVenda.cdsItensVenda) then begin
      edtVendaId.Text      := IntToStr(oVenda.VendaId);
      lkpCliente.KeyValue  := oVenda.ClienteId;
@@ -304,34 +309,82 @@ begin
   inherited;
    LimparCds;
 end;
+
+function TfrmProVenda.GravarOrcamento(EstadoOrcamento: TEstadoOrcamento): Boolean;
+begin
+  Result := False;
+  if edtVendaId.Text <> EmptyStr then
+    oOrcamento.OrcamentoId := StrToInt(edtVendaId.Text)
+  else
+    oOrcamento.OrcamentoId := 0;
+
+  oOrcamento.ClienteId := lkpCliente.KeyValue;
+  oOrcamento.DataOrcamento := edtDataVenda.Date;
+  oOrcamento.TotalOrcamento := edtValorTotal.Value;
+
+  if EstadoOrcamento = ecNovoOrcamento then
+  begin
+    oOrcamento.OrcamentoId := oOrcamento.Inserir(dtmVenda.cdsItensVenda);
+    if oOrcamento.OrcamentoId > 0 then
+      Result := True;
+  end
+  else if EstadoOrcamento = ecAlterarOrcamento then
+  begin
+    if oOrcamento.Atualizar(dtmVenda.cdsItensVenda) then
+      Result := True;
+  end;
+end;
+
+
+
 procedure TfrmProVenda.btnGravarClick(Sender: TObject);
 var
   Resposta: Integer;
 begin
-  if TotalPagar <> 0.00 then
+  if chkOrcamento.Checked then
   begin
-    MessageDlg('Algum lançamento ou forma de pagamento incorreto, por favor verificar', TMsgDlgType.mtWarning, [mbOK], 0);
-    abort;
-  end
-  else if TotalPagar = 0.00 then
-  Resposta := MessageDlg('Proceder com o pagamento ?', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0);
-  case Resposta of
-    mrYes:
-      begin
-        // Código para proceder com o pagamento
-        ShowMessage('Pagamento processado.');
-      end;
-    mrNo:
-      begin
-        // Código para cancelar o pagamento
-        ShowMessage('Pagamento cancelado.');
-        abort;
-      end;
-  end;
-  inherited;
+    // Certifique-se de que todos os valores de pagamento estejam zerados para um orçamento
+    if (edtPix.Value <> 0) or (edtCredito.Value <> 0) or (edtDebito.Value <> 0) or (edtDinheiro.Value <> 0) then
+    begin
+      MessageDlg('Orçamento não deve ter valores de pagamento.', TMsgDlgType.mtWarning, [mbOK], 0);
+      abort;
+    end;
 
-   LimparCds;
-end;
+        // Salvar o orçamento
+    if GravarOrcamento(ecNovoOrcamento) then
+      ShowMessage('Orçamento gravado com sucesso.');
+
+    inherited;
+    LimparCds;
+    Exit;
+  end
+  else if not (chkOrcamento.Checked) and (TotalPagar <> 0.00) then
+    begin
+      MessageDlg('Algum lançamento ou forma de pagamento incorreto, por favor verificar', TMsgDlgType.mtWarning, [mbOK], 0);
+      abort;
+    end
+    else if not (chkOrcamento.Checked) and (TotalPagar = 0.00) then
+    Resposta := MessageDlg('Proceder com o pagamento ?', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0);
+
+    case Resposta of
+      mrYes:
+        begin
+          // Código para proceder com o pagamento
+          ShowMessage('Pagamento processado.');
+        end;
+      mrNo:
+        begin
+          // Código para cancelar o pagamento
+          ShowMessage('Pagamento cancelado.');
+          abort;
+        end;
+    end;
+
+    inherited;
+    LimparCds;
+  end;
+
+
 procedure TfrmProVenda.btnIncluirClientesClick(Sender: TObject);
 begin
   TFuncao.CriarForm(TfrmCadCliente, oUsuarioLogado, DtmPrincipal.ConexaoDB);
@@ -352,6 +405,7 @@ begin
    lkpCliente.SetFocus;
    lblNomeProduto.Caption := 'Produto :';
    lblValorProduto.Caption := 'Valor :';
+   chkOrcamento.Checked := False;
    LimparCds;
 end;
 procedure TfrmProVenda.btnPesquisarClienteClick(Sender: TObject);
@@ -403,16 +457,20 @@ end;
 procedure TfrmProVenda.edtDataVendaExit(Sender: TObject);
 begin
   inherited;
-     if edtDataVenda.Date <> Date then
+  if not chkOrcamento.Checked then
   begin
-    if edtDataVenda.Date < Date then
-      MessageDlg('Data inferior a atual', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0)
-    else
-      MessageDlg('Data superior a atual', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
+    if edtDataVenda.Date <> Date then
+    begin
+      if edtDataVenda.Date < Date then
+        MessageDlg('Data inferior à atual', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0)
+      else
+        MessageDlg('Data superior à atual', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbOK], 0);
 
-    edtDataVenda.SetFocus;
+      edtDataVenda.SetFocus;
+    end;
   end;
 end;
+
 
 procedure TfrmProVenda.edtDebitoExit(Sender: TObject);
 begin
@@ -446,14 +504,51 @@ procedure TfrmProVenda.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   inherited;
   if Assigned(dtmVenda) then
-     FreeAndNil(dtmVenda);
+    FreeAndNil(dtmVenda);
+  if Assigned(oVenda) then
+    FreeAndNil(oVenda);
+  if Assigned(oOrcamento) then
+    FreeAndNil(oOrcamento);
 end;
+
+procedure TfrmProVenda.AtualizarUI(Sender: TObject);
+begin
+  if chkOrcamento.Checked then
+  begin
+    edtPix.Enabled := False;
+    edtCredito.Enabled := False;
+    edtDebito.Enabled := False;
+    edtDinheiro.Enabled := False;
+
+    edtPix.Value := 0;
+    edtCredito.Value := 0;
+    edtDebito.Value := 0;
+    edtDinheiro.Value := 0;
+  end
+  else
+  begin
+    edtPix.Enabled := True;
+    edtCredito.Enabled := True;
+    edtDebito.Enabled := True;
+    edtDinheiro.Enabled := True;
+  end;
+end;
+
 procedure TfrmProVenda.FormCreate(Sender: TObject);
 begin
   inherited;
    dtmVenda := TdtmVenda.Create(Self);
    oVenda:=TVenda.Create(dtmPrincipal.ConexaoDB);
+   oOrcamento := TOrcamento.Create(dtmPrincipal.ConexaoDB);
+   chkOrcamento.Checked := False;
    IndiceAtual :=  'nome';
+
+     // Vincular o evento OnClick do checkbox ao método AtualizarUI
+  chkOrcamento.OnClick := AtualizarUI;
+
+  // Atualizar a UI com o estado inicial do checkbox
+  AtualizarUI(chkOrcamento);
+
 end;
 procedure TfrmProVenda.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
