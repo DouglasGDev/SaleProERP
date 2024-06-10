@@ -114,7 +114,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
     end
     object Rodape: TRLBand
       Left = 38
-      Top = 317
+      Top = 289
       Width = 718
       Height = 47
       BandType = btFooter
@@ -183,7 +183,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
       Left = 38
       Top = 89
       Width = 718
-      Height = 228
+      Height = 200
       DataFields = 'vendaId'
       Transparent = False
       object RLBand3: TRLBand
@@ -491,7 +491,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
         Left = 0
         Top = 161
         Width = 718
-        Height = 58
+        Height = 40
         BandType = btSummary
         object RLLabel8: TRLLabel
           Left = 360
