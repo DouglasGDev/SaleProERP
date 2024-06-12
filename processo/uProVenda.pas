@@ -7,7 +7,7 @@ uses
   Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls, uDTMConexao, uDTMVenda,
   RxToolEdit, RxCurrEdit, uEnum, cProVenda, uRelVenda, uConsultaCliente,
   uConsultaProduto, uCadCliente, uCadProduto, uCalculadora, cProOrcamento,
-  uConsultaOrcamento;
+  uConsultaOrcamento, uRelOrcamento;
 type
   TfrmProVenda = class(TfrmTelaHeranca)
     QryListagemvendaId: TZIntegerField;
@@ -113,7 +113,7 @@ var
 implementation
 {$R *.dfm}
 
-uses UPrincipal, cFuncao;
+uses UPrincipal, cFuncao, cUsuarioLogado;
 {$region 'override'}
 
 function TfrmProVenda.Apagar: Boolean;
@@ -371,6 +371,7 @@ begin
     dtmVenda.cdsItensVenda.EnableControls;
     edtValorTotal.Value := TotalizarVenda;
     edtValorPagar.Value := TotalPagar;
+    chkOrcamento.Checked := False;
   end;
 end;
 
@@ -392,27 +393,56 @@ end;
 function TfrmProVenda.GravarOrcamento(EstadoOrcamento: TEstadoOrcamento): Boolean;
 begin
   Result := False;
+
+  // Verifica e define o ID do orçamento
   if edtVendaId.Text <> EmptyStr then
     oOrcamento.OrcamentoId := StrToInt(edtVendaId.Text)
   else
     oOrcamento.OrcamentoId := 0;
 
+  // Define os valores do orçamento
   oOrcamento.ClienteId := lkpCliente.KeyValue;
   oOrcamento.DataOrcamento := edtDataVenda.Date;
   oOrcamento.TotalOrcamento := edtValorTotal.Value;
 
-  if EstadoOrcamento = ecNovoOrcamento then
-  begin
-    oOrcamento.OrcamentoId := oOrcamento.Inserir(dtmVenda.cdsItensVenda);
+  try
+    // Insere ou atualiza o orçamento baseado no estado
+    if EstadoOrcamento = ecNovoOrcamento then
+      oOrcamento.OrcamentoId := oOrcamento.Inserir(dtmVenda.cdsItensVenda)
+    else if EstadoOrcamento = ecAlterarOrcamento then
+      oOrcamento.Atualizar(dtmVenda.cdsItensVenda);
+
+    // Verifica se o orçamento foi inserido ou atualizado corretamente
     if oOrcamento.OrcamentoId > 0 then
+    begin
+      // Abre o relatório do orçamento
+      frmRelOrcamento := TfrmRelOrcamento.Create(self);
+      try
+        frmRelOrcamento.QryOrcamento.Close;
+        frmRelOrcamento.QryOrcamento.ParamByName('orcamentoId').AsInteger := oOrcamento.OrcamentoId;
+        frmRelOrcamento.QryOrcamento.Open;
+
+        frmRelOrcamento.QryOrcamentoItens.Close;
+        frmRelOrcamento.QryOrcamentoItens.ParamByName('orcamentoId').AsInteger := oOrcamento.OrcamentoId;
+        frmRelOrcamento.QryOrcamentoItens.Open;
+
+        frmRelOrcamento.Relatorio.PreviewModal;
+      finally
+        frmRelOrcamento.Free;
+      end;
+
       Result := True;
-  end
-  else if EstadoOrcamento = ecAlterarOrcamento then
-  begin
-    if oOrcamento.Atualizar(dtmVenda.cdsItensVenda) then
-      Result := True;
+    end;
+  except
+    on E: Exception do
+    begin
+      ShowMessage('Erro ao gravar o orçamento: ' + E.Message);
+      Result := False;
+    end;
   end;
 end;
+
+
 
 
 
@@ -447,6 +477,8 @@ end;
 
 
 procedure TfrmProVenda.btnGravarOrcamentoClick(Sender: TObject);
+var
+  Resposta: Integer;
 begin
   // Certifique-se de que todos os valores de pagamento estejam zerados para um orçamento
   if (edtPix.Value <> 0) or (edtCredito.Value <> 0) or (edtDebito.Value <> 0) or (edtDinheiro.Value <> 0) then
@@ -454,10 +486,27 @@ begin
     MessageDlg('Orçamento não deve ter valores de pagamento.', TMsgDlgType.mtWarning, [mbOK], 0);
     Exit;
   end;
-  // Salvar o orçamento
-  if GravarOrcamento(ecNovoOrcamento) then
-    ShowMessage('Orçamento gravado com sucesso.');
-  LimparCds;
+
+  // Perguntar ao usuário se deseja proceder com o orçamento
+  Resposta := MessageDlg('Proceder com o orçamento?', TMsgDlgType.mtConfirmation, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0);
+
+  if Resposta = mrYes then
+  begin
+    // Salvar o orçamento
+    if GravarOrcamento(ecNovoOrcamento) then
+    begin
+      LimparCds;
+      Next;
+    end
+    else
+    begin
+      MessageDlg('Erro ao gravar o orçamento.', TMsgDlgType.mtError, [mbOK], 0);
+    end;
+  end
+  else
+  begin
+    ShowMessage('Orçamento cancelado.');
+  end;
 end;
 
 procedure TfrmProVenda.btnIncluirClientesClick(Sender: TObject);

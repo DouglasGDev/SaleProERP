@@ -147,8 +147,8 @@
         </DCCReference>
         <DCCReference Include="classes\cProVenda.pas"/>
         <DCCReference Include="classes\cControleEstoque.pas"/>
-        <DCCReference Include="relatorio\uRelVenda.pas">
-            <Form>frmRelVenda</Form>
+        <DCCReference Include="relatorio\uRelOrcamento.pas">
+            <Form>frmRelOrcamento</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="relatorio\uRelCadClienteFicha.pas">
@@ -265,6 +265,10 @@
             <Form>frmConsultaOrcamento</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="relatorio\uRelVenda.pas">
+            <Form>frmRelVenda</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -288,6 +292,7 @@
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k280.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dclofficexp280.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\TInjectCollection.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\TInjectCollection.bpl not found</Excluded_Packages>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="4">

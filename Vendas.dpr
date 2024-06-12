@@ -17,7 +17,7 @@ uses
   uProVenda in 'processo\uProVenda.pas' {frmProVenda},
   cProVenda in 'classes\cProVenda.pas',
   cControleEstoque in 'classes\cControleEstoque.pas',
-  uRelVenda in 'relatorio\uRelVenda.pas' {frmRelVenda},
+  uRelOrcamento in 'relatorio\uRelOrcamento.pas' {frmRelOrcamento},
   uRelCadClienteFicha in 'relatorio\uRelCadClienteFicha.pas' {frmRelCadClienteFicha},
   uRelCadClientes in 'relatorio\uRelCadClientes.pas' {frmRelCadClientes},
   uRelCategoria in 'relatorio\uRelCategoria.pas' {frmRelCategoria},
@@ -54,7 +54,8 @@ uses
   uDTMEntrada in 'datamodule\uDTMEntrada.pas' {dtmEntrada: TDataModule},
   uCalculadora in 'calculadora\uCalculadora.pas' {frmCalculadora},
   cProOrcamento in 'classes\cProOrcamento.pas',
-  uConsultaOrcamento in 'consulta\uConsultaOrcamento.pas' {frmConsultaOrcamento};
+  uConsultaOrcamento in 'consulta\uConsultaOrcamento.pas' {frmConsultaOrcamento},
+  uRelVenda in 'relatorio\uRelVenda.pas' {frmRelVenda};
 
 {$R *.res}
 begin

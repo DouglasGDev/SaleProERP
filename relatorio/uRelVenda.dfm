@@ -2,8 +2,8 @@ object frmRelVenda: TfrmRelVenda
   Left = 0
   Top = 0
   Caption = 'Relat'#243'rio de Venda'
-  ClientHeight = 1014
-  ClientWidth = 806
+  ClientHeight = 1013
+  ClientWidth = 802
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
