@@ -9,7 +9,7 @@ uses
   Vcl.StdCtrls, Vcl.WinXPickers, IdBaseComponent, IdComponent,ZDbcIntfs,cAtualizacaoBancoDeDados, RLReport, cFuncao,
   Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, VclTee.TeeGDIPlus,
   VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.DBChart,cVerificarEstoque, uNotificacao,
-  uCadFornecedor, uEntrada, uCalculadora, ZConnection;
+  uCadFornecedor, uEntrada, uCalculadora, ZConnection, uConsultaOrcamento;
 type
   TfrmPrincipal = class(TForm)
     pnlTopMenu: TPanel;
@@ -25,7 +25,6 @@ type
     CategoryButtonsRelatorios: TCategoryButtons;
     StbPrincipal: TStatusBar;
     lblBemVindo: TLabel;
-    lblDashboard: TLabel;
     grdPnlGraficos: TGridPanel;
     DBCProdutoEstoque: TDBChart;
     Series1: TBarSeries;
@@ -310,6 +309,7 @@ begin
     TAcaoAcesso.CriarAcoes(TfrmCadAcaoAcesso,DtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmAlterarSenha,DtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmProVenda,DtmPrincipal.ConexaoDB);
+    TAcaoAcesso.CriarAcoes(TfrmConsultaOrcamento, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmCalculadora, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmEntrada,DtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmRelVendaPorData,DtmPrincipal.ConexaoDB);

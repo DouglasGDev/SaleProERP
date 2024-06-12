@@ -637,21 +637,6 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object lblDashboard: TLabel
-      Left = 488
-      Top = 26
-      Width = 131
-      Height = 30
-      Align = alCustom
-      Alignment = taCenter
-      Caption = 'DASHBOARD'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWhite
-      Font.Height = -21
-      Font.Name = 'Segoe UI'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
   end
   object StbPrincipal: TStatusBar
     Left = 0

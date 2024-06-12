@@ -35,10 +35,11 @@ type
   public
     { Public declarations }
     aRetornarIdSelecionado:Variant;
+    aRetornarOrcamentoIdSelecionado:Variant;
     aIniciarPesquisaId:Variant;
+    aPrimarioId:String;
     aCampoId:String;
     IndiceAtual:String;
-    aPrimarioId : string;
   end;
 
 var
@@ -47,7 +48,6 @@ var
 implementation
 
 {$R *.dfm}
-
 
 procedure TfrmTelaHerancaConsulta.btnFecharClick(Sender: TObject);
 begin
@@ -90,6 +90,9 @@ end;
 procedure TfrmTelaHerancaConsulta.grdPesquisaDblClick(Sender: TObject);
 begin
   aRetornarIdSelecionado := QryListagem.FieldByName(aCampoId).AsVariant;// quando der 2 cliques no aquivo selecionado do grid ele vai fechar e retornar o id daquele campo selecionado e por ser variant, recebe qualquer tipo de dado
+
+  aRetornarOrcamentoIdSelecionado := QryListagem.FieldByName(aPrimarioId).AsVariant;
+
   Close;
 end;
 

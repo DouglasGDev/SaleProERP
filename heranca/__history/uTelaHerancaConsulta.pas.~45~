@@ -38,7 +38,6 @@ type
     aIniciarPesquisaId:Variant;
     aCampoId:String;
     IndiceAtual:String;
-    aPrimarioId : string;
   end;
 
 var
@@ -48,6 +47,7 @@ implementation
 
 {$R *.dfm}
 
+uses uConsultaOrcamento;
 
 procedure TfrmTelaHerancaConsulta.btnFecharClick(Sender: TObject);
 begin

@@ -48,6 +48,7 @@ implementation
 
 {$R *.dfm}
 
+uses uConsultaOrcamento;
 
 procedure TfrmTelaHerancaConsulta.btnFecharClick(Sender: TObject);
 begin

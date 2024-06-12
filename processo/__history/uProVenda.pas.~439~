@@ -327,6 +327,7 @@ begin
         dtmVenda.cdsItensVenda.First;
         while not dtmVenda.cdsItensVenda.Eof do
           dtmVenda.cdsItensVenda.Delete;
+
         Qry := TZQuery.Create(nil);
         try
           Qry.Connection := dtmPrincipal.ConexaoDB;
@@ -339,8 +340,9 @@ begin
                           '  FROM itens_orcamento ' +
                           '       INNER JOIN produtos ON produtos.produtoId = itens_orcamento.produtoId ' +
                           ' WHERE itens_orcamento.orcamentoId = :orcamentoId';
-          Qry.ParamByName('orcamentoId').AsInteger := frmConsultaOrcamento.aRetornarIdOrcamentoSelecionado;
+          Qry.ParamByName('orcamentoId').AsInteger := frmConsultaOrcamento.aRetornarIdSelecionado;
           Qry.Open;
+
           // Pega da Query e Coloca no ClientDataSet
           while not Qry.Eof do
           begin
@@ -356,6 +358,7 @@ begin
         finally
           Qry.Free;
         end;
+
         dtmVenda.cdsItensVenda.First;
       except
         on E: Exception do
@@ -369,8 +372,6 @@ begin
   finally
     frmConsultaOrcamento.Release;
     dtmVenda.cdsItensVenda.EnableControls;
-    edtValorTotal.Value := TotalizarVenda;
-    edtValorPagar.Value := TotalPagar;
   end;
 end;
 

@@ -261,6 +261,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="classes\cProOrcamento.pas"/>
+        <DCCReference Include="consulta\uConsultaOrcamento.pas">
+            <Form>frmConsultaOrcamento</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

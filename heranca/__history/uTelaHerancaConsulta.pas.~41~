@@ -35,10 +35,12 @@ type
   public
     { Public declarations }
     aRetornarIdSelecionado:Variant;
+    aRetornarOrcamentoIdSelecionado:Variant;
     aIniciarPesquisaId:Variant;
+    aPrimarioId:String;
     aCampoId:String;
     IndiceAtual:String;
-    aPrimarioId : string;
+    procedure orcamentoId(Sender: TObject);
   end;
 
 var
@@ -48,12 +50,14 @@ implementation
 
 {$R *.dfm}
 
-
 procedure TfrmTelaHerancaConsulta.btnFecharClick(Sender: TObject);
 begin
      Close;
 end;
-
+procedure TfrmTelaHerancaConsulta.orcamentoId(Sender: TObject);
+begin
+   aRetornarOrcamentoIdSelecionado := QryListagem.FieldByName(aPrimarioId).AsVariant;
+end;
 procedure TfrmTelaHerancaConsulta.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin

@@ -319,14 +319,16 @@ begin
     frmConsultaOrcamento.ShowModal;
 
     if not VarIsEmpty(frmConsultaOrcamento.aRetornarIdSelecionado) then  //Não Atribuido
- begin
+    begin
       lkpCliente.KeyValue := frmConsultaOrcamento.aRetornarIdSelecionado;
-      edtOrcamentoId.Text := frmConsultaOrcamento.aRetornarIdOrcamentoSelecionado;
-        try
+      edtOrcamentoId.Text := frmConsultaOrcamento.aRetornarIdSelecionado;
+
+      try
         dtmVenda.cdsItensVenda.DisableControls;
         dtmVenda.cdsItensVenda.First;
         while not dtmVenda.cdsItensVenda.Eof do
           dtmVenda.cdsItensVenda.Delete;
+
         Qry := TZQuery.Create(nil);
         try
           Qry.Connection := dtmPrincipal.ConexaoDB;
@@ -334,13 +336,14 @@ begin
           Qry.SQL.Text := 'SELECT itens_orcamento.produtoId, ' +
                           '       produtos.Nome, ' +
                           '       itens_orcamento.ValorUnitario, ' +
-                          '       itens_orcamento.Quantidade, ' +
-                          '       itens_orcamento.valorTotalProduto ' +
+                          '       itens_orcamento.Quantidade, ' + // Corrigido
+                          '       (itens_orcamento.ValorUnitario * itens_orcamento.Quantidade) as valorTotalProduto ' +
                           '  FROM itens_orcamento ' +
-                          '       INNER JOIN produtos ON produtos.produtoId = itens_orcamento.produtoId ' +
+                          '       INNER JOIN produtos On produtos.produtoId = itens_orcamento.produtoId ' +
                           ' WHERE itens_orcamento.orcamentoId = :orcamentoId';
           Qry.ParamByName('orcamentoId').AsInteger := frmConsultaOrcamento.aRetornarIdOrcamentoSelecionado;
           Qry.Open;
+
           // Pega da Query e Coloca no ClientDataSet
           while not Qry.Eof do
           begin
@@ -349,13 +352,15 @@ begin
             dtmVenda.cdsItensVenda.FieldByName('nomeProduto').AsString := Qry.FieldByName('Nome').AsString;
             dtmVenda.cdsItensVenda.FieldByName('valorUnitario').AsFloat := Qry.FieldByName('ValorUnitario').AsFloat;
             dtmVenda.cdsItensVenda.FieldByName('quantidade').AsFloat := Qry.FieldByName('Quantidade').AsFloat;
-            dtmVenda.cdsItensVenda.FieldByName('valorTotalProduto').AsFloat := Qry.FieldByName('valorTotalProduto').AsFloat;
+            dtmVenda.cdsItensVenda.FieldByName('valorTotalProduto').AsFloat :=
+              Qry.FieldByName('ValorUnitario').AsFloat * Qry.FieldByName('Quantidade').AsFloat; // Calculando o total
             dtmVenda.cdsItensVenda.Post;
             Qry.Next;
           end;
         finally
           Qry.Free;
         end;
+
         dtmVenda.cdsItensVenda.First;
       except
         on E: Exception do
@@ -369,8 +374,6 @@ begin
   finally
     frmConsultaOrcamento.Release;
     dtmVenda.cdsItensVenda.EnableControls;
-    edtValorTotal.Value := TotalizarVenda;
-    edtValorPagar.Value := TotalPagar;
   end;
 end;
 

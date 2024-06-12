@@ -1,0 +1,48 @@
+inherited frmConsultaOrcamento: TfrmConsultaOrcamento
+  Caption = 'Tela de Or'#231'amento'
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    inherited lblTitulo: TLabel
+      Caption = 'CONSULTA OR'#199'AMENTO'
+      ExplicitWidth = 221
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT o.orcamentoId,'
+      '             o.clienteId,'
+      '             c.nome,'
+      '             o.dataOrcamento,'
+      '             o.totalOrcamento'
+      'FROM orcamentos o'
+      'JOIN clientes c on o.clienteId = c.clienteId ')
+    object QryListagemorcamentoId: TZIntegerField
+      DisplayLabel = 'Cod. Or'#231'amento'
+      FieldName = 'orcamentoId'
+      Required = True
+    end
+    object QryListagemclienteId: TZIntegerField
+      DisplayLabel = 'Cod. Cliente'
+      FieldName = 'clienteId'
+      Required = True
+    end
+    object QryListagemnome: TZUnicodeStringField
+      DisplayLabel = 'Nome'
+      FieldName = 'nome'
+      Size = 60
+    end
+    object QryListagemdataOrcamento: TZDateTimeField
+      DisplayLabel = 'Dt. Or'#231'amento'
+      FieldName = 'dataOrcamento'
+      Required = True
+    end
+    object QryListagemtotalOrcamento: TZFMTBCDField
+      DisplayLabel = 'Total'
+      FieldName = 'totalOrcamento'
+      Required = True
+      DisplayFormat = 'R$ #0.00'
+      Precision = 18
+      Size = 5
+    end
+  end
+end

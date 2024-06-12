@@ -327,6 +327,7 @@ begin
         dtmVenda.cdsItensVenda.First;
         while not dtmVenda.cdsItensVenda.Eof do
           dtmVenda.cdsItensVenda.Delete;
+
         Qry := TZQuery.Create(nil);
         try
           Qry.Connection := dtmPrincipal.ConexaoDB;
@@ -341,6 +342,7 @@ begin
                           ' WHERE itens_orcamento.orcamentoId = :orcamentoId';
           Qry.ParamByName('orcamentoId').AsInteger := frmConsultaOrcamento.aRetornarIdOrcamentoSelecionado;
           Qry.Open;
+
           // Pega da Query e Coloca no ClientDataSet
           while not Qry.Eof do
           begin
@@ -356,6 +358,7 @@ begin
         finally
           Qry.Free;
         end;
+
         dtmVenda.cdsItensVenda.First;
       except
         on E: Exception do

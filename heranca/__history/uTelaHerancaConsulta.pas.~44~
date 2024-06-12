@@ -35,10 +35,11 @@ type
   public
     { Public declarations }
     aRetornarIdSelecionado:Variant;
+    aRetornarOrcamentoIdSelecionado:Variant;
     aIniciarPesquisaId:Variant;
+    aPrimarioId:String;
     aCampoId:String;
     IndiceAtual:String;
-    aPrimarioId : string;
   end;
 
 var
@@ -48,6 +49,7 @@ implementation
 
 {$R *.dfm}
 
+uses uConsultaOrcamento;
 
 procedure TfrmTelaHerancaConsulta.btnFecharClick(Sender: TObject);
 begin

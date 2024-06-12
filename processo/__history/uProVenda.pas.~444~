@@ -367,6 +367,7 @@ begin
       end;
     end;
   finally
+    LimparComponenteItem;
     frmConsultaOrcamento.Release;
     dtmVenda.cdsItensVenda.EnableControls;
     edtValorTotal.Value := TotalizarVenda;

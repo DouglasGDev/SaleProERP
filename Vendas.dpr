@@ -53,7 +53,8 @@ uses
   uEntrada in 'processo\uEntrada.pas' {frmEntrada},
   uDTMEntrada in 'datamodule\uDTMEntrada.pas' {dtmEntrada: TDataModule},
   uCalculadora in 'calculadora\uCalculadora.pas' {frmCalculadora},
-  cProOrcamento in 'classes\cProOrcamento.pas';
+  cProOrcamento in 'classes\cProOrcamento.pas',
+  uConsultaOrcamento in 'consulta\uConsultaOrcamento.pas' {frmConsultaOrcamento};
 
 {$R *.res}
 begin
