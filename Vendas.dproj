@@ -265,6 +265,10 @@
             <Form>frmConsultaOrcamento</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="relatorio\uRelEntradaNota.pas">
+            <Form>frmRelEntradaNota</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <DCCReference Include="relatorio\uRelVenda.pas">
             <Form>frmRelVenda</Form>
             <FormType>dfm</FormType>

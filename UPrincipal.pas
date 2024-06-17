@@ -9,7 +9,8 @@ uses
   Vcl.StdCtrls, Vcl.WinXPickers, IdBaseComponent, IdComponent,ZDbcIntfs,cAtualizacaoBancoDeDados, RLReport, cFuncao,
   Data.DB, ZAbstractRODataset, ZAbstractDataset, ZDataset, VclTee.TeeGDIPlus,
   VCLTee.TeEngine, VCLTee.Series, VCLTee.TeeProcs, VCLTee.Chart, VCLTee.DBChart,cVerificarEstoque, uNotificacao,
-  uCadFornecedor, uEntrada, uCalculadora, ZConnection, uConsultaOrcamento;
+  uCadFornecedor, uEntrada, uCalculadora, ZConnection, uConsultaOrcamento, uCEFChromiumCore, uCEFChromium,
+  uCEFWinControl, uCEFLinkedWinControlBase, uCEFChromiumWindow, uCEFApplication;
 type
   TfrmPrincipal = class(TForm)
     pnlTopMenu: TPanel;
@@ -35,6 +36,8 @@ type
     DBChart1: TDBChart;
     Series3: TFastLineSeries;
     CategoryButtonsPermissoes: TCategoryButtons;
+    ChromiumWindowWhatsapp: TChromiumWindow;
+    ChromiumWhatsapp: TChromium;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -250,6 +253,7 @@ begin
   FreeAndNil(TeclaEnter);// limpa da memoria ao fechar
   FreeAndNil(dtmPrincipal);// limpa da memoria ao fechar
   FreeAndNil(DtmGrafico);
+  FreeAndNil(GlobalCEFApp);
 
    // Parar e liberar o verificador de estoque
   VerificarEstoque.Parar;
@@ -264,6 +268,30 @@ end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
 begin
+// Inicialize a aplicação CEF
+  if not Assigned(GlobalCEFApp) then
+  begin
+    GlobalCEFApp := TCefApplication.Create;
+    GlobalCEFApp.FrameworkDirPath := ExtractFilePath(ParamStr(0)) + 'integracao\';
+    GlobalCEFApp.ResourcesDirPath := GlobalCEFApp.FrameworkDirPath;
+    GlobalCEFApp.LocalesDirPath := GlobalCEFApp.FrameworkDirPath + 'locales';
+    GlobalCEFApp.Cache := ExtractFilePath(ParamStr(0)) + 'cookies';
+    GlobalCEFApp.PersistSessionCookies := True;
+    GlobalCEFApp.PersistUserPreferences := True;
+    GlobalCEFApp.AcceptLanguageList := 'pt-BR';
+    //GlobalCEFApp.StartMainProcess;
+
+  if GlobalCEFApp.StartMainProcess then
+  begin
+    Application.Initialize;
+    //Application.MainFormOnTaskbar := True;
+  end
+  else
+  begin
+    Application.Terminate;
+  end;
+  end;
+
  if not FileExists(TArquivoIni.ArquivoIni) then // se não existe o arquivo vendas.ini ele vai criar um com as seguintes configurações abaixo
  begin
     TArquivoIni.AtualizarIni('SERVER', 'TipoDataBase', 'MYSQL'); // tipo gerenciador de banco de dados
@@ -278,7 +306,8 @@ begin
       Application.Terminate;
     end;
  end
- else begin
+ else
+ begin
 
    frmAtualizaDB := TfrmAtualizaDB.Create(Self);
    frmAtualizaDB.Show;
@@ -320,7 +349,10 @@ begin
     TAcaoAcesso.CriarAcoes(TfrmRelCategoria,DtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmUsuarioVsAcoes,DtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmConsultarCEP, dtmPrincipal.ConexaoDB);
+    //TAcaoAcesso.CriarAcoes(TfrmWhatsapp, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmCadFornecedor, dtmPrincipal.ConexaoDB);
+
+
 
     TAcaoAcesso.PreencherUsuariosVsAcoes(dtmPrincipal.ConexaoDB);
     DtmGrafico := TDtmGrafico.Create(Self);
@@ -329,6 +361,7 @@ begin
     TeclaEnter := TMREnter.Create(Self);
     TeclaEnter.FocusEnabled := True;
     TeclaEnter.FocusColor := clInfoBk;
+
   end;
 end;
 
@@ -345,6 +378,11 @@ begin
  finally
    frmLogin.Release;
     StbPrincipal.Panels[0].Text := 'USUÁRIO: ' + oUsuarioLogado.nome;
+
+    ChromiumWindowWhatsapp.Enabled := True;
+    ChromiumWindowWhatsapp.Visible := True;
+    ChromiumWhatsapp.DefaultURL := 'https://web.whatsapp.com';
+    ChromiumWhatsapp.CreateBrowser(ChromiumWindowWhatsapp);
 
     // Criar o formulário de notificação
     frmNotificacao := TfrmNotificacao.Create(Application);

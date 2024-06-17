@@ -55,6 +55,7 @@ uses
   uCalculadora in 'calculadora\uCalculadora.pas' {frmCalculadora},
   cProOrcamento in 'classes\cProOrcamento.pas',
   uConsultaOrcamento in 'consulta\uConsultaOrcamento.pas' {frmConsultaOrcamento},
+  uRelEntradaNota in 'relatorio\uRelEntradaNota.pas' {frmRelEntradaNota},
   uRelVenda in 'relatorio\uRelVenda.pas' {frmRelVenda};
 
 {$R *.res}

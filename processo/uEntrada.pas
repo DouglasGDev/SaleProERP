@@ -92,7 +92,7 @@ implementation
 
 {$R *.dfm}
 
-uses uCadFornecedor, UPrincipal, uCadProduto;
+uses uCadFornecedor, UPrincipal, uCadProduto, uRelEntradaNota;
 
 procedure TfrmEntrada.btnAdicionarClick(Sender: TObject);
 var
@@ -514,6 +514,22 @@ begin
 
       ShowMessage('Entrada de mercadoria gravada com sucesso.');
       lkpFornecedor.Enabled := True;
+
+
+
+
+     {frmRelEntradaNota:=frmRelEntradaNota.Create(self);
+     frmRelEntradaNota.QryEntradaNota.Close;
+     frmRelEntradaNota.QryEntradaNota.ParamByName('entradaId').AsInteger;
+     frmRelEntradaNota.QryEntradaNota.Open;
+
+     frmRelEntradaNota.QryEntradaNotaItens.Close;
+     frmRelEntradaNota.QryEntradaNotaItens.ParamByName('entradaId').AsInteger;
+     frmRelEntradaNota.QryEntradaNotaItens.Open;
+
+
+     frmRelEntradaNota.Relatorio.PreviewModal;
+     frmRelEntradaNota.Release;}
 
       QryListagem.Close;
       QryListagem.Open;

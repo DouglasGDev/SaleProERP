@@ -55,8 +55,6 @@ type
     QryProdutosQuantidade: TZDoubleField;
     QryProdutoscategoriaId: TZIntegerField;
     QryProdutosDescricaoCategoria: TZUnicodeStringField;
-    RLLabel12: TRLLabel;
-    RLLabel13: TRLLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
   private

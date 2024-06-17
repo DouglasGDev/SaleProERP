@@ -53,7 +53,6 @@ type
     RLLabel9: TRLLabel;
     RLLabel7: TRLLabel;
     RLDBText1: TRLDBText;
-    RLLabel4: TRLLabel;
     RLSubDetail1: TRLSubDetail;
     RLBand2: TRLBand;
     RLLabel5: TRLLabel;
@@ -80,8 +79,6 @@ type
     QryVendaCCREDITO: TZDoubleField;
     QryVendaDDEBITO: TZDoubleField;
     QryVendaDDINHEIRO: TZDoubleField;
-    RLLabel19: TRLLabel;
-    RLLabel20: TRLLabel;
     procedure FormDestroy(Sender: TObject);
   private
     { Private declarations }

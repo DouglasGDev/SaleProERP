@@ -41,7 +41,6 @@ type
     RLLabel9: TRLLabel;
     RLLabel7: TRLLabel;
     RLDBText1: TRLDBText;
-    RLLabel4: TRLLabel;
     RLSubDetail1: TRLSubDetail;
     RLBand2: TRLBand;
     RLLabel5: TRLLabel;
@@ -55,8 +54,6 @@ type
     RLDBText9: TRLDBText;
     RLLabel12: TRLLabel;
     RLDBText8: TRLDBText;
-    RLLabel19: TRLLabel;
-    RLLabel20: TRLLabel;
     QryOrcamentoorcamentoId: TZIntegerField;
     QryOrcamentoclienteId: TZIntegerField;
     QryOrcamentonome: TZUnicodeStringField;

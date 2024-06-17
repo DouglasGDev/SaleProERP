@@ -142,7 +142,7 @@ object frmRelCategoria: TfrmRelCategoria
       end
       object RLDBText2: TRLDBText
         Left = 84
-        Top = 6
+        Top = 4
         Width = 60
         Height = 16
         DataField = 'descricao'

@@ -62,7 +62,7 @@ object frmRelCadProduto: TfrmRelCadProduto
       Left = 38
       Top = 133
       Width = 718
-      Height = 50
+      Height = 44
       BandType = btFooter
       Transparent = False
       object RLDraw2: TRLDraw
@@ -142,7 +142,7 @@ object frmRelCadProduto: TfrmRelCadProduto
       end
       object RLDBText2: TRLDBText
         Left = 84
-        Top = 6
+        Top = 4
         Width = 36
         Height = 16
         DataField = 'nome'
@@ -157,7 +157,7 @@ object frmRelCadProduto: TfrmRelCadProduto
         Align = faRight
         DataField = 'valor'
         DataSource = dtsProdutos
-        DisplayMask = '#0.00'
+        DisplayMask = 'R$ #0.00'
         Text = ''
       end
       object RLDBText5: TRLDBText
@@ -168,20 +168,6 @@ object frmRelCadProduto: TfrmRelCadProduto
         DataField = 'quantidade'
         DataSource = dtsProdutos
         Text = ''
-      end
-      object RLLabel6: TRLLabel
-        Left = 654
-        Top = 1
-        Width = 20
-        Height = 16
-        Caption = 'R$'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlack
-        Font.Height = -13
-        Font.Name = 'Arial'
-        Font.Style = [fsBold]
-        ParentFont = False
-        Transparent = False
       end
     end
     object RLBand2: TRLBand

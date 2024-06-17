@@ -4,8 +4,8 @@ object frmPrincipal: TfrmPrincipal
   BorderIcons = []
   BorderStyle = bsNone
   Caption = 'Menu Principal'
-  ClientHeight = 780
-  ClientWidth = 1044
+  ClientHeight = 937
+  ClientWidth = 1525
   Color = clBtnFace
   UseDockManager = True
   Font.Charset = DEFAULT_CHARSET
@@ -20,14 +20,14 @@ object frmPrincipal: TfrmPrincipal
   OnCreate = FormCreate
   OnShow = FormShow
   DesignSize = (
-    1044
-    780)
+    1525
+    937)
   TextHeight = 15
   object grdPnlGraficos: TGridPanel
     Left = 60
     Top = 73
-    Width = 984
-    Height = 679
+    Width = 388
+    Height = 836
     Align = alClient
     BevelOuter = bvNone
     Color = 16767927
@@ -77,8 +77,8 @@ object frmPrincipal: TfrmPrincipal
     object DBCProdutoEstoque: TDBChart
       Left = 0
       Top = 0
-      Width = 492
-      Height = 340
+      Width = 194
+      Height = 418
       RefreshInterval = 10
       Title.Text.Strings = (
         'Produto em Estoque')
@@ -130,10 +130,10 @@ object frmPrincipal: TfrmPrincipal
       end
     end
     object DBCValorVendaCliente: TDBChart
-      Left = 492
+      Left = 194
       Top = 0
-      Width = 492
-      Height = 340
+      Width = 194
+      Height = 418
       RefreshInterval = 10
       Title.Text.Strings = (
         'Valor de venda por cliente na '#250'ltima semana.')
@@ -204,10 +204,10 @@ object frmPrincipal: TfrmPrincipal
       end
     end
     object DBCTop10ProdutosMaisVendidos: TDBChart
-      Left = 492
-      Top = 340
-      Width = 492
-      Height = 339
+      Left = 194
+      Top = 418
+      Width = 194
+      Height = 418
       RefreshInterval = 10
       Title.Text.Strings = (
         'Top 10 Produtos mais vendidos')
@@ -279,9 +279,9 @@ object frmPrincipal: TfrmPrincipal
     end
     object DBChart1: TDBChart
       Left = 0
-      Top = 340
-      Width = 492
-      Height = 339
+      Top = 418
+      Width = 194
+      Height = 418
       RefreshInterval = 10
       Title.Text.Strings = (
         'Vendas da '#250'ltima semana')
@@ -309,7 +309,7 @@ object frmPrincipal: TfrmPrincipal
   object pnlTopMenu: TPanel
     Left = 0
     Top = 0
-    Width = 1044
+    Width = 1525
     Height = 73
     Align = alTop
     BevelOuter = bvNone
@@ -640,8 +640,8 @@ object frmPrincipal: TfrmPrincipal
   end
   object StbPrincipal: TStatusBar
     Left = 0
-    Top = 752
-    Width = 1044
+    Top = 909
+    Width = 1525
     Height = 28
     Color = clTeal
     Panels = <
@@ -653,7 +653,7 @@ object frmPrincipal: TfrmPrincipal
     Left = 0
     Top = 73
     Width = 60
-    Height = 679
+    Height = 836
     AnimationDelay = 5
     AnimationStep = 50
     CloseStyle = svcCompact
@@ -666,10 +666,10 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 1
     DesignSize = (
       60
-      679)
+      836)
     object CategoryButtonsSair: TCategoryButtons
       Left = -37
-      Top = 578
+      Top = 735
       Width = 257
       Height = 101
       Cursor = crHandPoint
@@ -707,7 +707,7 @@ object frmPrincipal: TfrmPrincipal
       Left = 0
       Top = -34
       Width = 228
-      Height = 347
+      Height = 411
       Cursor = crHandPoint
       BevelInner = bvNone
       BevelOuter = bvNone
@@ -762,7 +762,7 @@ object frmPrincipal: TfrmPrincipal
     Left = 60
     Top = 73
     Width = 0
-    Height = 679
+    Height = 836
     AnimationDelay = 5
     AnimationStep = 50
     Color = clTeal
@@ -779,7 +779,7 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 2
     DesignSize = (
       0
-      679)
+      836)
     object CategoryButtonsPermissoes: TCategoryButtons
       Left = -32
       Top = 240
@@ -966,6 +966,16 @@ object frmPrincipal: TfrmPrincipal
       Visible = False
     end
   end
+  object ChromiumWindowWhatsapp: TChromiumWindow
+    Left = 448
+    Top = 73
+    Width = 1077
+    Height = 836
+    Align = alRight
+    TabOrder = 7
+    Visible = False
+    Enabled = False
+  end
   object ListaVirtualImg: TVirtualImageList
     Images = <
       item
@@ -989,15 +999,15 @@ object frmPrincipal: TfrmPrincipal
         Name = 'permissoes'
       end
       item
-        CollectionIndex = 4
+        CollectionIndex = 5
         CollectionName = 'Exit_48px'
         Name = 'Exit_48px'
       end>
     ImageCollection = ColecaoImg
     Width = 48
     Height = 48
-    Left = 848
-    Top = 312
+    Left = 624
+    Top = 288
   end
   object ColecaoImg: TImageCollection
     Images = <
@@ -1270,6 +1280,10 @@ object frmPrincipal: TfrmPrincipal
           end>
       end
       item
+        Name = 'WhatsApp_48px'
+        SourceImages = <>
+      end
+      item
         Name = 'Exit_48px'
         SourceImages = <
           item
@@ -1300,7 +1314,11 @@ object frmPrincipal: TfrmPrincipal
               C2ADA86A5504AA083847E037AD83D3224B166E900000000049454E44AE426082}
           end>
       end>
-    Left = 928
-    Top = 312
+    Left = 624
+    Top = 224
+  end
+  object ChromiumWhatsapp: TChromium
+    Left = 1016
+    Top = 296
   end
 end
