@@ -147,7 +147,7 @@ inherited frmCadCliente: TfrmCadCliente
       object edtCEP: TMaskEdit
         Left = 443
         Top = 96
-        Width = 219
+        Width = 220
         Height = 25
         TabOrder = 2
         Text = ''
@@ -278,7 +278,6 @@ inherited frmCadCliente: TfrmCadCliente
           6CA5776CFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
           00FFFF00FFA77E70A98073A4786EFF00FFFF00FFFF00FFFF00FF}
         TabOrder = 11
-        OnClick = btnBuscarClick
       end
     end
   end

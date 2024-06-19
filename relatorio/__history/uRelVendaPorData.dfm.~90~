@@ -114,7 +114,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
     end
     object Rodape: TRLBand
       Left = 38
-      Top = 283
+      Top = 289
       Width = 718
       Height = 47
       BandType = btFooter
@@ -183,7 +183,7 @@ object frmRelVendaPorData: TfrmRelVendaPorData
       Left = 38
       Top = 89
       Width = 718
-      Height = 194
+      Height = 200
       DataFields = 'vendaId'
       Transparent = False
       object RLBand3: TRLBand
@@ -281,6 +281,20 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           ParentFont = False
           Transparent = False
         end
+        object RLLabel7: TRLLabel
+          Left = 495
+          Top = 2
+          Width = 107
+          Height = 16
+          Caption = 'Valor da Venda:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
         object RLDBText1: TRLDBText
           Left = 58
           Top = 2
@@ -299,21 +313,6 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           DataField = 'nome'
           DataSource = dtsVenda
           Text = ''
-          Transparent = False
-        end
-        object RLLabel7: TRLLabel
-          Left = 542
-          Top = 0
-          Width = 107
-          Height = 24
-          Align = faRight
-          Caption = 'Valor da Venda:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentFont = False
           Transparent = False
         end
         object RLDBText4: TRLDBText
@@ -466,6 +465,40 @@ object frmRelVendaPorData: TfrmRelVendaPorData
         Width = 718
         Height = 82
         BandType = btSummary
+        object RLDBResult1: TRLDBResult
+          Left = 599
+          Top = 54
+          Width = 108
+          Height = 16
+          Alignment = taRightJustify
+          DataField = 'TotalVenda'
+          DataSource = dtsVenda
+          DisplayMask = 'R$ #0.00'
+          Info = riSum
+          Text = ''
+        end
+        object RLDraw3: TRLDraw
+          Left = 360
+          Top = -3
+          Width = 358
+          Height = 11
+          DrawKind = dkLine
+          Transparent = False
+        end
+        object RLLabel10: TRLLabel
+          Left = 495
+          Top = 54
+          Width = 98
+          Height = 16
+          Caption = 'Total por Data:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
         object RLLabel14: TRLLabel
           Left = 0
           Top = 6
@@ -574,6 +607,47 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           ParentFont = False
+          Transparent = False
+        end
+      end
+      object RLBand5: TRLBand
+        Left = 0
+        Top = 155
+        Width = 718
+        Height = 40
+        BandType = btSummary
+        object RLLabel8: TRLLabel
+          Left = 510
+          Top = 17
+          Width = 83
+          Height = 16
+          Caption = 'Total Geral :'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLDBResult2: TRLDBResult
+          Left = 599
+          Top = 17
+          Width = 108
+          Height = 16
+          Alignment = taRightJustify
+          DataField = 'TotalVenda'
+          DataSource = dtsVenda
+          DisplayMask = 'R$ #0.00'
+          Info = riSum
+          Text = ''
+        end
+        object RLDraw4: TRLDraw
+          Left = 495
+          Top = 6
+          Width = 223
+          Height = 11
+          DrawKind = dkLine
           Transparent = False
         end
       end

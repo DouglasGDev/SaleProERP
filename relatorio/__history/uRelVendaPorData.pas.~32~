@@ -34,7 +34,11 @@ type
     RLLabel6: TRLLabel;
     RLLabel4: TRLLabel;
     RLLabel5: TRLLabel;
+    RLLabel7: TRLLabel;
     RLBand4: TRLBand;
+    RLDBResult1: TRLDBResult;
+    RLDraw3: TRLDraw;
+    RLLabel10: TRLLabel;
     rllblDataInicio: TRLLabel;
     rllblDataFim: TRLLabel;
     RLLabel9: TRLLabel;
@@ -50,6 +54,10 @@ type
     RLDBResultDebito: TRLDBResult;
     RLDBResultDinheiro: TRLDBResult;
     RLLabel18: TRLLabel;
+    RLBand5: TRLBand;
+    RLLabel8: TRLLabel;
+    RLDBResult2: TRLDBResult;
+    RLDraw4: TRLDraw;
     QryVendavendaId: TZIntegerField;
     QryVendaclienteId: TZIntegerField;
     QryVendanome: TZUnicodeStringField;
@@ -76,7 +84,6 @@ type
     RLDBText10: TRLDBText;
     RLDBText1: TRLDBText;
     RLDBText2: TRLDBText;
-    RLLabel7: TRLLabel;
     RLDBText4: TRLDBText;
     procedure FormDestroy(Sender: TObject);
   private

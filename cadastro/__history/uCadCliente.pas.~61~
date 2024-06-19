@@ -46,7 +46,7 @@ type
     procedure btnAlterarClick(Sender: TObject);
     procedure edtCPFExit(Sender: TObject);
     procedure btnPesquisarCepClick(Sender: TObject);
-    procedure btnBuscarClick(Sender: TObject);
+    procedure edtCEPExit(Sender: TObject);
   private
     { Private declarations }
     oCliente:TCliente;
@@ -153,7 +153,50 @@ begin
   inherited;
 end;
 
-procedure TfrmCadCliente.btnBuscarClick(Sender: TObject);
+procedure TfrmCadCliente.FormCreate(Sender: TObject);
+begin
+  inherited;
+   oCliente := TCliente.Create(dtmPrincipal.ConexaoDB);
+   IndiceAtual := 'nome';// apenas para mostrar o campo label da pesquisa em categoria, ele puxa do banc
+end;
+
+function TfrmCadCliente.Gravar(EstadoDoCadastro: TEstadoDoCadastro): Boolean;
+begin
+  if edtClienteId.Text<>EmptyStr then // se o campo do id for diferente de vazio
+         oCliente.codigo:=StrToInt(edtClienteId.Text)// atribui pro campo código o texto convertido em numero inteiro
+  else
+     oCliente.codigo:=0;
+     oCliente.nome:= edtNome.Text;
+     oCliente.endereco:= edtEndereco.Text;
+     oCliente.cidade:= edtCidade.Text;
+     oCliente.bairro:= edtBairro.Text;
+     oCliente.estado:= edtEstado.Text;
+     oCliente.cep:= edtCEP.Text;
+     oCliente.telefone:= edtTelefone.Text;
+     oCliente.email:= edtEmail.Text;
+     oCliente.cpf:= edtCPF.Text;
+     oCliente.dataNascimento:= edtDataNascimento.Date;
+
+    if (EstadoDoCadastro=ecInserir) then
+        Result := oCliente.Inserir
+    else if(EstadoDoCadastro=ecAlterar) then
+        Result := oCliente.Atualizar;
+end;
+
+procedure TfrmCadCliente.btnNovoClick(Sender: TObject);
+begin
+  inherited;
+  edtDataNascimento.Date:= Date;
+  edtNome.SetFocus;// toda vez que abrir novo ele abre no nome
+end;
+
+procedure TfrmCadCliente.btnPesquisarCepClick(Sender: TObject);
+begin
+  inherited;
+  TFuncao.CriarForm(TfrmConsultarCEP, oUsuarioLogado, dtmPrincipal.ConexaoDB);
+end;
+
+procedure TfrmCadCliente.edtCEPExit(Sender: TObject); // so sair do campo cep ele busca pelo cep e atualiza nos campos informados
 var
   LCEP: String;
   JSONObject: TJSONObject;
@@ -206,50 +249,6 @@ begin
     RESTClient.ResetToDefaults;
   end;
 end;
-
-procedure TfrmCadCliente.FormCreate(Sender: TObject);
-begin
-  inherited;
-   oCliente := TCliente.Create(dtmPrincipal.ConexaoDB);
-   IndiceAtual := 'nome';// apenas para mostrar o campo label da pesquisa em categoria, ele puxa do banc
-end;
-
-function TfrmCadCliente.Gravar(EstadoDoCadastro: TEstadoDoCadastro): Boolean;
-begin
-  if edtClienteId.Text<>EmptyStr then // se o campo do id for diferente de vazio
-         oCliente.codigo:=StrToInt(edtClienteId.Text)// atribui pro campo código o texto convertido em numero inteiro
-  else
-     oCliente.codigo:=0;
-     oCliente.nome:= edtNome.Text;
-     oCliente.endereco:= edtEndereco.Text;
-     oCliente.cidade:= edtCidade.Text;
-     oCliente.bairro:= edtBairro.Text;
-     oCliente.estado:= edtEstado.Text;
-     oCliente.cep:= edtCEP.Text;
-     oCliente.telefone:= edtTelefone.Text;
-     oCliente.email:= edtEmail.Text;
-     oCliente.cpf:= edtCPF.Text;
-     oCliente.dataNascimento:= edtDataNascimento.Date;
-
-    if (EstadoDoCadastro=ecInserir) then
-        Result := oCliente.Inserir
-    else if(EstadoDoCadastro=ecAlterar) then
-        Result := oCliente.Atualizar;
-end;
-
-procedure TfrmCadCliente.btnNovoClick(Sender: TObject);
-begin
-  inherited;
-  edtDataNascimento.Date:= Date;
-  edtNome.SetFocus;// toda vez que abrir novo ele abre no nome
-end;
-
-procedure TfrmCadCliente.btnPesquisarCepClick(Sender: TObject);
-begin
-  inherited;
-  TFuncao.CriarForm(TfrmConsultarCEP, oUsuarioLogado, dtmPrincipal.ConexaoDB);
-end;
-
 
 procedure TfrmCadCliente.edtCPFExit(Sender: TObject);
 begin

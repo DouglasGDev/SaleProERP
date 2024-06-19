@@ -301,33 +301,6 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           Text = ''
           Transparent = False
         end
-        object RLLabel7: TRLLabel
-          Left = 542
-          Top = 0
-          Width = 107
-          Height = 24
-          Align = faRight
-          Caption = 'Valor da Venda:'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -13
-          Font.Name = 'Arial'
-          Font.Style = [fsBold]
-          ParentFont = False
-          Transparent = False
-        end
-        object RLDBText4: TRLDBText
-          Left = 649
-          Top = 0
-          Width = 69
-          Height = 24
-          Align = faRight
-          DataField = 'TotalVenda'
-          DataSource = dtsVenda
-          DisplayMask = 'R$ #0.00'
-          Text = ''
-          Transparent = False
-        end
       end
       object RLBand1: TRLBand
         Left = 0
@@ -574,6 +547,31 @@ object frmRelVendaPorData: TfrmRelVendaPorData
           Font.Name = 'Arial'
           Font.Style = [fsBold]
           ParentFont = False
+          Transparent = False
+        end
+        object RLLabel7: TRLLabel
+          Left = 492
+          Top = 54
+          Width = 107
+          Height = 16
+          Caption = 'Valor da Venda:'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = False
+        end
+        object RLDBText4: TRLDBText
+          Left = 646
+          Top = 54
+          Width = 69
+          Height = 16
+          DataField = 'TotalVenda'
+          DataSource = dtsVenda
+          DisplayMask = 'R$ #0.00'
+          Text = ''
           Transparent = False
         end
       end

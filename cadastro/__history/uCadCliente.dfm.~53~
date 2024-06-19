@@ -149,8 +149,10 @@ inherited frmCadCliente: TfrmCadCliente
         Top = 96
         Width = 219
         Height = 25
+        EditMask = '00.000-000;1;_'
+        MaxLength = 10
         TabOrder = 2
-        Text = ''
+        Text = '  .   -   '
       end
       object edtEndereco: TLabeledEdit
         Left = 3

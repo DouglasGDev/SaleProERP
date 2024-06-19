@@ -26,7 +26,7 @@ object frmPrincipal: TfrmPrincipal
   object grdPnlGraficos: TGridPanel
     Left = 60
     Top = 73
-    Width = 388
+    Width = 665
     Height = 836
     Align = alClient
     BevelOuter = bvNone
@@ -74,10 +74,11 @@ object frmPrincipal: TfrmPrincipal
         SizeStyle = ssAuto
       end>
     TabOrder = 4
+    ExplicitWidth = 388
     object DBCProdutoEstoque: TDBChart
       Left = 0
       Top = 0
-      Width = 194
+      Width = 332
       Height = 418
       RefreshInterval = 10
       Title.Text.Strings = (
@@ -87,6 +88,7 @@ object frmPrincipal: TfrmPrincipal
       Color = 16767927
       TabOrder = 0
       AutoSize = True
+      ExplicitWidth = 194
       DefaultCanvas = 'TGDIPlusCanvas'
       PrintMargins = (
         15
@@ -130,9 +132,9 @@ object frmPrincipal: TfrmPrincipal
       end
     end
     object DBCValorVendaCliente: TDBChart
-      Left = 194
+      Left = 332
       Top = 0
-      Width = 194
+      Width = 333
       Height = 418
       RefreshInterval = 10
       Title.Text.Strings = (
@@ -146,6 +148,8 @@ object frmPrincipal: TfrmPrincipal
       Color = 16767927
       TabOrder = 1
       AutoSize = True
+      ExplicitLeft = 194
+      ExplicitWidth = 194
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object Series2: TPieSeries
@@ -204,9 +208,9 @@ object frmPrincipal: TfrmPrincipal
       end
     end
     object DBCTop10ProdutosMaisVendidos: TDBChart
-      Left = 194
+      Left = 332
       Top = 418
-      Width = 194
+      Width = 333
       Height = 418
       RefreshInterval = 10
       Title.Text.Strings = (
@@ -220,6 +224,8 @@ object frmPrincipal: TfrmPrincipal
       Color = 16767927
       TabOrder = 2
       AutoSize = True
+      ExplicitLeft = 194
+      ExplicitWidth = 194
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object PieSeries1: TPieSeries
@@ -280,7 +286,7 @@ object frmPrincipal: TfrmPrincipal
     object DBChart1: TDBChart
       Left = 0
       Top = 418
-      Width = 194
+      Width = 332
       Height = 418
       RefreshInterval = 10
       Title.Text.Strings = (
@@ -290,6 +296,7 @@ object frmPrincipal: TfrmPrincipal
       Color = 16767927
       TabOrder = 3
       AutoSize = True
+      ExplicitWidth = 194
       DefaultCanvas = 'TGDIPlusCanvas'
       ColorPaletteIndex = 13
       object Series3: TFastLineSeries
@@ -967,14 +974,15 @@ object frmPrincipal: TfrmPrincipal
     end
   end
   object ChromiumWindowWhatsapp: TChromiumWindow
-    Left = 448
+    Left = 725
     Top = 73
-    Width = 1077
+    Width = 800
     Height = 836
     Align = alRight
     TabOrder = 7
     Visible = False
     Enabled = False
+    ExplicitLeft = 525
   end
   object ListaVirtualImg: TVirtualImageList
     Images = <

@@ -35,6 +35,7 @@ type
     RLLabel4: TRLLabel;
     RLLabel5: TRLLabel;
     RLBand4: TRLBand;
+    RLDraw3: TRLDraw;
     rllblDataInicio: TRLLabel;
     rllblDataFim: TRLLabel;
     RLLabel9: TRLLabel;

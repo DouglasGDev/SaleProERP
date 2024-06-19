@@ -109,7 +109,7 @@ var
   SoundFilePath: string;
 begin
   // Caminho relativo para o arquivo de som
-  SoundFilePath := ExtractFilePath(Application.ExeName) + '..\..\som\Som.wav';
+  SoundFilePath := ExtractFilePath(Application.ExeName) + '\som\Som.wav';
   PlaySound(PChar(SoundFilePath), 0, SND_FILENAME or SND_ASYNC);
 end;
 end.

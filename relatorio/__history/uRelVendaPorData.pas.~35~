@@ -35,6 +35,7 @@ type
     RLLabel4: TRLLabel;
     RLLabel5: TRLLabel;
     RLBand4: TRLBand;
+    RLDraw3: TRLDraw;
     rllblDataInicio: TRLLabel;
     rllblDataFim: TRLLabel;
     RLLabel9: TRLLabel;
@@ -50,6 +51,8 @@ type
     RLDBResultDebito: TRLDBResult;
     RLDBResultDinheiro: TRLDBResult;
     RLLabel18: TRLLabel;
+    RLBand5: TRLBand;
+    RLDraw4: TRLDraw;
     QryVendavendaId: TZIntegerField;
     QryVendaclienteId: TZIntegerField;
     QryVendanome: TZUnicodeStringField;

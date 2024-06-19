@@ -46,6 +46,7 @@ type
     procedure btnAlterarClick(Sender: TObject);
     procedure edtCPFExit(Sender: TObject);
     procedure btnPesquisarCepClick(Sender: TObject);
+    procedure edtCEPExit(Sender: TObject);
     procedure btnBuscarClick(Sender: TObject);
   private
     { Private declarations }
