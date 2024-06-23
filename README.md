@@ -1,6 +1,8 @@
 # SalePro
  Projeto Interdisciplinar 4 ADS 
 
+ ***É necessário ter o FortesReportes, Cef4Delphi, Zeos e RXLibrary***
+
 Este guia fornece instruções detalhadas sobre como compilar o projeto SalePro ERP usando Delphi 11 e preparar o ambiente de execução.
 
 Passos para Compilação
