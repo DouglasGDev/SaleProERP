@@ -1,0 +1,55 @@
+object frmDashboard: TfrmDashboard
+  Left = 0
+  Top = 0
+  Caption = 'DASHBOARD'
+  ClientHeight = 715
+  ClientWidth = 1015
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  TextHeight = 15
+  object pnlHeader: TPanel
+    Left = 0
+    Top = 0
+    Width = 1015
+    Height = 97
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'DASHBOARD'
+    Color = clTeal
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWhite
+    Font.Height = -21
+    Font.Name = 'Segoe UI'
+    Font.Style = [fsBold]
+    ParentBackground = False
+    ParentFont = False
+    TabOrder = 0
+  end
+  object pnlFooter: TPanel
+    Left = 0
+    Top = 656
+    Width = 1015
+    Height = 59
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = clTeal
+    ParentBackground = False
+    TabOrder = 1
+  end
+  object pnlBody: TPanel
+    Left = 0
+    Top = 97
+    Width = 1015
+    Height = 559
+    Align = alClient
+    TabOrder = 2
+    ExplicitLeft = 496
+    ExplicitTop = 344
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+  end
+end

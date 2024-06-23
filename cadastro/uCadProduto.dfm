@@ -24,6 +24,7 @@ inherited frmCadProduto: TfrmCadProduto
           item
             Expanded = False
             FieldName = 'produtoId'
+            Width = 101
             Visible = True
           end
           item
@@ -296,10 +297,12 @@ inherited frmCadProduto: TfrmCadProduto
     Left = 124
     Top = 346
     object QryListagemprodutoId: TZIntegerField
+      DisplayLabel = 'Cod. Produto'
       FieldName = 'produtoId'
       Required = True
     end
     object QryListagemnome: TZUnicodeStringField
+      DisplayLabel = 'Nome'
       FieldName = 'nome'
       Size = 60
     end

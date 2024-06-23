@@ -57,7 +57,9 @@ uses
   uConsultaOrcamento in 'consulta\uConsultaOrcamento.pas' {frmConsultaOrcamento},
   uRelEntradaNota in 'relatorio\uRelEntradaNota.pas' {frmRelEntradaNota},
   uRelVenda in 'relatorio\uRelVenda.pas' {frmRelVenda},
-  uDashboard in 'dashboard\uDashboard.pas' {frmDashboard};
+  uDashboard in 'dashboard\uDashboard.pas' {frmDashboard},
+  TodoUnit in 'TodoTxt\TodoUnit.pas' {TodoForm},
+  AddTodoEntryUnit in 'TodoTxt\AddTodoEntryUnit.pas' {AddTodoEntryForm};
 
 {$R *.res}
 begin

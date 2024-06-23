@@ -321,7 +321,20 @@ end;
 
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
+var
+  SwitchState: Boolean;
 begin
+  SwitchState := LoadSwitchState;
+  if SwitchState then
+    switchDark.State := tssOn
+  else
+    switchDark.State := tssOff;
+
+  // Aplicar o estado inicial das cores baseado no estado carregado
+  switchDarkClick(switchDark);
+
+  // Aplicar o estado inicial das cores baseado no estado carregado
+  switchDarkClick(switchDark);
 // Inicialize a aplicação CEF
   if not Assigned(GlobalCEFApp) then
   begin
@@ -425,7 +438,6 @@ var
   RESTResponseQuote, RESTResponseTranslate: TRESTResponse;
   JSONObjQuote, JSONObjTranslate: TJSONObject;
   Frase, Autor, FraseTraduzida: string;
-  SwitchState: Boolean;
 begin
 // tela de login
 
@@ -443,16 +455,7 @@ begin
     ChromiumWhatsapp.DefaultURL := 'https://web.whatsapp.com';
     ChromiumWhatsapp.CreateBrowser(ChromiumWindowWhatsapp);
 
-    SwitchState := LoadSwitchState;
-    if SwitchState then
-    switchDark.State := tssOn
-    else
-    switchDark.State := tssOff;
-    // Aplicar o estado inicial das cores baseado no estado carregado
-    switchDarkClick(switchDark);
 
-  // Aplicar o estado inicial das cores baseado no estado carregado
-  switchDarkClick(switchDark);
 
     lkpProdutoSelecionado.KeyValue := 1;
     // Criar o formulário de notificação
@@ -646,6 +649,7 @@ begin
     Ini.Free;
   end;
 end;
+
 function TfrmPrincipal.LoadSwitchState: Boolean;
 var
   Ini: TIniFile;

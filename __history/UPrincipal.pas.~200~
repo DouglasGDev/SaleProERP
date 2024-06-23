@@ -425,7 +425,6 @@ var
   RESTResponseQuote, RESTResponseTranslate: TRESTResponse;
   JSONObjQuote, JSONObjTranslate: TJSONObject;
   Frase, Autor, FraseTraduzida: string;
-  SwitchState: Boolean;
 begin
 // tela de login
 

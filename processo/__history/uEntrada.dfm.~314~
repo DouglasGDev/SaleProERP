@@ -567,8 +567,8 @@ inherited frmEntrada: TfrmEntrada
     ExplicitWidth = 953
     ExplicitHeight = 69
     inherited btnGravar: TBitBtn
-      Left = 260
-      ExplicitLeft = 260
+      Left = 261
+      ExplicitLeft = 261
     end
     inherited btnFechar: TBitBtn
       Left = 868

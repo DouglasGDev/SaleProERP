@@ -29,43 +29,6 @@ inherited frmCadProduto: TfrmCadProduto
           item
             Expanded = False
             FieldName = 'nome'
-            Width = 64
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'descricao'
-            Width = 64
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'valor'
-            Width = 64
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'quantidade'
-            Width = 64
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'DescricaoCategoria'
-            Width = 64
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'codbarras'
-            Width = 64
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'validade'
-            Width = 64
             Visible = True
           end>
       end
@@ -327,18 +290,9 @@ inherited frmCadProduto: TfrmCadProduto
   end
   inherited QryListagem: TZQuery
     SQL.Strings = (
-      'SELECT p.produtoId,'
-      '       p.nome,'
-      '       p.descricao,'
-      '       p.valor,'
-      '       p.quantidade,'
-      '       p.qtminima,'
-      '       p.categoriaId,'
-      '       c.descricao AS DescricaoCategoria,'
-      '       p.codbarras,'
-      '       p.validade'
-      'FROM produtos as p'
-      'LEFT JOIN categorias as c on c.categoriaId = p.categoriaId')
+      'SELECT produtoId,'
+      '             nome'
+      'FROM produtos')
     Left = 124
     Top = 346
     object QryListagemprodutoId: TZIntegerField
@@ -348,39 +302,6 @@ inherited frmCadProduto: TfrmCadProduto
     object QryListagemnome: TZUnicodeStringField
       FieldName = 'nome'
       Size = 60
-    end
-    object QryListagemdescricao: TZUnicodeStringField
-      FieldName = 'descricao'
-      Size = 255
-    end
-    object QryListagemvalor: TZFMTBCDField
-      FieldName = 'valor'
-      Precision = 18
-      Size = 5
-    end
-    object QryListagemquantidade: TZFMTBCDField
-      FieldName = 'quantidade'
-      Precision = 18
-      Size = 5
-    end
-    object QryListagemqtminima: TZFMTBCDField
-      FieldName = 'qtminima'
-      Precision = 18
-      Size = 5
-    end
-    object QryListagemcategoriaId: TZIntegerField
-      FieldName = 'categoriaId'
-    end
-    object QryListagemDescricaoCategoria: TZUnicodeStringField
-      FieldName = 'DescricaoCategoria'
-      Size = 100
-    end
-    object QryListagemcodbarras: TZUnicodeStringField
-      FieldName = 'codbarras'
-      Size = 13
-    end
-    object QryListagemvalidade: TZDateTimeField
-      FieldName = 'validade'
     end
   end
   inherited dtsListagem: TDataSource

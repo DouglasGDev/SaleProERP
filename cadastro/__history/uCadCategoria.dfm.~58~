@@ -1,25 +1,26 @@
 inherited frmCadCategoria: TfrmCadCategoria
   Caption = 'Cadastro de categorias'
-  ClientHeight = 406
-  ClientWidth = 781
-  ExplicitWidth = 793
-  ExplicitHeight = 444
+  ClientHeight = 515
+  ClientWidth = 1050
+  ExplicitWidth = 1050
+  ExplicitHeight = 515
   TextHeight = 15
   inherited pgcPrincipal: TPageControl
-    Width = 781
-    Height = 339
-    ExplicitWidth = 777
-    ExplicitHeight = 338
+    Width = 1050
+    Height = 448
+    ActivePage = tabManutencao
+    ExplicitWidth = 1050
+    ExplicitHeight = 448
     inherited tabListagem: TTabSheet
-      ExplicitWidth = 773
-      ExplicitHeight = 309
+      ExplicitWidth = 1042
+      ExplicitHeight = 416
       inherited pnlListagemTopo: TPanel
-        Width = 773
-        ExplicitWidth = 773
+        Width = 1042
+        ExplicitWidth = 1042
       end
       inherited grdListagem: TDBGrid
-        Width = 773
-        Height = 228
+        Width = 1042
+        Height = 278
         Columns = <
           item
             Expanded = False
@@ -33,18 +34,23 @@ inherited frmCadCategoria: TfrmCadCategoria
             Visible = True
           end>
       end
+      inherited pnlTitulo: TPanel
+        Width = 1042
+        Caption = 'Cadastro de categorias'
+        ExplicitWidth = 1042
+      end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitWidth = 773
-      ExplicitHeight = 309
+      ExplicitWidth = 1042
+      ExplicitHeight = 416
       object edtCategoriaId: TLabeledEdit
         Tag = 1
         Left = 0
         Top = 32
         Width = 121
-        Height = 23
-        EditLabel.Width = 39
-        EditLabel.Height = 15
+        Height = 25
+        EditLabel.Width = 43
+        EditLabel.Height = 17
         EditLabel.Caption = 'C'#243'digo'
         MaxLength = 11
         NumbersOnly = True
@@ -56,9 +62,9 @@ inherited frmCadCategoria: TfrmCadCategoria
         Left = 0
         Top = 96
         Width = 421
-        Height = 23
-        EditLabel.Width = 51
-        EditLabel.Height = 15
+        Height = 25
+        EditLabel.Width = 57
+        EditLabel.Height = 17
         EditLabel.Caption = 'Descri'#231#227'o'
         MaxLength = 100
         TabOrder = 1
@@ -67,16 +73,20 @@ inherited frmCadCategoria: TfrmCadCategoria
     end
   end
   inherited pnlRodape: TPanel
-    Top = 339
-    Width = 781
-    ExplicitTop = 338
-    ExplicitWidth = 777
+    Top = 448
+    Width = 1050
+    ExplicitTop = 448
+    ExplicitWidth = 1050
     DesignSize = (
-      781
+      1050
       67)
+    inherited btnGravar: TBitBtn
+      Left = 260
+      ExplicitLeft = 260
+    end
     inherited btnFechar: TBitBtn
-      Left = 670
-      ExplicitLeft = 666
+      Left = 965
+      ExplicitLeft = 965
     end
     inherited btnNavigator: TDBNavigator
       Hints.Strings = ()
@@ -84,7 +94,7 @@ inherited frmCadCategoria: TfrmCadCategoria
   end
   inherited QryListagem: TZQuery
     SQL.Strings = (
-      'select categoriaId, descricao from categorias;')
+      'select categoriaId, descricao from categorias')
     object QryListagemcategoriaId: TZIntegerField
       DisplayLabel = 'Codigo'
       FieldName = 'categoriaId'

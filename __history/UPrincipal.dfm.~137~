@@ -33,6 +33,7 @@ object frmPrincipal: TfrmPrincipal
     Color = clWhite
     ParentBackground = False
     TabOrder = 5
+    ExplicitWidth = 740
     object lblProduto: TLabel
       Left = 23
       Top = 202
@@ -174,6 +175,7 @@ object frmPrincipal: TfrmPrincipal
       ReadOnly = True
       ShowHint = False
       TabOrder = 0
+      ExplicitWidth = 740
     end
     object lkpProdutoSelecionado: TDBLookupComboBox
       Left = 23
@@ -602,6 +604,7 @@ object frmPrincipal: TfrmPrincipal
       StateCaptions.CaptionOff = ' '
       TabOrder = 0
       OnClick = switchDarkClick
+      ExplicitLeft = 1463
       ExplicitHeight = 23
     end
   end

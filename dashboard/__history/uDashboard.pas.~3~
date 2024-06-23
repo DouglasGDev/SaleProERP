@@ -1,0 +1,38 @@
+unit uDashboard;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, VclTee.TeeGDIPlus,
+  Data.DB, VCLTee.Series, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
+  VCLTee.DBChart;
+
+type
+  TfrmDashboard = class(TForm)
+    pnlHeader: TPanel;
+    pnlFooter: TPanel;
+    pnlBody: TPanel;
+    grdPnlGraficos: TGridPanel;
+    DBCProdutoEstoque: TDBChart;
+    Series1: TBarSeries;
+    DBCValorVendaCliente: TDBChart;
+    Series2: TPieSeries;
+    DBCTop10ProdutosMaisVendidos: TDBChart;
+    PieSeries1: TPieSeries;
+    DBChart1: TDBChart;
+    Series3: TFastLineSeries;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDashboard: TfrmDashboard;
+
+implementation
+
+{$R *.dfm}
+
+end.

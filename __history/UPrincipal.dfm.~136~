@@ -33,6 +33,7 @@ object frmPrincipal: TfrmPrincipal
     Color = clWhite
     ParentBackground = False
     TabOrder = 5
+    ExplicitWidth = 740
     object lblProduto: TLabel
       Left = 23
       Top = 202
@@ -150,15 +151,11 @@ object frmPrincipal: TfrmPrincipal
       Top = 0
       Width = 764
       Height = 129
-      ParentCustomHint = False
       Align = alTop
       BevelInner = bvNone
       BevelOuter = bvNone
       BiDiMode = bdLeftToRight
       BorderStyle = bsNone
-      Color = clWhite
-      Ctl3D = True
-      DoubleBuffered = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -21
@@ -167,13 +164,11 @@ object frmPrincipal: TfrmPrincipal
       Lines.Strings = (
         '')
       ParentBiDiMode = False
-      ParentCtl3D = False
-      ParentDoubleBuffered = False
+      ParentColor = True
       ParentFont = False
-      ParentShowHint = False
       ReadOnly = True
-      ShowHint = False
       TabOrder = 0
+      ExplicitWidth = 740
     end
     object lkpProdutoSelecionado: TDBLookupComboBox
       Left = 23
@@ -602,6 +597,7 @@ object frmPrincipal: TfrmPrincipal
       StateCaptions.CaptionOff = ' '
       TabOrder = 0
       OnClick = switchDarkClick
+      ExplicitLeft = 1463
       ExplicitHeight = 23
     end
   end

@@ -33,9 +33,10 @@ object frmPrincipal: TfrmPrincipal
     Color = clWhite
     ParentBackground = False
     TabOrder = 5
+    ExplicitWidth = 740
     object lblProduto: TLabel
       Left = 23
-      Top = 202
+      Top = 203
       Width = 146
       Height = 21
       Caption = 'Selecionar Produto'
@@ -59,7 +60,7 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object lblDescricao: TLabel
+    object Label1: TLabel
       Left = 304
       Top = 293
       Width = 164
@@ -106,7 +107,7 @@ object frmPrincipal: TfrmPrincipal
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       OnClick = btnPesquisarProdutoClick
     end
-    object lblExtrato: TLabel
+    object Label2: TLabel
       Left = 23
       Top = 129
       Width = 242
@@ -119,7 +120,7 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object lblQuantidade: TLabel
+    object Label3: TLabel
       Left = 312
       Top = 552
       Width = 81
@@ -132,7 +133,7 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object lblValor: TLabel
+    object Label4: TLabel
       Left = 349
       Top = 616
       Width = 41
@@ -150,15 +151,10 @@ object frmPrincipal: TfrmPrincipal
       Top = 0
       Width = 764
       Height = 129
-      ParentCustomHint = False
       Align = alTop
       BevelInner = bvNone
       BevelOuter = bvNone
-      BiDiMode = bdLeftToRight
       BorderStyle = bsNone
-      Color = clWhite
-      Ctl3D = True
-      DoubleBuffered = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -21
@@ -166,14 +162,10 @@ object frmPrincipal: TfrmPrincipal
       Font.Style = [fsBold, fsItalic]
       Lines.Strings = (
         '')
-      ParentBiDiMode = False
-      ParentCtl3D = False
-      ParentDoubleBuffered = False
       ParentFont = False
-      ParentShowHint = False
       ReadOnly = True
-      ShowHint = False
       TabOrder = 0
+      ExplicitWidth = 740
     end
     object lkpProdutoSelecionado: TDBLookupComboBox
       Left = 23
@@ -569,7 +561,7 @@ object frmPrincipal: TfrmPrincipal
       ParentFont = False
     end
     object Label5: TLabel
-      Left = 1366
+      Left = 1346
       Top = 0
       Width = 99
       Height = 73
@@ -587,9 +579,8 @@ object frmPrincipal: TfrmPrincipal
       ExplicitHeight = 20
     end
     object switchDark: TToggleSwitch
-      Left = 1465
+      Left = 1445
       Top = 0
-      Width = 60
       Height = 73
       Align = alRight
       Font.Charset = DEFAULT_CHARSET
@@ -598,10 +589,9 @@ object frmPrincipal: TfrmPrincipal
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
       ParentFont = False
-      StateCaptions.CaptionOn = ' '
-      StateCaptions.CaptionOff = ' '
       TabOrder = 0
       OnClick = switchDarkClick
+      ExplicitLeft = 1447
       ExplicitHeight = 23
     end
   end

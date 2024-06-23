@@ -9,14 +9,14 @@ inherited frmProVenda: TfrmProVenda
     Width = 1103
     Height = 533
     ActivePage = tabManutencao
-    ExplicitWidth = 1106
+    ExplicitWidth = 1103
     ExplicitHeight = 533
     inherited tabListagem: TTabSheet
       ExplicitWidth = 1095
       ExplicitHeight = 501
       inherited pnlListagemTopo: TPanel
         Width = 1095
-        ExplicitWidth = 1098
+        ExplicitWidth = 1095
       end
       inherited grdListagem: TDBGrid
         Width = 1095
@@ -51,7 +51,7 @@ inherited frmProVenda: TfrmProVenda
       inherited pnlTitulo: TPanel
         Width = 1095
         Caption = 'Vendas'
-        ExplicitWidth = 1098
+        ExplicitWidth = 1095
       end
     end
     inherited tabManutencao: TTabSheet
@@ -182,7 +182,6 @@ inherited frmProVenda: TfrmProVenda
         Height = 436
         Align = alBottom
         TabOrder = 3
-        ExplicitWidth = 1098
         object Panel2: TPanel
           Left = 1
           Top = 1
@@ -190,7 +189,6 @@ inherited frmProVenda: TfrmProVenda
           Height = 71
           Align = alTop
           TabOrder = 0
-          ExplicitWidth = 1096
           object lblProduto: TLabel
             Left = 2
             Top = 6
@@ -447,7 +445,6 @@ inherited frmProVenda: TfrmProVenda
           Height = 317
           Align = alClient
           TabOrder = 1
-          ExplicitWidth = 1096
           object dbGridItensVenda: TDBGrid
             Left = 201
             Top = 1
@@ -568,7 +565,6 @@ inherited frmProVenda: TfrmProVenda
           Height = 46
           Align = alBottom
           TabOrder = 2
-          ExplicitWidth = 1096
           object lblPix: TLabel
             Left = 4
             Top = 17
@@ -800,6 +796,7 @@ inherited frmProVenda: TfrmProVenda
         EditLabel.Width = 65
         EditLabel.Height = 17
         EditLabel.Caption = 'Or'#231'amento'
+        Enabled = False
         MaxLength = 11
         NumbersOnly = True
         ParentColor = True
@@ -813,7 +810,7 @@ inherited frmProVenda: TfrmProVenda
     Top = 533
     Width = 1103
     ExplicitTop = 533
-    ExplicitWidth = 1106
+    ExplicitWidth = 1103
     DesignSize = (
       1103
       67)
@@ -838,7 +835,7 @@ inherited frmProVenda: TfrmProVenda
     inherited btnFechar: TBitBtn
       Left = 1018
       TabStop = False
-      ExplicitLeft = 1021
+      ExplicitLeft = 1018
     end
     inherited btnNavigator: TDBNavigator
       Left = 663

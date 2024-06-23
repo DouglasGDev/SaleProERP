@@ -57,12 +57,15 @@ uses
   uConsultaOrcamento in 'consulta\uConsultaOrcamento.pas' {frmConsultaOrcamento},
   uRelEntradaNota in 'relatorio\uRelEntradaNota.pas' {frmRelEntradaNota},
   uRelVenda in 'relatorio\uRelVenda.pas' {frmRelVenda},
-  uDashboard in 'dashboard\uDashboard.pas' {frmDashboard};
+  uDashboard in 'dashboard\uDashboard.pas' {frmDashboard},
+  AddTodoEntryUnit in 'TodoTxt\AddTodoEntryUnit.pas' {AddTodoEntryForm},
+  TodoUnit in 'TodoTxt\TodoUnit.pas' {TodoForm};
 
 {$R *.res}
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TAddTodoEntryForm, AddTodoEntryForm);
   Application.Run;
 end.

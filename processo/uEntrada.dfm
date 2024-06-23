@@ -6,7 +6,6 @@ inherited frmEntrada: TfrmEntrada
   inherited pgcPrincipal: TPageControl
     Width = 953
     Height = 544
-    ActivePage = tabManutencao
     ExplicitWidth = 953
     ExplicitHeight = 544
     inherited tabListagem: TTabSheet
@@ -28,6 +27,7 @@ inherited frmEntrada: TfrmEntrada
           item
             Expanded = False
             FieldName = 'entradaId'
+            Width = 203
             Visible = True
           end
           item
@@ -38,7 +38,7 @@ inherited frmEntrada: TfrmEntrada
           item
             Expanded = False
             FieldName = 'numnotafiscal'
-            Width = 214
+            Width = 186
             Visible = True
           end
           item

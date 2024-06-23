@@ -1,25 +1,26 @@
 inherited frmCadUsuario: TfrmCadUsuario
   Caption = 'Cadastro de Usu'#225'rio'
-  ClientHeight = 380
-  ClientWidth = 742
-  ExplicitWidth = 754
-  ExplicitHeight = 418
+  ClientHeight = 468
+  ClientWidth = 905
+  ExplicitWidth = 905
+  ExplicitHeight = 468
   TextHeight = 15
   inherited pgcPrincipal: TPageControl
-    Width = 742
-    Height = 313
-    ExplicitWidth = 738
-    ExplicitHeight = 312
+    Width = 905
+    Height = 401
+    ActivePage = tabManutencao
+    ExplicitWidth = 905
+    ExplicitHeight = 401
     inherited tabListagem: TTabSheet
-      ExplicitWidth = 734
-      ExplicitHeight = 283
+      ExplicitWidth = 897
+      ExplicitHeight = 369
       inherited pnlListagemTopo: TPanel
-        Width = 734
-        ExplicitWidth = 734
+        Width = 897
+        ExplicitWidth = 897
       end
       inherited grdListagem: TDBGrid
-        Width = 734
-        Height = 202
+        Width = 897
+        Height = 231
         Columns = <
           item
             Expanded = False
@@ -33,18 +34,23 @@ inherited frmCadUsuario: TfrmCadUsuario
             Visible = True
           end>
       end
+      inherited pnlTitulo: TPanel
+        Width = 897
+        Caption = 'Cadastro de Usu'#225'rio'
+        ExplicitWidth = 897
+      end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitWidth = 734
-      ExplicitHeight = 283
+      ExplicitWidth = 897
+      ExplicitHeight = 369
       object edtUsuarioId: TLabeledEdit
         Tag = 1
         Left = 3
         Top = 32
         Width = 121
-        Height = 23
-        EditLabel.Width = 39
-        EditLabel.Height = 15
+        Height = 25
+        EditLabel.Width = 43
+        EditLabel.Height = 17
         EditLabel.Caption = 'C'#243'digo'
         MaxLength = 11
         NumbersOnly = True
@@ -56,9 +62,9 @@ inherited frmCadUsuario: TfrmCadUsuario
         Left = 3
         Top = 96
         Width = 574
-        Height = 23
-        EditLabel.Width = 40
-        EditLabel.Height = 15
+        Height = 25
+        EditLabel.Width = 45
+        EditLabel.Height = 17
         EditLabel.Caption = 'Usu'#225'rio'
         MaxLength = 50
         TabOrder = 1
@@ -69,9 +75,9 @@ inherited frmCadUsuario: TfrmCadUsuario
         Left = 3
         Top = 152
         Width = 331
-        Height = 23
-        EditLabel.Width = 32
-        EditLabel.Height = 15
+        Height = 25
+        EditLabel.Width = 35
+        EditLabel.Height = 17
         EditLabel.Caption = 'Senha'
         MaxLength = 40
         PasswordChar = '*'
@@ -81,16 +87,20 @@ inherited frmCadUsuario: TfrmCadUsuario
     end
   end
   inherited pnlRodape: TPanel
-    Top = 313
-    Width = 742
-    ExplicitTop = 312
-    ExplicitWidth = 738
+    Top = 401
+    Width = 905
+    ExplicitTop = 401
+    ExplicitWidth = 905
     DesignSize = (
-      742
+      905
       67)
+    inherited btnGravar: TBitBtn
+      Left = 260
+      ExplicitLeft = 260
+    end
     inherited btnFechar: TBitBtn
-      Left = 653
-      ExplicitLeft = 649
+      Left = 820
+      ExplicitLeft = 820
     end
     inherited btnNavigator: TDBNavigator
       Left = 431
