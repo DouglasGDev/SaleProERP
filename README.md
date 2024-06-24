@@ -19,18 +19,9 @@ Copiar código
 CREATE DATABASE vendas;
 
 3. Descompactar Bibliotecas
-Dentro da pasta integracao do projeto, há um arquivo chamado libcef.rar. Este arquivo contém as bibliotecas necessárias para o funcionamento do projeto.
+descompactar a pasta integração desse link https://drive.google.com/drive/folders/1Trcif5xKCvNc4FZcLfpi6s1F80LkSEqy?usp=sharing e colocar dentro da pasta Win32/Debug
 
-Descompactar libcef.rar:
-Utilize uma ferramenta de descompactação como WinRAR ou 7-Zip para descompactar o arquivo libcef.rar.
-O arquivo descompactado será libcef.dll.
-4. Copiar Bibliotecas para o Diretório de Debug
-As bibliotecas descompactadas precisam ser copiadas para o diretório correto dentro da estrutura de build do Delphi
-(vai ter uma pasta integracao, só extrair esse arquivo dela e copiar a pasta inteira para Win32/Debug/).
-
-
-
-Certifique-se de que o arquivo libmysql.dll também esteja presente no diretório win32/debug/.
+4. Certifique-se de que o arquivo libmysql.dll também esteja presente no diretório win32/debug/.
 5. Configurar o Acesso ao MySQL
 Após a compilação do projeto, você precisa configurar o acesso ao banco de dados MySQL.
 
