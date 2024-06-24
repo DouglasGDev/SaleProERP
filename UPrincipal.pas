@@ -59,7 +59,9 @@ type
     QryProdutosquantidade: TZFMTBCDField;
     dbedtValor: TDBEdit;
     switchDark: TToggleSwitch;
-    Label5: TLabel;
+    imageCollectionBotao: TImageCollection;
+    ListaVirtualBotao: TVirtualImageList;
+    VirtualImageBotao: TVirtualImage;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -569,7 +571,7 @@ begin
      SVMenu.Open;
 
 end;
-
+{$region 'Tema'}
 procedure TfrmPrincipal.switchDarkClick(Sender: TObject);
 var
   i: Integer;
@@ -582,6 +584,7 @@ begin
     begin
       if pnlTopMenu is TPanel then
       begin
+        VirtualImageBotao.ImageIndex := 0;
         pnlTopMenu.Color := clTeal;
         SVMenu.Color := clTeal;
         SVSubMenu.Color := clTeal;
@@ -601,6 +604,7 @@ begin
   begin
     if pnlTopMenu is TPanel then
     begin
+      VirtualImageBotao.ImageIndex := 1;
       pnlTopMenu.Color := $001E1E1E;
       SVMenu.Color := $001E1E1E;
       SVSubMenu.Color := $001E1E1E;
@@ -617,6 +621,7 @@ begin
   end;
 end;
 
+{$endregion}
 
 procedure TfrmPrincipal.closeSubMenu(Sender: TObject);// animação submenu
 begin
