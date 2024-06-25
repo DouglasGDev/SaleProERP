@@ -1,2 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<BorlandProject/>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2024/06/24 22:35:49.000.371,=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.pas</Transaction>
+    <Transaction>2024/06/24 22:37:04.000.791,E:\ADS\quinto_semestre\projetos4\Estoque\consulta\uConsultaExtratoProduto.dfm=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.dfm</Transaction>
+    <Transaction>2024/06/24 22:37:04.000.791,E:\ADS\quinto_semestre\projetos4\Estoque\consulta\uConsultaExtratoProduto.pas=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>

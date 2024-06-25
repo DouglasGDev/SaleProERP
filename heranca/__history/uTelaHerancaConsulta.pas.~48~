@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Mask,
   Data.DB, Vcl.Grids, Vcl.DBGrids, ZAbstractRODataset, ZAbstractDataset,
-  ZDataset, Vcl.Buttons, IniFiles;
+  ZDataset, Vcl.Buttons;
 
 type
   TfrmTelaHerancaConsulta = class(TForm)
@@ -31,7 +31,6 @@ type
   private
     function RetornarCampoTraduzido(Campo: string): string;
     procedure ExibirLabelIndice(Campo: string; aLabel: TLabel);
-    function LoadSwitchState: Boolean;
     { Private declarations }
   public
     { Public declarations }
@@ -81,25 +80,11 @@ begin
 end;
 
 procedure TfrmTelaHerancaConsulta.FormShow(Sender: TObject);
-var
-SwitchState : Boolean;
 begin
-if (aIniciarPesquisaId<>Unassigned) then
+     if (aIniciarPesquisaId<>Unassigned) then
   begin
     QryListagem.Locate(aCampoId, aIniciarPesquisaId,[loPartialKey])
   end;
-
-  SwitchState := LoadSwitchState;
-    if SwitchState.ToInteger = 0 then
-    begin
-        pnlHeader.Color := clTeal;
-        pnlFooter.Color := clTeal;
-    end
-    else if SwitchState.ToInteger = 1 then
-    begin
-        pnlHeader.Color := $001E1E1E;
-        pnlFooter.Color := $001E1E1E;
-    end;
 end;
 
 procedure TfrmTelaHerancaConsulta.grdPesquisaDblClick(Sender: TObject);
@@ -134,18 +119,6 @@ begin
        Result:=QryListagem.Fields[i].DisplayLabel;
        Break;
     end;
-  end;
-end;
-
-function TfrmTelaHerancaConsulta.LoadSwitchState: Boolean;
-var
-  Ini: TIniFile;
-begin
-  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'vendas.ini');
-  try
-    Result := Ini.ReadBool('Settings', 'SwitchState', False);
-  finally
-    Ini.Free;
   end;
 end;
 

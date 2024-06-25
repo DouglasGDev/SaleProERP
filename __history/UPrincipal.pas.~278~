@@ -431,6 +431,7 @@ begin
     RESTClientFeriado.Free;
   end;
 end;
+
 function TfrmPrincipal.ISO8601ToDate(const AISO8601: string): TDate;
 var
   Year, Month, Day: Word;
@@ -440,6 +441,7 @@ begin
   Day := StrToInt(Copy(AISO8601, 9, 2));
   Result := EncodeDate(Year, Month, Day);
 end;
+
 procedure TfrmPrincipal.CalendarViewDblClick(Sender: TObject);
 var
   SelectedDate: TDate;
@@ -462,6 +464,7 @@ begin
   end;
   ShowMessage('Não há feriado nesta data.');
 end;
+
 procedure TfrmPrincipal.CalendarViewDateChange(Sender: TObject);
 var
   SelectedDate: TDate;
@@ -484,6 +487,7 @@ begin
   end;
   ShowMessage('Não há feriado nesta data.');
 end;
+
 procedure TfrmPrincipal.FormDestroy(Sender: TObject);
 begin
   Feriados.Free;
@@ -540,7 +544,7 @@ begin
      SVMenu.Close;
      SVSubMenu.Close;
      SVSubMenu.UseAnimation := True;
-{$region 'frases do dia'}
+
     RESTClientQuote := TRESTClient.Create(nil);
     RESTRequestQuote := TRESTRequest.Create(nil);
     RESTResponseQuote := TRESTResponse.Create(nil);
@@ -605,7 +609,7 @@ begin
     RESTRequestTranslate.Free;
     RESTResponseTranslate.Free;
   end
-{$endregion}
+
 end;
 end;
 
@@ -663,7 +667,6 @@ begin
         memoPensamento.Font.Color := clBlack;
         pnlbody.Color := clWhite;
         CalendarView.Color := clWhite;
-        CalendarView.HeaderInfo.FontColor := clBlack;
         CalendarView.Font.Color := clWindowText;
       end;
     end;
@@ -680,7 +683,6 @@ begin
       memoPensamento.Font.Color := clWhite;
       pnlbody.Color := $00616161;
       CalendarView.Color := $00616161;
-      CalendarView.HeaderInfo.FontColor := clWhite;
       CalendarView.Font.Color := clWhite;
     end;
   end;

@@ -10,9 +10,9 @@ uses
 
 type
   TfrmUsuarioVsAcoes = class(TForm)
-    pnlUser: TPanel;
-    pnlBody: TPanel;
-    pnlFooter: TPanel;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
     Splitter1: TSplitter;
     grdUsuario: TDBGrid;
     grdAcoes: TDBGrid;
@@ -27,7 +27,7 @@ type
     QryAcoesdescricao: TZUnicodeStringField;
     QryAcoesativo: TZBooleanField;
     btnFechar: TBitBtn;
-    pnlHeader: TPanel;
+    Panel4: TPanel;
     procedure btnFecharClick(Sender: TObject);
     procedure QryUsuarioAfterScroll(DataSet: TDataSet);
     procedure FormShow(Sender: TObject);
@@ -37,7 +37,6 @@ type
   private
     { Private declarations }
     procedure SelecionarAcoesAcessoPorUsuario;
-    function LoadSwitchState: Boolean;
   public
     { Public declarations }
   end;
@@ -99,8 +98,6 @@ begin
 end;
 
 procedure TfrmUsuarioVsAcoes.FormShow(Sender: TObject);
-var
-SwitchState : Boolean;
 begin
    Try
     QryUsuario.DisableControls;// desabilita o afterscroll para cada usuário que puxa todos os controles da query
@@ -109,18 +106,6 @@ begin
   Finally
     QryUsuario.EnableControls;// habilita novamente, e isso pra cada usuário
   End;
-
-  SwitchState := LoadSwitchState;
-    if SwitchState.ToInteger = 0 then
-    begin
-        pnlHeader.Color := clTeal;
-        pnlFooter.Color := clTeal;
-    end
-    else if SwitchState.ToInteger = 1 then
-    begin
-        pnlHeader.Color := $001E1E1E;
-        pnlFooter.Color := $001E1E1E;
-    end;
 end;
 
 procedure TfrmUsuarioVsAcoes.QryUsuarioAfterScroll(DataSet: TDataSet);
@@ -133,18 +118,6 @@ begin
   QryAcoes.Close;
   QryAcoes.ParamByName('usuarioId').AsInteger := QryUsuario.FieldByName('usuarioID').AsInteger;
   QryAcoes.Open;
-end;
-
-function TfrmUsuarioVsAcoes.LoadSwitchState: Boolean;
-var
-  Ini: TIniFile;
-begin
-  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'vendas.ini');
-  try
-    Result := Ini.ReadBool('Settings', 'SwitchState', False);
-  finally
-    Ini.Free;
-  end;
 end;
 
 end.

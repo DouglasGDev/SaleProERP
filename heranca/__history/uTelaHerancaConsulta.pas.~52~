@@ -82,7 +82,7 @@ end;
 
 procedure TfrmTelaHerancaConsulta.FormShow(Sender: TObject);
 var
-SwitchState : Boolean;
+SwitchState : Boolean
 begin
 if (aIniciarPesquisaId<>Unassigned) then
   begin

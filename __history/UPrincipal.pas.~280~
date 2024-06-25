@@ -431,6 +431,7 @@ begin
     RESTClientFeriado.Free;
   end;
 end;
+
 function TfrmPrincipal.ISO8601ToDate(const AISO8601: string): TDate;
 var
   Year, Month, Day: Word;
@@ -440,6 +441,7 @@ begin
   Day := StrToInt(Copy(AISO8601, 9, 2));
   Result := EncodeDate(Year, Month, Day);
 end;
+
 procedure TfrmPrincipal.CalendarViewDblClick(Sender: TObject);
 var
   SelectedDate: TDate;
@@ -462,6 +464,7 @@ begin
   end;
   ShowMessage('Não há feriado nesta data.');
 end;
+
 procedure TfrmPrincipal.CalendarViewDateChange(Sender: TObject);
 var
   SelectedDate: TDate;
@@ -484,6 +487,7 @@ begin
   end;
   ShowMessage('Não há feriado nesta data.');
 end;
+
 procedure TfrmPrincipal.FormDestroy(Sender: TObject);
 begin
   Feriados.Free;

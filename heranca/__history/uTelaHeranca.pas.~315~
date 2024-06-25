@@ -408,12 +408,10 @@ begin
         pnlListagemTopo.Color := clTeal;
         pnlRodape.Color := clTeal;
     end
-    else if SwitchState.ToInteger = 1 then
-    begin
+    else
         pnlTitulo.Color := $001E1E1E;
         pnlListagemTopo.Color := $001E1E1E;
         pnlRodape.Color :=$001E1E1E;
-    end;
 end;
 
 

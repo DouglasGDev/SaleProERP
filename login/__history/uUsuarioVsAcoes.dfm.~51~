@@ -22,7 +22,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
     ExplicitTop = 368
     ExplicitHeight = 100
   end
-  object pnlUser: TPanel
+  object Panel1: TPanel
     Left = 0
     Top = 41
     Width = 313
@@ -57,7 +57,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
         end>
     end
   end
-  object pnlBody: TPanel
+  object Panel2: TPanel
     Left = 316
     Top = 41
     Width = 791
@@ -104,7 +104,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
         end>
     end
   end
-  object pnlFooter: TPanel
+  object Panel3: TPanel
     Left = 0
     Top = 757
     Width = 1107
@@ -154,7 +154,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
       OnClick = btnFecharClick
     end
   end
-  object pnlHeader: TPanel
+  object Panel4: TPanel
     Left = 0
     Top = 0
     Width = 1107

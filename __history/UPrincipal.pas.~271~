@@ -42,9 +42,6 @@ type
     imageCollectionBotao: TImageCollection;
     VirtualImageBotao: TVirtualImage;
     CalendarView: TCalendarView;
-    RESTClientFeriado: TRESTClient;
-    RESTResponseFeriado: TRESTResponse;
-    RESTRequestFeriado: TRESTRequest;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -393,53 +390,12 @@ begin
     TeclaEnter := TMREnter.Create(Self);
     TeclaEnter.FocusEnabled := True;
     TeclaEnter.FocusColor := clInfoBk;
-    Feriados := TJSONArray.Create;
-    // Carrega os feriados da API (ano atual)
-    CarregarFeriados(StrToInt(FormatDateTime('yyyy', Now)));
+
 
 
   end;
 end;
 {$region 'Feriados'}
-
-procedure TfrmPrincipal.CarregarFeriados(Ano: Integer);
-var
-  RESTClientFeriado: TRESTClient;
-  RESTRequestFeriado: TRESTRequest;
-  RESTResponseFeriado: TRESTResponse;
-  JSONValue: TJSONValue;
-begin
-  RESTClientFeriado := TRESTClient.Create(Format('https://brasilapi.com.br/api/feriados/v1/%d', [Ano]));
-  RESTRequestFeriado := TRESTRequest.Create(nil);
-  RESTResponseFeriado := TRESTResponse.Create(nil);
-  try
-    RESTRequestFeriado.Client := RESTClientFeriado;
-    RESTRequestFeriado.Response := RESTResponseFeriado;
-    RESTRequestFeriado.Execute;
-    // Processa a resposta JSON
-    if RESTResponseFeriado.StatusCode = 200 then
-    begin
-      JSONValue := TJSONObject.ParseJSONValue(RESTResponseFeriado.Content);
-      if JSONValue is TJSONArray then
-      begin
-        Feriados := TJSONArray(JSONValue.Clone as TJSONArray);
-      end;
-    end;
-  finally
-    RESTRequestFeriado.Free;
-    RESTResponseFeriado.Free;
-    RESTClientFeriado.Free;
-  end;
-end;
-function TfrmPrincipal.ISO8601ToDate(const AISO8601: string): TDate;
-var
-  Year, Month, Day: Word;
-begin
-  Year := StrToInt(Copy(AISO8601, 1, 4));
-  Month := StrToInt(Copy(AISO8601, 6, 2));
-  Day := StrToInt(Copy(AISO8601, 9, 2));
-  Result := EncodeDate(Year, Month, Day);
-end;
 procedure TfrmPrincipal.CalendarViewDblClick(Sender: TObject);
 var
   SelectedDate: TDate;
@@ -449,6 +405,7 @@ var
   FeriadoNome: string;
 begin
   SelectedDate := CalendarView.Date;
+
   for I := 0 to Feriados.Count - 1 do
   begin
     Feriado := Feriados.Items[I] as TJSONObject;
@@ -460,8 +417,52 @@ begin
       Exit;
     end;
   end;
+
   ShowMessage('Não há feriado nesta data.');
 end;
+
+procedure TfrmPrincipal.CarregarFeriados(Ano: Integer);
+var
+  RESTClient: TRESTClient;
+  RESTRequest: TRESTRequest;
+  RESTResponse: TRESTResponse;
+  JSONValue: TJSONValue;
+begin
+  RESTClient := TRESTClient.Create(Format('https://brasilapi.com.br/api/feriados/v1/%d', [Ano]));
+  RESTRequest := TRESTRequest.Create(nil);
+  RESTResponse := TRESTResponse.Create(nil);
+
+  try
+    RESTRequest.Client := RESTClient;
+    RESTRequest.Response := RESTResponse;
+    RESTRequest.Execute;
+
+    // Processa a resposta JSON
+    if RESTResponse.StatusCode = 200 then
+    begin
+      JSONValue := TJSONObject.ParseJSONValue(RESTResponse.Content);
+      if JSONValue is TJSONArray then
+      begin
+        Feriados := TJSONArray(JSONValue.Clone as TJSONArray);
+      end;
+    end;
+  finally
+    RESTRequest.Free;
+    RESTResponse.Free;
+    RESTClient.Free;
+  end;
+end;
+
+function TfrmPrincipal.ISO8601ToDate(const AISO8601: string): TDate;
+var
+  Year, Month, Day: Word;
+begin
+  Year := StrToInt(Copy(AISO8601, 1, 4));
+  Month := StrToInt(Copy(AISO8601, 6, 2));
+  Day := StrToInt(Copy(AISO8601, 9, 2));
+  Result := EncodeDate(Year, Month, Day);
+end;
+
 procedure TfrmPrincipal.CalendarViewDateChange(Sender: TObject);
 var
   SelectedDate: TDate;
@@ -471,6 +472,7 @@ var
   FeriadoNome: string;
 begin
   SelectedDate := CalendarView.Date;
+
   for I := 0 to Feriados.Count - 1 do
   begin
     Feriado := Feriados.Items[I] as TJSONObject;
@@ -482,8 +484,10 @@ begin
       Exit;
     end;
   end;
+
   ShowMessage('Não há feriado nesta data.');
 end;
+
 procedure TfrmPrincipal.FormDestroy(Sender: TObject);
 begin
   Feriados.Free;
@@ -535,12 +539,16 @@ begin
 
     lblBemVindo.Caption :='Bem vindo(a) '+ oUsuarioLogado.nome +' !';
 
+     Feriados := TJSONArray.Create;
+     // Carrega os feriados da API (ano atual)
+     CarregarFeriados(StrToInt(FormatDateTime('yyyy', Now)));
+
      // menu primcipal e submenu
      SVSubMenu.UseAnimation := False;
      SVMenu.Close;
      SVSubMenu.Close;
      SVSubMenu.UseAnimation := True;
-{$region 'frases do dia'}
+
     RESTClientQuote := TRESTClient.Create(nil);
     RESTRequestQuote := TRESTRequest.Create(nil);
     RESTResponseQuote := TRESTResponse.Create(nil);
@@ -605,7 +613,7 @@ begin
     RESTRequestTranslate.Free;
     RESTResponseTranslate.Free;
   end
-{$endregion}
+
 end;
 end;
 
@@ -663,7 +671,6 @@ begin
         memoPensamento.Font.Color := clBlack;
         pnlbody.Color := clWhite;
         CalendarView.Color := clWhite;
-        CalendarView.HeaderInfo.FontColor := clBlack;
         CalendarView.Font.Color := clWindowText;
       end;
     end;
@@ -680,7 +687,6 @@ begin
       memoPensamento.Font.Color := clWhite;
       pnlbody.Color := $00616161;
       CalendarView.Color := $00616161;
-      CalendarView.HeaderInfo.FontColor := clWhite;
       CalendarView.Font.Color := clWhite;
     end;
   end;

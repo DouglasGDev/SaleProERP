@@ -388,7 +388,6 @@ end;
 procedure TfrmTelaHeranca.FormShow(Sender: TObject);
 var
 SwitchState: Boolean;
-
 begin
    if (QryListagem.SQL.Text<>EmptyStr) then begin // está verificando se o campo sql não está vazio
       QryListagem.IndexFieldNames := IndiceAtual;// aqui recebe o indice para armazenar e mostrar no campo de pesquisa
@@ -400,22 +399,48 @@ begin
    DesabilitarEditPK;
    ControlarBotoes(btnNovo,btnAlterar,btnCancelar,
                    btnGravar,btnApagar,btnNavigator, pgcPrincipal, True);// isso é feito para deixar os botões cancelar e gravar da tela de listagem, desabilitados
+   SwitchState := LoadSwitchState;
+    if SwitchState = 1 then
+    begin
+       if pnlTitulo is Tpanel then
 
-    SwitchState := LoadSwitchState;
-    if SwitchState.ToInteger = 0 then
+    else
+
+
+      begin
+    for i := 0 to ComponentCount - 1 do
     begin
-        pnlTitulo.Color := clTeal;
-        pnlListagemTopo.Color := clTeal;
-        pnlRodape.Color := clTeal;
-    end
-    else if SwitchState.ToInteger = 1 then
+      if pnlTopMenu is TPanel then
+      begin
+        VirtualImageBotao.ImageIndex := 0;
+        pnlTopMenu.Color := clTeal;
+        SVMenu.Color := clTeal;
+        SVSubMenu.Color := clTeal;
+        memoPensamento.Color := clWhite;
+        memoPensamento.Font.Color := clBlack;
+        pnlbody.Color := clWhite;
+        CalendarView.Color := clWhite;
+        CalendarView.HeaderInfo.FontColor := clBlack;
+        CalendarView.Font.Color := clWindowText;
+      end;
+    end;
+  end
+  else
+  begin
+    if pnlTopMenu is TPanel then
     begin
-        pnlTitulo.Color := $001E1E1E;
-        pnlListagemTopo.Color := $001E1E1E;
-        pnlRodape.Color :=$001E1E1E;
+      VirtualImageBotao.ImageIndex := 1;
+      pnlTopMenu.Color := $001E1E1E;
+      SVMenu.Color := $001E1E1E;
+      SVSubMenu.Color := $001E1E1E;
+      memoPensamento.Color := $00616161;
+      memoPensamento.Font.Color := clWhite;
+      pnlbody.Color := $00616161;
+      CalendarView.Color := $00616161;
+      CalendarView.HeaderInfo.FontColor := clWhite;
+      CalendarView.Font.Color := clWhite;
     end;
 end;
-
 
 procedure TfrmTelaHeranca.grdListagemDblClick(Sender: TObject);
 begin

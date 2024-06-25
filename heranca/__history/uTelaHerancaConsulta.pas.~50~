@@ -81,25 +81,11 @@ begin
 end;
 
 procedure TfrmTelaHerancaConsulta.FormShow(Sender: TObject);
-var
-SwitchState : Boolean;
 begin
-if (aIniciarPesquisaId<>Unassigned) then
+     if (aIniciarPesquisaId<>Unassigned) then
   begin
     QryListagem.Locate(aCampoId, aIniciarPesquisaId,[loPartialKey])
   end;
-
-  SwitchState := LoadSwitchState;
-    if SwitchState.ToInteger = 0 then
-    begin
-        pnlHeader.Color := clTeal;
-        pnlFooter.Color := clTeal;
-    end
-    else if SwitchState.ToInteger = 1 then
-    begin
-        pnlHeader.Color := $001E1E1E;
-        pnlFooter.Color := $001E1E1E;
-    end;
 end;
 
 procedure TfrmTelaHerancaConsulta.grdPesquisaDblClick(Sender: TObject);

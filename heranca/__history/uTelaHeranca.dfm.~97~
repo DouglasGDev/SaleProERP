@@ -138,7 +138,6 @@ object frmTelaHeranca: TfrmTelaHeranca
         ParentBackground = False
         ParentFont = False
         TabOrder = 2
-        ExplicitTop = -5
       end
     end
     object tabManutencao: TTabSheet

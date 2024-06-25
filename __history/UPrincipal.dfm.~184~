@@ -638,7 +638,7 @@ object frmPrincipal: TfrmPrincipal
       Left = -32
       Top = 156
       Width = 292
-      Height = 397
+      Height = 349
       Cursor = crHandPoint
       Anchors = [akLeft, akTop, akBottom]
       BevelOuter = bvNone

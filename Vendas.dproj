@@ -277,6 +277,10 @@
             <Form>frmDashboard</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="consulta\uConsultaExtratoProduto.pas">
+            <Form>frmConsultaExtratoProduto</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="Vendas.todo"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

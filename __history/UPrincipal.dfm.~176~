@@ -70,7 +70,6 @@ object frmPrincipal: TfrmPrincipal
       Left = 464
       Top = 136
       Anchors = [akTop, akRight]
-      BorderStyle = bsNone
       Date = 45468.000000000000000000
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -87,7 +86,6 @@ object frmPrincipal: TfrmPrincipal
       HeaderInfo.Font.Height = -20
       HeaderInfo.Font.Name = 'Segoe UI'
       HeaderInfo.Font.Style = []
-      OnDblClick = CalendarViewDblClick
       ParentFont = False
       TabOrder = 1
     end
@@ -638,7 +636,7 @@ object frmPrincipal: TfrmPrincipal
       Left = -32
       Top = 156
       Width = 292
-      Height = 397
+      Height = 349
       Cursor = crHandPoint
       Anchors = [akLeft, akTop, akBottom]
       BevelOuter = bvNone
@@ -1384,21 +1382,5 @@ object frmPrincipal: TfrmPrincipal
       end>
     Left = 840
     Top = 152
-  end
-  object RESTClientFeriado: TRESTClient
-    Params = <>
-    SynchronizedEvents = False
-    Left = 148
-    Top = 257
-  end
-  object RESTResponseFeriado: TRESTResponse
-    Left = 260
-    Top = 257
-  end
-  object RESTRequestFeriado: TRESTRequest
-    Params = <>
-    SynchronizedEvents = False
-    Left = 380
-    Top = 257
   end
 end

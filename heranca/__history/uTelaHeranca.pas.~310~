@@ -386,9 +386,6 @@ begin
    BloqueiaCTRL_DEL_DBGrid(Key,Shift);
 end;
 procedure TfrmTelaHeranca.FormShow(Sender: TObject);
-var
-SwitchState: Boolean;
-
 begin
    if (QryListagem.SQL.Text<>EmptyStr) then begin // está verificando se o campo sql não está vazio
       QryListagem.IndexFieldNames := IndiceAtual;// aqui recebe o indice para armazenar e mostrar no campo de pesquisa
@@ -400,22 +397,7 @@ begin
    DesabilitarEditPK;
    ControlarBotoes(btnNovo,btnAlterar,btnCancelar,
                    btnGravar,btnApagar,btnNavigator, pgcPrincipal, True);// isso é feito para deixar os botões cancelar e gravar da tela de listagem, desabilitados
-
-    SwitchState := LoadSwitchState;
-    if SwitchState.ToInteger = 0 then
-    begin
-        pnlTitulo.Color := clTeal;
-        pnlListagemTopo.Color := clTeal;
-        pnlRodape.Color := clTeal;
-    end
-    else if SwitchState.ToInteger = 1 then
-    begin
-        pnlTitulo.Color := $001E1E1E;
-        pnlListagemTopo.Color := $001E1E1E;
-        pnlRodape.Color :=$001E1E1E;
-    end;
 end;
-
 
 procedure TfrmTelaHeranca.grdListagemDblClick(Sender: TObject);
 begin
@@ -449,6 +431,4 @@ begin
     Ini.Free;
   end;
 end;
-
-
 end.
