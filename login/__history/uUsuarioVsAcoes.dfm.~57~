@@ -3,8 +3,8 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
   Top = 0
   BorderStyle = bsNone
   Caption = 'A'#231#245'es dos usu'#225'rios'
-  ClientHeight = 798
-  ClientWidth = 1107
+  ClientHeight = 569
+  ClientWidth = 793
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,27 +17,25 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
   object Splitter1: TSplitter
     Left = 313
     Top = 41
-    Height = 716
+    Height = 487
     ExplicitLeft = 320
     ExplicitTop = 368
     ExplicitHeight = 100
   end
-  object Panel1: TPanel
+  object pnlUser: TPanel
     Left = 0
     Top = 41
     Width = 313
-    Height = 716
+    Height = 487
     Align = alLeft
     TabOrder = 0
-    ExplicitTop = 0
-    ExplicitHeight = 718
+    ExplicitHeight = 716
     object grdUsuario: TDBGrid
       Left = 1
       Top = 1
       Width = 311
-      Height = 714
+      Height = 485
       Align = alClient
-      Color = 16767927
       DataSource = DtsUsuario
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       TabOrder = 0
@@ -60,23 +58,21 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
         end>
     end
   end
-  object Panel2: TPanel
+  object pnlBody: TPanel
     Left = 316
     Top = 41
-    Width = 791
-    Height = 716
+    Width = 477
+    Height = 487
     Align = alClient
     TabOrder = 1
-    ExplicitTop = 0
-    ExplicitWidth = 775
-    ExplicitHeight = 718
+    ExplicitWidth = 791
+    ExplicitHeight = 716
     object grdAcoes: TDBGrid
       Left = 1
       Top = 1
-      Width = 789
-      Height = 714
+      Width = 475
+      Height = 485
       Align = alClient
-      Color = 16767927
       DataSource = DtsAcoes
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
       TabOrder = 0
@@ -111,22 +107,22 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
         end>
     end
   end
-  object Panel3: TPanel
+  object pnlFooter: TPanel
     Left = 0
-    Top = 757
-    Width = 1107
+    Top = 528
+    Width = 793
     Height = 41
     Align = alBottom
     Color = clTeal
     ParentBackground = False
     TabOrder = 2
-    ExplicitTop = 718
-    ExplicitWidth = 1091
+    ExplicitTop = 757
+    ExplicitWidth = 1107
     DesignSize = (
-      1107
+      793
       41)
     object btnFechar: TBitBtn
-      Left = 1012
+      Left = 698
       Top = 6
       Width = 81
       Height = 25
@@ -161,13 +157,13 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
         4E6E244E6E244E6E244E6E244E6E244E6E244E6E244E6EFF00FF}
       TabOrder = 0
       OnClick = btnFecharClick
-      ExplicitLeft = 996
+      ExplicitLeft = 1012
     end
   end
-  object Panel4: TPanel
+  object pnlHeader: TPanel
     Left = 0
     Top = 0
-    Width = 1107
+    Width = 793
     Height = 41
     Align = alTop
     BevelOuter = bvNone
@@ -175,15 +171,13 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
     Color = clTeal
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
-    Font.Height = -13
+    Font.Height = -19
     Font.Name = 'Segoe UI'
     Font.Style = [fsBold]
     ParentBackground = False
     ParentFont = False
     TabOrder = 3
-    ExplicitLeft = 464
-    ExplicitTop = -16
-    ExplicitWidth = 185
+    ExplicitWidth = 1107
   end
   object QryUsuario: TZQuery
     AfterScroll = QryUsuarioAfterScroll
@@ -224,8 +218,8 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
         SQLType = stUnicodeString
         Value = 'NULL'
       end>
-    Left = 676
-    Top = 152
+    Left = 468
+    Top = 144
     ParamData = <
       item
         DataType = ftWideString
@@ -261,7 +255,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
   end
   object DtsAcoes: TDataSource
     DataSet = QryAcoes
-    Left = 764
-    Top = 152
+    Left = 572
+    Top = 144
   end
 end

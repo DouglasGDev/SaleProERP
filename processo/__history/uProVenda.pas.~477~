@@ -371,6 +371,7 @@ begin
     dtmVenda.cdsItensVenda.EnableControls;
     edtValorTotal.Value := TotalizarVenda;
     edtValorPagar.Value := TotalPagar;
+    chkOrcamento.Checked := False;
   end;
 end;
 
@@ -394,8 +395,8 @@ begin
   Result := False;
 
   // Verifica e define o ID do orçamento
-  if edtOrcamentoId.Text <> EmptyStr then
-    oOrcamento.OrcamentoId := StrToInt(edtOrcamentoId.Text)
+  if edtVendaId.Text <> EmptyStr then
+    oOrcamento.OrcamentoId := StrToInt(edtVendaId.Text)
   else
     oOrcamento.OrcamentoId := 0;
 
@@ -407,7 +408,9 @@ begin
   try
     // Insere ou atualiza o orçamento baseado no estado
     if EstadoOrcamento = ecNovoOrcamento then
-      oOrcamento.OrcamentoId := oOrcamento.Inserir(dtmVenda.cdsItensVenda);
+      oOrcamento.OrcamentoId := oOrcamento.Inserir(dtmVenda.cdsItensVenda)
+    else if EstadoOrcamento = ecAlterarOrcamento then
+      oOrcamento.Atualizar(dtmVenda.cdsItensVenda);
 
     // Verifica se o orçamento foi inserido ou atualizado corretamente
     if oOrcamento.OrcamentoId > 0 then
@@ -438,6 +441,7 @@ begin
     end;
   end;
 end;
+
 
 
 
@@ -476,41 +480,34 @@ procedure TfrmProVenda.btnGravarOrcamentoClick(Sender: TObject);
 var
   Resposta: Integer;
 begin
-begin
   // Certifique-se de que todos os valores de pagamento estejam zerados para um orçamento
   if (edtPix.Value <> 0) or (edtCredito.Value <> 0) or (edtDebito.Value <> 0) or (edtDinheiro.Value <> 0) then
   begin
     MessageDlg('Orçamento não deve ter valores de pagamento.', TMsgDlgType.mtWarning, [mbOK], 0);
-    abort;
+    Exit;
   end;
 
-  // Salvar o orçamento
-  if GravarOrcamento(ecNovoOrcamento) then
+  // Perguntar ao usuário se deseja proceder com o orçamento
+  Resposta := MessageDlg('Proceder com o orçamento?', TMsgDlgType.mtConfirmation, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0);
+
+  if Resposta = mrYes then
   begin
-    Resposta := MessageDlg('Proceder com o orçamento?', TMsgDlgType.mtWarning, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0);
-    case Resposta of
-      mrYes:
-        begin
-          ShowMessage('Orçamento processado.');
-          LimparCds;
-        end;
-      mrNo:
-        begin
-          ShowMessage('Orçamento cancelado.');
-          abort;
-        end;
+    // Salvar o orçamento
+    if GravarOrcamento(ecNovoOrcamento) then
+    begin
+      LimparCds;
+      Next;
+    end
+    else
+    begin
+      MessageDlg('Erro ao gravar o orçamento.', TMsgDlgType.mtError, [mbOK], 0);
     end;
   end
   else
   begin
-    MessageDlg('Erro ao gravar o orçamento.', TMsgDlgType.mtError, [mbOK], 0);
+    ShowMessage('Orçamento cancelado.');
   end;
 end;
-
-end;
-
-
-
 
 procedure TfrmProVenda.btnIncluirClientesClick(Sender: TObject);
 begin
@@ -762,10 +759,10 @@ var
   ValorPix, ValorCredito, ValorDebito, ValorDinheiro: Double;
 begin
   // Convertendo os valores das edições para Float, garantindo que não haja erro de conversão
-  ValorPix := StrToFloatDef(edtPix.Text, 0);
-  ValorCredito := StrToFloatDef(edtCredito.Text, 0);
-  ValorDebito := StrToFloatDef(edtDebito.Text, 0);
-  ValorDinheiro := StrToFloatDef(edtDinheiro.Text, 0);
+  edtPix.Value := ValorPix;
+  edtCredito.Value := ValorCredito;
+  edtDebito.Value := ValorDebito;
+  edtDinheiro.Value := ValorDinheiro;
 
   // Calculando o valor total a pagar
   Result := TotalizarVenda - (ValorPix + ValorCredito + ValorDebito + ValorDinheiro);

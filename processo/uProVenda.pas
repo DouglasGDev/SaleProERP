@@ -759,10 +759,10 @@ var
   ValorPix, ValorCredito, ValorDebito, ValorDinheiro: Double;
 begin
   // Convertendo os valores das edições para Float, garantindo que não haja erro de conversão
-  ValorPix := StrToFloatDef(edtPix.Text, 0);
-  ValorCredito := StrToFloatDef(edtCredito.Text, 0);
-  ValorDebito := StrToFloatDef(edtDebito.Text, 0);
-  ValorDinheiro := StrToFloatDef(edtDinheiro.Text, 0);
+  ValorPix := edtPix.Value;
+  ValorCredito := edtCredito.Value ;
+  ValorDebito  :=  edtDebito.Value;
+  ValorDinheiro:= edtDinheiro.Value;
 
   // Calculando o valor total a pagar
   Result := TotalizarVenda - (ValorPix + ValorCredito + ValorDebito + ValorDinheiro);
