@@ -45,6 +45,7 @@ uses cCadUsuario, uDTMConexao, UPrincipal;
 procedure TfrmAlterarSenha.btnAlterarClick(Sender: TObject);
 var oUsuario:TUsuario;
 begin
+
  if (edtSenhaAtual.Text=oUsuarioLogado.senha) then begin
     if (edtSenhaNova.Text=edtRepetirNovaSenha.Text) then begin
       try
@@ -85,7 +86,7 @@ begin
   edtSenhaAtual.Clear;
   edtSenhaNova.Clear;
   edtRepetirNovaSenha.Clear;
-  lblUsuarioLogado.Caption :='USUÁRIO:' + oUsuarioLogado.nome;
+  lblUsuarioLogado.Caption := oUsuarioLogado.nome;
 end;
 
 end.

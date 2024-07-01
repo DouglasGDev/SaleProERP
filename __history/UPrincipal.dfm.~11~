@@ -41,7 +41,7 @@ object frmPrincipal: TfrmPrincipal
       Top = 136
       Anchors = [akTop, akRight]
       BorderStyle = bsNone
-      Date = -700000.000000000000000000
+      Date = 45468.000000000000000000
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -20

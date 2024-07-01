@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, IniFiles;
 
 type
   TfrmAlterarSenha = class(TForm)
@@ -28,6 +28,7 @@ type
     procedure btnAlterarClick(Sender: TObject);
   private
     procedure LimparEdits;
+    function LoadSwitchState: Boolean;
     { Private declarations }
   public
     { Public declarations }
@@ -45,6 +46,7 @@ uses cCadUsuario, uDTMConexao, UPrincipal;
 procedure TfrmAlterarSenha.btnAlterarClick(Sender: TObject);
 var oUsuario:TUsuario;
 begin
+
  if (edtSenhaAtual.Text=oUsuarioLogado.senha) then begin
     if (edtSenhaNova.Text=edtRepetirNovaSenha.Text) then begin
       try
@@ -86,6 +88,18 @@ begin
   edtSenhaNova.Clear;
   edtRepetirNovaSenha.Clear;
   lblUsuarioLogado.Caption := oUsuarioLogado.nome;
+end;
+
+function TfrmAlterarSenha.LoadSwitchState: Boolean;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'vendas.ini');
+  try
+    Result := Ini.ReadBool('Settings', 'SwitchState', False);
+  finally
+    Ini.Free;
+  end;
 end;
 
 end.

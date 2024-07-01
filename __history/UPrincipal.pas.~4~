@@ -534,7 +534,7 @@ begin
     VerificarEstoque.Iniciar;
 
     lblBemVindo.Caption :='Bem vindo(a) '+ oUsuarioLogado.nome +' !';
-      CalendarView.Date := Date;
+
      // menu primcipal e submenu
      SVSubMenu.UseAnimation := False;
      SVMenu.Close;

@@ -534,7 +534,7 @@ begin
     VerificarEstoque.Iniciar;
 
     lblBemVindo.Caption :='Bem vindo(a) '+ oUsuarioLogado.nome +' !';
-      CalendarView.Date := Date;
+
      // menu primcipal e submenu
      SVSubMenu.UseAnimation := False;
      SVMenu.Close;
@@ -665,7 +665,6 @@ begin
         CalendarView.Color := clWhite;
         CalendarView.HeaderInfo.FontColor := clBlack;
         CalendarView.Font.Color := clWindowText;
-        CalendarView.FocusedColor := clGray
       end;
     end;
   end
@@ -683,7 +682,6 @@ begin
       CalendarView.Color := $00616161;
       CalendarView.HeaderInfo.FontColor := clWhite;
       CalendarView.Font.Color := clWhite;
-      CalendarView.FocusedColor := clSilver;
     end;
   end;
 end;

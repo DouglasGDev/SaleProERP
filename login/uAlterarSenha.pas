@@ -4,7 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, IniFiles;
 
 type
   TfrmAlterarSenha = class(TForm)
@@ -28,6 +28,7 @@ type
     procedure btnAlterarClick(Sender: TObject);
   private
     procedure LimparEdits;
+    function LoadSwitchState: Boolean;
     { Private declarations }
   public
     { Public declarations }
@@ -77,7 +78,20 @@ begin
 end;
 
 procedure TfrmAlterarSenha.FormShow(Sender: TObject);
+var
+SwitchState : Boolean;
 begin
+  SwitchState := LoadSwitchState;
+    if SwitchState.ToInteger = 0 then
+    begin
+        pnlHeader.Color := clTeal;
+        pnlFooter.Color := clTeal;
+    end
+    else if SwitchState.ToInteger = 1 then
+    begin
+        pnlHeader.Color := $001E1E1E;
+        pnlFooter.Color := $001E1E1E;
+    end;
   LimparEdits;
 end;
 
@@ -87,6 +101,18 @@ begin
   edtSenhaNova.Clear;
   edtRepetirNovaSenha.Clear;
   lblUsuarioLogado.Caption := oUsuarioLogado.nome;
+end;
+
+function TfrmAlterarSenha.LoadSwitchState: Boolean;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'vendas.ini');
+  try
+    Result := Ini.ReadBool('Settings', 'SwitchState', False);
+  finally
+    Ini.Free;
+  end;
 end;
 
 end.

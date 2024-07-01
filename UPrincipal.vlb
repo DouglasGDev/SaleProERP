@@ -31,10 +31,6 @@ Coordinates=382,10,96,102
 [lblBemVindo]
 Coordinates=309,386,87,58
 
-[memoPensamento]
-Coordinates=104,386,122,58
-Visible=True
-
 [RESTResponse]
 Coordinates=10,10,106,366
 
@@ -84,5 +80,6 @@ Coordinates=767,551,83,36
 Coordinates=265,78,243,36
 
 []
-Coordinates=767,606,91,36
+Coordinates=104,386,122,58
+Visible=True
 
