@@ -61,3 +61,5 @@ Remover permissões: Ajuste as permissões de acordo com as necessidades.
 Alterar senha: Usuários logados podem alterar suas próprias senhas através da interface do sistema.
 Conclusão
 Seguindo esses passos, você deve ser capaz de compilar e executar o projeto SalePro ERP. Caso encontre problemas, certifique-se de que todos os arquivos e bibliotecas estão no lugar correto e que o banco de dados está configurado corretamente. Se persistirem problemas, consulte a documentação ou entre em contato com o suporte técnico.
+
+OBS: NO MOMENTO ESTÁ FUNCIONANDO 100% APENAS COM O XAMPP( O MYSQL DELE) NO PRÓPRIO MYSQL ESTÁ COM ALGUNS BUGS QUE NÃO FORAM CORRIGIDOS MAS EM BREVE DEVE SER CORRIGIDO E ATUALIZADO NO REPOSITÓRIO.
