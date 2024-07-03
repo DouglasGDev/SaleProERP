@@ -1,8 +1,7 @@
 inherited frmCadFornecedor: TfrmCadFornecedor
-  Caption = 'frmCadFornecedor'
+  Caption = 'Cadastro de Fornecedores'
   TextHeight = 15
   inherited pgcPrincipal: TPageControl
-    ActivePage = tabManutencao
     inherited tabListagem: TTabSheet
       inherited grdListagem: TDBGrid
         Columns = <
@@ -169,7 +168,6 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         Text = ''
       end
       object edtCNPJ: TLabeledEdit
-        Tag = 2
         Left = 696
         Top = 95
         Width = 212
@@ -228,7 +226,6 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         TabOrder = 13
       end
       object edtFantasia: TLabeledEdit
-        Tag = 2
         Left = 328
         Top = 95
         Width = 359

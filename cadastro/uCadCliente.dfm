@@ -8,6 +8,7 @@ inherited frmCadCliente: TfrmCadCliente
   inherited pgcPrincipal: TPageControl
     Width = 986
     Height = 495
+    ActivePage = tabManutencao
     ExplicitWidth = 986
     ExplicitHeight = 495
     inherited tabListagem: TTabSheet
@@ -48,6 +49,7 @@ inherited frmCadCliente: TfrmCadCliente
       inherited pnlTitulo: TPanel
         Width = 978
         Caption = 'Cadastro de Cliente'
+        ExplicitTop = 0
         ExplicitWidth = 978
       end
     end
@@ -246,7 +248,7 @@ inherited frmCadCliente: TfrmCadCliente
       object btnBuscar: TBitBtn
         Left = 680
         Top = 96
-        Width = 75
+        Width = 90
         Height = 25
         Caption = 'BUSCAR'
         Glyph.Data = {

@@ -1,5 +1,5 @@
 inherited frmCadFornecedor: TfrmCadFornecedor
-  Caption = 'frmCadFornecedor'
+  Caption = 'Cadastro de Fornecedores'
   TextHeight = 15
   inherited pgcPrincipal: TPageControl
     ActivePage = tabManutencao
@@ -26,6 +26,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
       end
       inherited pnlTitulo: TPanel
         Caption = 'Cadastro de fornecedores'
+        ExplicitTop = 0
       end
     end
     inherited tabManutencao: TTabSheet
@@ -112,7 +113,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Width = 55
         EditLabel.Height = 17
         EditLabel.Caption = 'Endere'#231'o'
-        TabOrder = 2
+        TabOrder = 5
         Text = ''
       end
       object edtBairro: TLabeledEdit
@@ -123,7 +124,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Width = 35
         EditLabel.Height = 17
         EditLabel.Caption = 'Bairro'
-        TabOrder = 3
+        TabOrder = 6
         Text = ''
       end
       object edtCidade: TLabeledEdit
@@ -134,7 +135,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Width = 41
         EditLabel.Height = 17
         EditLabel.Caption = 'Cidade'
-        TabOrder = 4
+        TabOrder = 10
         Text = ''
       end
       object edtEstado: TLabeledEdit
@@ -146,7 +147,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Height = 17
         EditLabel.Caption = 'Estado(UF)'
         MaxLength = 2
-        TabOrder = 5
+        TabOrder = 11
         Text = ''
       end
       object edtTelefone: TMaskEdit
@@ -154,7 +155,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         Top = 192
         Width = 212
         Height = 25
-        TabOrder = 6
+        TabOrder = 13
         Text = ''
       end
       object edtEmail: TLabeledEdit
@@ -165,11 +166,10 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Width = 31
         EditLabel.Height = 17
         EditLabel.Caption = 'Email'
-        TabOrder = 7
+        TabOrder = 16
         Text = ''
       end
       object edtCNPJ: TLabeledEdit
-        Tag = 2
         Left = 696
         Top = 95
         Width = 212
@@ -179,7 +179,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Caption = 'CNPJ'
         EditMask = '99.999.999/9999-99'
         MaxLength = 18
-        TabOrder = 8
+        TabOrder = 3
         Text = '  .   .   /    -  '
       end
       object edtTelefone2: TMaskEdit
@@ -187,7 +187,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         Top = 192
         Width = 212
         Height = 25
-        TabOrder = 9
+        TabOrder = 14
         Text = ''
       end
       object edtIE: TMaskEdit
@@ -195,7 +195,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         Top = 144
         Width = 114
         Height = 25
-        TabOrder = 10
+        TabOrder = 8
         Text = ''
       end
       object btnBuscarCNPJ: TBitBtn
@@ -204,7 +204,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         Width = 92
         Height = 25
         Caption = 'BUSCAR CNPJ'
-        TabOrder = 11
+        TabOrder = 4
         OnClick = btnBuscarCNPJClick
       end
       object edtRamoAtividade: TLabeledEdit
@@ -215,7 +215,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Width = 110
         EditLabel.Height = 17
         EditLabel.Caption = 'Ramo de atividade'
-        TabOrder = 12
+        TabOrder = 17
         Text = ''
       end
       object memObservacoes: TMemo
@@ -225,10 +225,9 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         Height = 153
         Lines.Strings = (
           '')
-        TabOrder = 13
+        TabOrder = 18
       end
       object edtFantasia: TLabeledEdit
-        Tag = 2
         Left = 328
         Top = 95
         Width = 359
@@ -236,7 +235,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Width = 47
         EditLabel.Height = 17
         EditLabel.Caption = 'Fantasia'
-        TabOrder = 14
+        TabOrder = 2
         Text = ''
       end
       object edtCEP: TMaskEdit
@@ -244,7 +243,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         Top = 144
         Width = 149
         Height = 25
-        TabOrder = 15
+        TabOrder = 7
         Text = ''
       end
       object edtComplemento: TLabeledEdit
@@ -255,7 +254,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Width = 82
         EditLabel.Height = 17
         EditLabel.Caption = 'Complemento'
-        TabOrder = 16
+        TabOrder = 12
         Text = ''
       end
       object edtIEAtivo: TMaskEdit
@@ -263,7 +262,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         Top = 144
         Width = 114
         Height = 25
-        TabOrder = 17
+        TabOrder = 9
         Text = ''
       end
       object edtSituacaoCadastral: TLabeledEdit
@@ -274,7 +273,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
         EditLabel.Width = 108
         EditLabel.Height = 17
         EditLabel.Caption = 'Situa'#231#227'o Cadastral'
-        TabOrder = 18
+        TabOrder = 15
         Text = ''
       end
       object edtMotivo: TMemo

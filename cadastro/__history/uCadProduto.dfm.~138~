@@ -24,21 +24,12 @@ inherited frmCadProduto: TfrmCadProduto
           item
             Expanded = False
             FieldName = 'produtoId'
+            Width = 101
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'nome'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'categoriaId'
-            Visible = True
-          end
-          item
-            Expanded = False
-            FieldName = 'DescricaoCategoria'
             Visible = True
           end>
       end
@@ -300,34 +291,20 @@ inherited frmCadProduto: TfrmCadProduto
   end
   inherited QryListagem: TZQuery
     SQL.Strings = (
-      'SELECT p.produtoId,'
-      '       p.nome,'
-      '       p.descricao,'
-      '       p.valor,'
-      '       p.quantidade,'
-      '       p.qtminima,'
-      '       p.categoriaId,'
-      '       c.descricao AS DescricaoCategoria,'
-      '       p.codbarras,'
-      '       p.validade'
-      'FROM produtos  p'
-      'LEFT JOIN categorias  c on c.categoriaId = p.categoriaId')
+      'SELECT produtoId,'
+      '             nome'
+      'FROM produtos')
     Left = 124
     Top = 346
     object QryListagemprodutoId: TZIntegerField
+      DisplayLabel = 'Cod. Produto'
       FieldName = 'produtoId'
       Required = True
     end
     object QryListagemnome: TZUnicodeStringField
+      DisplayLabel = 'Nome'
       FieldName = 'nome'
       Size = 60
-    end
-    object QryListagemcategoriaId: TZIntegerField
-      FieldName = 'categoriaId'
-    end
-    object QryListagemDescricaoCategoria: TZUnicodeStringField
-      FieldName = 'DescricaoCategoria'
-      Size = 100
     end
   end
   inherited dtsListagem: TDataSource

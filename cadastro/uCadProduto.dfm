@@ -8,6 +8,7 @@ inherited frmCadProduto: TfrmCadProduto
   inherited pgcPrincipal: TPageControl
     Width = 929
     Height = 397
+    ActivePage = tabManutencao
     ExplicitWidth = 929
     ExplicitHeight = 397
     inherited tabListagem: TTabSheet
@@ -36,6 +37,7 @@ inherited frmCadProduto: TfrmCadProduto
       inherited pnlTitulo: TPanel
         Width = 921
         Caption = 'Cadastro de Produto'
+        ExplicitTop = 0
         ExplicitWidth = 921
       end
     end
@@ -196,7 +198,7 @@ inherited frmCadProduto: TfrmCadProduto
         Top = 280
         Width = 121
         Height = 25
-        TabOrder = 4
+        TabOrder = 5
       end
       object edtQuantidadeMinima: TCurrencyEdit
         Left = 322
@@ -204,7 +206,7 @@ inherited frmCadProduto: TfrmCadProduto
         Width = 121
         Height = 25
         DisplayFormat = '0.00'
-        TabOrder = 5
+        TabOrder = 6
       end
       object lkpCategoria: TDBLookupComboBox
         Tag = 2
@@ -226,7 +228,7 @@ inherited frmCadProduto: TfrmCadProduto
         DialogTitle = 'Selecione a Data'
         NumGlyphs = 2
         CalendarStyle = csDialog
-        TabOrder = 7
+        TabOrder = 8
       end
       object edtCodBarras: TLabeledEdit
         Tag = 2
@@ -238,7 +240,7 @@ inherited frmCadProduto: TfrmCadProduto
         EditLabel.Height = 17
         EditLabel.Caption = 'Cod. Barras'
         MaxLength = 13
-        TabOrder = 6
+        TabOrder = 7
         Text = ''
       end
       object edtCusto: TCurrencyEdit
@@ -246,7 +248,7 @@ inherited frmCadProduto: TfrmCadProduto
         Top = 280
         Width = 121
         Height = 25
-        TabOrder = 8
+        TabOrder = 4
       end
       object pnlImagem: TPanel
         Left = 712
