@@ -1,0 +1,50 @@
+unit uConfiguracao;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, Inifiles;
+
+type
+  TfrmConfiguracao = class(TForm)
+    pnlHeader: TPanel;
+    pnlFooter: TPanel;
+    pnlBody: TPanel;
+    lblCorPrincipal: TLabel;
+    ColorBoxPrincipal: TColorBox;
+    btnFechar: TBitBtn;
+    btnPadrao: TBitBtn;
+    procedure btnFecharClick(Sender: TObject);
+  private
+    function LoadSwitchState: Boolean;
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmConfiguracao: TfrmConfiguracao;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmConfiguracao.btnFecharClick(Sender: TObject);
+begin
+    Close;
+end;
+
+function TfrmConfiguracao.LoadSwitchState: Boolean;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'vendas.ini');
+  try
+    Result := Ini.ReadBool('Settings', 'SwitchState', False);
+  finally
+    Ini.Free;
+  end;
+end;
+
+end.

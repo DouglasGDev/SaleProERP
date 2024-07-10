@@ -41,7 +41,7 @@ object frmPrincipal: TfrmPrincipal
       Top = 136
       Anchors = [akTop, akRight]
       BorderStyle = bsNone
-      Date = 45468.000000000000000000
+      Date = -700000.000000000000000000
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -20
@@ -74,7 +74,7 @@ object frmPrincipal: TfrmPrincipal
       BevelOuter = bvNone
       BiDiMode = bdLeftToRight
       BorderStyle = bsNone
-      Ctl3D = True
+      Ctl3D = False
       DoubleBuffered = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -92,11 +92,12 @@ object frmPrincipal: TfrmPrincipal
       ScrollBars = ssVertical
       ShowHint = False
       TabOrder = 1
+      Touch.InteractiveGestures = []
+      Touch.InteractiveGestureOptions = []
       Touch.ParentTabletOptions = False
       Touch.TabletOptions = []
       WantReturns = False
       WordWrap = False
-      StyleElements = []
     end
   end
   object pnlTopMenu: TPanel

@@ -59,12 +59,14 @@ uses
   uRelVenda in 'relatorio\uRelVenda.pas' {frmRelVenda},
   uDashboard in 'dashboard\uDashboard.pas' {frmDashboard},
   uConsultaExtratoProduto in 'consulta\uConsultaExtratoProduto.pas' {frmConsultaExtratoProduto},
-  uConfiguracao in 'config\uConfiguracao.pas' {frmConfiguracao};
+  uConfiguracao in 'config\uConfiguracao.pas' {Form1};
 
 {$R *.res}
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TfrmConsultaExtratoProduto, frmConsultaExtratoProduto);
+  Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.

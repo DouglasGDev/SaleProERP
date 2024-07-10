@@ -78,7 +78,6 @@ type
     procedure CategoryButtonsRelatoriosCategories0Items7Click(Sender: TObject);
     procedure RelativePanel1Click(Sender: TObject);
     procedure CalendarViewDblClick(Sender: TObject);
-    procedure CategoryButtonsSairCategories0Items0Click(Sender: TObject);
   private
     { Private declarations }
     TeclaEnter : TMREnter;
@@ -281,12 +280,6 @@ procedure TfrmPrincipal.CategoryButtonsRelatoriosCategories0Items7Click(
   Sender: TObject);
 begin
     TFuncao.CriarForm(TfrmConsultaExtratoProduto, oUsuarioLogado, dtmPrincipal.ConexaoDB);
-end;
-
-procedure TfrmPrincipal.CategoryButtonsSairCategories0Items0Click(
-  Sender: TObject);
-begin
-    TFuncao.CriarForm(TfrmConfiguracao, oUsuarioLogado, dtmPrincipal.ConexaoDB);
 end;
 
 procedure TfrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);

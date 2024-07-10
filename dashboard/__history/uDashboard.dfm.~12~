@@ -1,8 +1,6 @@
 object frmDashboard: TfrmDashboard
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu, biMaximize]
-  BorderStyle = bsSingle
   Caption = 'DASHBOARD'
   ClientHeight = 715
   ClientWidth = 1015

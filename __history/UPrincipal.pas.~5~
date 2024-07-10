@@ -14,7 +14,7 @@ uses
   uDashboard, Vcl.WinXCalendars, IdTCPConnection, IdTCPClient, IdTime,
   REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,System.JSON,
   Vcl.Grids, uConsultaProduto, Vcl.Mask, IniFiles, Vcl.JumpList,
-  uConsultaExtratoProduto, uConfiguracao;
+  uConsultaExtratoProduto;
 type
   TfrmPrincipal = class(TForm)
     pnlTopMenu: TPanel;
@@ -78,7 +78,6 @@ type
     procedure CategoryButtonsRelatoriosCategories0Items7Click(Sender: TObject);
     procedure RelativePanel1Click(Sender: TObject);
     procedure CalendarViewDblClick(Sender: TObject);
-    procedure CategoryButtonsSairCategories0Items0Click(Sender: TObject);
   private
     { Private declarations }
     TeclaEnter : TMREnter;
@@ -283,12 +282,6 @@ begin
     TFuncao.CriarForm(TfrmConsultaExtratoProduto, oUsuarioLogado, dtmPrincipal.ConexaoDB);
 end;
 
-procedure TfrmPrincipal.CategoryButtonsSairCategories0Items0Click(
-  Sender: TObject);
-begin
-    TFuncao.CriarForm(TfrmConfiguracao, oUsuarioLogado, dtmPrincipal.ConexaoDB);
-end;
-
 procedure TfrmPrincipal.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   FreeAndNil(TeclaEnter);// limpa da memoria ao fechar
@@ -393,7 +386,6 @@ begin
     TAcaoAcesso.CriarAcoes(TfrmDashboard, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmCadFornecedor, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmConsultaExtratoProduto, dtmPrincipal.ConexaoDB);
-    TAcaoAcesso.CriarAcoes(TfrmConfiguracao, dtmPrincipal.ConexaoDB);
 
 
     TAcaoAcesso.PreencherUsuariosVsAcoes(dtmPrincipal.ConexaoDB);

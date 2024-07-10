@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, VclTee.TeeGDIPlus,
   Data.DB, VCLTee.Series, VCLTee.TeEngine, VCLTee.TeeProcs, VCLTee.Chart,
-  VCLTee.DBChart, uDTMGrafico, Inifiles;
+  VCLTee.DBChart, uDTMGrafico;
 
 type
   TfrmDashboard = class(TForm)
@@ -24,11 +24,9 @@ type
     Series3: TFastLineSeries;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
   private
     procedure IniciarDashBoardEstoque;
     procedure FinalizarDashBoardEstoque;
-    function LoadSwitchState: Boolean;
     { Private declarations }
   public
     { Public declarations }
@@ -55,25 +53,6 @@ begin
     IniciarDashBoardEstoque;
 end;
 
-procedure TfrmDashboard.FormShow(Sender: TObject);
-var
-SwitchState: Boolean;
-begin
-     SwitchState := LoadSwitchState;
-    if SwitchState.ToInteger = 0 then
-    begin
-        pnlHeader.Color := clTeal;
-        //pnlListagemTopo.Color := clTeal;
-        pnlFooter.Color := clTeal;
-    end
-    else if SwitchState.ToInteger = 1 then
-    begin
-        pnlHeader.Color := $001E1E1E;
-        //pnlListagemTopo.Color := $001E1E1E;
-        pnlFooter.Color :=$001E1E1E;
-    end;
-end;
-
 procedure TfrmDashboard.IniciarDashBoardEstoque;
 begin
   DtmGrafico.QryProdutoEstoque.Open;
@@ -88,18 +67,6 @@ begin
   DtmGrafico.QryValorVendaPorCliente.Close;
   DtmGrafico.QryTopProdutosMaisVendidos.Close;
   DtmGrafico.QryVendasUltimaSemana.Close;
-end;
-
-function TfrmDashboard.LoadSwitchState: Boolean;
-var
-  Ini: TIniFile;
-begin
-  Ini := TIniFile.Create(ExtractFilePath(ParamStr(0)) + 'vendas.ini');
-  try
-    Result := Ini.ReadBool('Settings', 'SwitchState', False);
-  finally
-    Ini.Free;
-  end;
 end;
 
 end.

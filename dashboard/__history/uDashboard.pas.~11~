@@ -59,19 +59,7 @@ procedure TfrmDashboard.FormShow(Sender: TObject);
 var
 SwitchState: Boolean;
 begin
-     SwitchState := LoadSwitchState;
-    if SwitchState.ToInteger = 0 then
-    begin
-        pnlHeader.Color := clTeal;
-        //pnlListagemTopo.Color := clTeal;
-        pnlFooter.Color := clTeal;
-    end
-    else if SwitchState.ToInteger = 1 then
-    begin
-        pnlHeader.Color := $001E1E1E;
-        //pnlListagemTopo.Color := $001E1E1E;
-        pnlFooter.Color :=$001E1E1E;
-    end;
+
 end;
 
 procedure TfrmDashboard.IniciarDashBoardEstoque;

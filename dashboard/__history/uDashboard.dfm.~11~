@@ -1,8 +1,6 @@
 object frmDashboard: TfrmDashboard
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu, biMaximize]
-  BorderStyle = bsSingle
   Caption = 'DASHBOARD'
   ClientHeight = 715
   ClientWidth = 1015
@@ -15,7 +13,6 @@ object frmDashboard: TfrmDashboard
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
-  OnShow = FormShow
   TextHeight = 15
   object pnlHeader: TPanel
     Left = 0

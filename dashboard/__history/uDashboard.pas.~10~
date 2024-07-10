@@ -24,7 +24,6 @@ type
     Series3: TFastLineSeries;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure FormShow(Sender: TObject);
   private
     procedure IniciarDashBoardEstoque;
     procedure FinalizarDashBoardEstoque;
@@ -53,25 +52,6 @@ procedure TfrmDashboard.FormCreate(Sender: TObject);
 begin
     DtmGrafico := TDtmGrafico.Create(Self);
     IniciarDashBoardEstoque;
-end;
-
-procedure TfrmDashboard.FormShow(Sender: TObject);
-var
-SwitchState: Boolean;
-begin
-     SwitchState := LoadSwitchState;
-    if SwitchState.ToInteger = 0 then
-    begin
-        pnlHeader.Color := clTeal;
-        //pnlListagemTopo.Color := clTeal;
-        pnlFooter.Color := clTeal;
-    end
-    else if SwitchState.ToInteger = 1 then
-    begin
-        pnlHeader.Color := $001E1E1E;
-        //pnlListagemTopo.Color := $001E1E1E;
-        pnlFooter.Color :=$001E1E1E;
-    end;
 end;
 
 procedure TfrmDashboard.IniciarDashBoardEstoque;

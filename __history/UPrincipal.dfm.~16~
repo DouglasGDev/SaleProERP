@@ -41,7 +41,7 @@ object frmPrincipal: TfrmPrincipal
       Top = 136
       Anchors = [akTop, akRight]
       BorderStyle = bsNone
-      Date = 45468.000000000000000000
+      Date = -700000.000000000000000000
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -20
@@ -490,16 +490,12 @@ object frmPrincipal: TfrmPrincipal
     OpenedWidth = 220
     Placement = svpLeft
     TabOrder = 1
-    DesignSize = (
-      60
-      836)
     object CategoryButtonsSair: TCategoryButtons
       Left = -37
-      Top = 735
+      Top = 663
       Width = 257
       Height = 101
       Cursor = crHandPoint
-      Anchors = [akLeft, akBottom]
       BevelInner = bvNone
       BevelOuter = bvNone
       BorderStyle = bsNone
@@ -517,6 +513,9 @@ object frmPrincipal: TfrmPrincipal
               ImageIndex = 4
               ImageName = 'Exit_48px'
               OnClick = CategoryButtons1Categories0Items0Click
+            end
+            item
+              Caption = 'CONFIGURA'#199#213'ES'
             end>
         end>
       Font.Charset = DEFAULT_CHARSET

@@ -66,5 +66,7 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TfrmConsultaExtratoProduto, frmConsultaExtratoProduto);
+  Application.CreateForm(TfrmConfiguracao, frmConfiguracao);
   Application.Run;
 end.
