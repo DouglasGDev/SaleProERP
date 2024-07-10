@@ -133,7 +133,6 @@ object frmConfiguracao: TfrmConfiguracao
         9E9FB6FAFFDDDDDDDDDDDDDDDDDDDDDDFFFFFFFFDDDDDDDDDDDD}
       ParentFont = False
       TabOrder = 1
-      OnClick = btnPadraoClick
     end
     object btnSalvarConfiguracao: TBitBtn
       Left = 304
@@ -175,7 +174,6 @@ object frmConfiguracao: TfrmConfiguracao
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       ParentFont = False
       TabOrder = 2
-      OnClick = btnSalvarConfiguracaoClick
     end
   end
   object pnlBody: TPanel

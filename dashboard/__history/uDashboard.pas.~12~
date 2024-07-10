@@ -58,30 +58,13 @@ end;
 procedure TfrmDashboard.FormShow(Sender: TObject);
 var
 SwitchState: Boolean;
-  Ini: TIniFile;
-  FilePath: string;
-  corPrincipal: TColor;
 begin
-
-// Define o caminho do arquivo INI
-  FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
-
-  // Cria a instância de TIniFile
-  Ini := TIniFile.Create(FilePath);
-  try
-    // Lê os valores do arquivo INI
-    corPrincipal := StringToColor(Ini.ReadString('Configuracoes', 'CorPrincipal', 'clTeal'));
-  finally
-    // Libera a instância de TIniFile
-    Ini.Free;
-  end;
-
      SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then
     begin
-        pnlHeader.Color := corPrincipal;
+        pnlHeader.Color := clTeal;
         //pnlListagemTopo.Color := clTeal;
-        pnlFooter.Color := corPrincipal;
+        pnlFooter.Color := clTeal;
     end
     else if SwitchState.ToInteger = 1 then
     begin

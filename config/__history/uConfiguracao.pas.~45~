@@ -116,22 +116,18 @@ begin
   try
     // Lê os valores do arquivo INI
     corPrincipal := StringToColor(Ini.ReadString('Configuracoes', 'CorPrincipal', ''));
-    TamanhoFonte := StrToFloat(Ini.ReadString('Configuracoes', 'TamanhoFonte', ''));
-    TempoHora := StrToInt(Ini.ReadString('Configuracoes', 'TempoHora', ''));
-    TempoMinuto := StrToInt(Ini.ReadString('Configuracoes', 'TempoMinuto', ''));
-    TempoSegundo := StrToInt(Ini.ReadString('Configuracoes', 'TempoSegundo', ''));
-    Fonte := Ini.ReadString('Configuracoes', 'Fonte', '');
+    TamanhoFonte := StringToColor(Ini.ReadString('Configuracoes', 'TamanhoFonte', ''));
   finally
     // Libera a instância de TIniFile
     Ini.Free;
   end;
 
      ColorBoxPrincipal.Selected :=  corPrincipal;
-     edtTamanhoFonte.Value  :=  TamanhoFonte;
-     edtTempoNotificacao.Hours := TempoHora;
-     edtTempoNotificacao.Minutes := TempoMinuto;
-     edtTempoNotificacao.Seconds := TempoSegundo ;
-     edtFont.FontName := Fonte;
+     TamanhoFonte := edtTamanhoFonte.Value;
+     TempoHora := edtTempoNotificacao.Hours;
+     TempoMinuto := edtTempoNotificacao.Minutes;
+     TempoSegundo := edtTempoNotificacao.Seconds;
+     Fonte := edtFont.FontName;
 
      SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then

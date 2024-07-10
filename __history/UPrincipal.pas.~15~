@@ -341,12 +341,6 @@ begin
     TArquivoIni.AtualizarIni('SERVER', 'User', 'root'); // o usuário
     TArquivoIni.AtualizarIni('SERVER', 'Password', ''); // senha
     TArquivoIni.AtualizarIni('SERVER', 'Database', 'vendas'); // e qual banco de dados vai utilizar
-    TArquivoIni.AtualizarIni('Configuracoes', 'CorPrincipal', 'clTeal');
-    TArquivoIni.AtualizarIni('Configuracoes', 'TamanhoFonte', '15');
-    TArquivoIni.AtualizarIni('Configuracoes', 'TempoHora', '0');
-    TArquivoIni.AtualizarIni('Configuracoes', 'TempoMinuto', '1');
-    TArquivoIni.AtualizarIni('Configuracoes', 'TempoSegundo', '0');
-    TArquivoIni.AtualizarIni('Configuracoes', 'Fonte','Segoe UI');
     if MessageDlg('Arquivo ' + TArquivoIni.ArquivoIni + ' criado com sucesso' + #13 +
                   'Configure o arquivo antes de inicializar a aplicação', mtInformation, [mbOK], 0) = mrOk then
     begin
@@ -563,8 +557,7 @@ begin
     frmNotificacao := TfrmNotificacao.Create(Application);
 
     // Criar e iniciar o verificador de estoque
-    TempoTotal := (TempoHora * 3600000) + (TempoMinuto * 60000) + (TempoSegundo * 1000);
-    VerificarEstoque := TVerificarEstoque.Create(DtmPrincipal.ConexaoDB, frmNotificacao, TempoTotal); // Intervalo de 1 minuto (60000 ms)
+    VerificarEstoque := TVerificarEstoque.Create(DtmPrincipal.ConexaoDB, frmNotificacao, 60000); // Intervalo de 1 minuto (60000 ms)
     VerificarEstoque.Iniciar;
 
     lblBemVindo.Caption :='Bem vindo(a) '+ oUsuarioLogado.nome +' !';

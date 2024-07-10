@@ -129,9 +129,9 @@ begin
      ColorBoxPrincipal.Selected :=  corPrincipal;
      edtTamanhoFonte.Value  :=  TamanhoFonte;
      edtTempoNotificacao.Hours := TempoHora;
-     edtTempoNotificacao.Minutes := TempoMinuto;
-     edtTempoNotificacao.Seconds := TempoSegundo ;
-     edtFont.FontName := Fonte;
+     TempoMinuto := edtTempoNotificacao.Minutes;
+     TempoSegundo := edtTempoNotificacao.Seconds;
+     Fonte := edtFont.FontName;
 
      SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then

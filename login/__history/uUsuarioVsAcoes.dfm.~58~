@@ -29,6 +29,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
     Height = 487
     Align = alLeft
     TabOrder = 0
+    ExplicitHeight = 716
     object grdUsuario: TDBGrid
       Left = 1
       Top = 1
@@ -64,6 +65,8 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
     Height = 487
     Align = alClient
     TabOrder = 1
+    ExplicitWidth = 791
+    ExplicitHeight = 716
     object grdAcoes: TDBGrid
       Left = 1
       Top = 1
@@ -113,6 +116,8 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
     Color = clTeal
     ParentBackground = False
     TabOrder = 2
+    ExplicitTop = 757
+    ExplicitWidth = 1107
     DesignSize = (
       793
       41)
@@ -152,6 +157,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
         4E6E244E6E244E6E244E6E244E6E244E6E244E6E244E6EFF00FF}
       TabOrder = 0
       OnClick = btnFecharClick
+      ExplicitLeft = 1012
     end
   end
   object pnlHeader: TPanel
@@ -171,6 +177,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
     ParentBackground = False
     ParentFont = False
     TabOrder = 3
+    ExplicitWidth = 1107
   end
   object QryUsuario: TZQuery
     AfterScroll = QryUsuarioAfterScroll

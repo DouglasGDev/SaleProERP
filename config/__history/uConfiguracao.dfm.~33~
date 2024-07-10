@@ -175,7 +175,6 @@ object frmConfiguracao: TfrmConfiguracao
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       ParentFont = False
       TabOrder = 2
-      OnClick = btnSalvarConfiguracaoClick
     end
   end
   object pnlBody: TPanel

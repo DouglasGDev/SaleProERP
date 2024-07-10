@@ -420,7 +420,7 @@ begin
     SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then
     begin
-        pnlTitulo.Color := corPrincipal;
+        pnlTitulo.Color := clTeal;
         pnlListagemTopo.Color := corPrincipal;
         pnlRodape.Color := corPrincipal;
     end

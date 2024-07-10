@@ -92,24 +92,11 @@ if (aIniciarPesquisaId<>Unassigned) then
     QryListagem.Locate(aCampoId, aIniciarPesquisaId,[loPartialKey])
   end;
 
-  // Define o caminho do arquivo INI
-  FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
-
-  // Cria a instância de TIniFile
-  Ini := TIniFile.Create(FilePath);
-  try
-    // Lê os valores do arquivo INI
-    corPrincipal := StringToColor(Ini.ReadString('Configuracoes', 'CorPrincipal', 'clTeal'));
-  finally
-    // Libera a instância de TIniFile
-    Ini.Free;
-  end;
-
   SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then
     begin
-        pnlHeader.Color := corPrincipal;
-        pnlFooter.Color := corPrincipal;
+        pnlHeader.Color := clTeal;
+        pnlFooter.Color := clTeal;
     end
     else if SwitchState.ToInteger = 1 then
     begin

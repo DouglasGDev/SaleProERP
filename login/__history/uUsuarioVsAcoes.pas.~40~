@@ -101,9 +101,6 @@ end;
 procedure TfrmUsuarioVsAcoes.FormShow(Sender: TObject);
 var
 SwitchState : Boolean;
-  Ini: TIniFile;
-  FilePath: string;
-  corPrincipal: TColor;
 begin
    Try
     QryUsuario.DisableControls;// desabilita o afterscroll para cada usuário que puxa todos os controles da query
@@ -113,24 +110,11 @@ begin
     QryUsuario.EnableControls;// habilita novamente, e isso pra cada usuário
   End;
 
-  // Define o caminho do arquivo INI
-  FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
-
-  // Cria a instância de TIniFile
-  Ini := TIniFile.Create(FilePath);
-  try
-    // Lê os valores do arquivo INI
-    corPrincipal := StringToColor(Ini.ReadString('Configuracoes', 'CorPrincipal', 'clTeal'));
-  finally
-    // Libera a instância de TIniFile
-    Ini.Free;
-  end;
-
   SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then
     begin
-        pnlHeader.Color := corPrincipal;
-        pnlFooter.Color := corPrincipal;
+        pnlHeader.Color := clTeal;
+        pnlFooter.Color := clTeal;
     end
     else if SwitchState.ToInteger = 1 then
     begin

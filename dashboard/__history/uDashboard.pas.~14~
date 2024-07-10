@@ -79,9 +79,9 @@ begin
      SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then
     begin
-        pnlHeader.Color := corPrincipal;
+        pnlHeader.Color := clTeal;
         //pnlListagemTopo.Color := clTeal;
-        pnlFooter.Color := corPrincipal;
+        pnlFooter.Color := clTeal;
     end
     else if SwitchState.ToInteger = 1 then
     begin
