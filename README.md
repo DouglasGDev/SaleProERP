@@ -63,3 +63,4 @@ Conclusão
 Seguindo esses passos, você deve ser capaz de compilar e executar o projeto SalePro ERP. Caso encontre problemas, certifique-se de que todos os arquivos e bibliotecas estão no lugar correto e que o banco de dados está configurado corretamente. Se persistirem problemas, consulte a documentação ou entre em contato com o suporte técnico.
 
 OBS: NO MOMENTO ESTÁ FUNCIONANDO 100% APENAS COM O XAMPP( O MYSQL DELE) NO PRÓPRIO MYSQL ESTÁ COM ALGUNS BUGS QUE NÃO FORAM CORRIGIDOS MAS EM BREVE DEVE SER CORRIGIDO E ATUALIZADO NO REPOSITÓRIO.
+OBS2: TODA VEZ QUE MUDAR A COR, TEM QUE APLICAR O MODO DARK E DESAPLICAR, AI A COR MUDA. SOBRE O TEMPO DE NOTIFICAÇÃO, TEM QUE REINCIAR A APLICAÇÃO E APENAS ESSES DETALHES, NO MOMENTO SOBRE AS FONTES, NÃO ESTÁ POSSÍVEL A MUDANÇA.
