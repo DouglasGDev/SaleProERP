@@ -575,7 +575,7 @@ begin
       'log_id INT AUTO_INCREMENT PRIMARY KEY, ' +
       'tabela_nome VARCHAR(255), ' +
       'operacao VARCHAR(10), ' +
-      'registro_id VARCHAR(50), ' +
+      'registro_id INT, ' +
       'usuario VARCHAR(255), ' +
       'data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ' +
       'detalhes JSON);'

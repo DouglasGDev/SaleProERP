@@ -605,15 +605,7 @@ inherited frmEntrada: TfrmEntrada
       'INNER JOIN '
       '    produtos ON produtos.produtoId = itens_entradanota.produtoId'
       'GROUP BY'
-      '    entradanota.entradaId,'
-      '    entradanota.dataentrada,'
-      '    entradanota.numnotafiscal,'
-      '    entradanota.numpedido,'
-      '    entradanota.fornecedorId,'
-      '    fornecedores.razaosocial,'
-      '    itens_entradanota.produtoId,'
-      '    produtos.nome,'
-      '    itens_entradanota.quantidade')
+      'entradanota.entradaId')
     Left = 612
     Top = 322
     object QryListagementradaId: TZUnicodeStringField

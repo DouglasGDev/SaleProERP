@@ -406,6 +406,7 @@ begin
 
    // Define o caminho do arquivo INI
   FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
+
   // Cria a instância de TIniFile
   Ini := TIniFile.Create(FilePath);
   try

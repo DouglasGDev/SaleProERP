@@ -342,7 +342,7 @@ begin
     TArquivoIni.AtualizarIni('SERVER', 'Password', ''); // senha
     TArquivoIni.AtualizarIni('SERVER', 'Database', 'vendas'); // e qual banco de dados vai utilizar
     TArquivoIni.AtualizarIni('Configuracoes', 'CorPrincipal', 'clTeal');
-    TArquivoIni.AtualizarIni('Configuracoes', 'CorFonte', 'clWhite');
+    TArquivoIni.AtualizarIni('Configuracoes', 'TamanhoFonte', '15');
     TArquivoIni.AtualizarIni('Configuracoes', 'TempoHora', '0');
     TArquivoIni.AtualizarIni('Configuracoes', 'TempoMinuto', '1');
     TArquivoIni.AtualizarIni('Configuracoes', 'TempoSegundo', '0');
@@ -686,6 +686,7 @@ var
 begin
   // Define o caminho do arquivo INI
   FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
+
   // Cria a instância de TIniFile
   Ini := TIniFile.Create(FilePath);
   try
@@ -695,7 +696,9 @@ begin
     // Libera a instância de TIniFile
     Ini.Free;
   end;
+
   SaveSwitchState(switchDark.State = tssOn);
+
   if switchDark.State = tssoff then
   begin
     for i := 0 to ComponentCount - 1 do

@@ -365,19 +365,18 @@ begin
   QrySequencia := TZQuery.Create(nil);
   try
     QrySequencia.Connection := DtmPrincipal.ConexaoDB;
-    QrySequencia.SQL.Text := 'INSERT INTO seq_entradanota () VALUES ()';
+    QrySequencia.SQL.Text := 'INSERT INTO seq_entradanota (seq_value) VALUES (NULL)';
     QrySequencia.ExecSQL;
 
-    QrySequencia.SQL.Text := 'SELECT LAST_INSERT_ID() AS seq_id';
+    QrySequencia.SQL.Text := 'SELECT LAST_INSERT_ID() AS seq_value';
     QrySequencia.Open;
-    sequencia := QrySequencia.FieldByName('seq_id').AsInteger;
+    sequencia := QrySequencia.FieldByName('seq_value').AsInteger;
   finally
     QrySequencia.Free;
   end;
 
   Result := 'Entrada' + FormatDateTime('yyyymmdd', data) + numNotaFiscal + numPedido + Format('%.*d', [5, sequencia]);
 end;
-
 
 
 function TfrmEntrada.GerarNovoEntradaIdCompleto(data: TDateTime; numNotaFiscal, numPedido: string): string;
@@ -464,7 +463,6 @@ begin
       else
         novoEntradaId := edtEntradaId.Text;
 
-      // Processar todos os itens na tabela virtual
       dtmEntrada.cdsGridEntradaProdutoVirtual.First;
       while not dtmEntrada.cdsGridEntradaProdutoVirtual.Eof do
       begin
@@ -515,7 +513,6 @@ begin
       DtmPrincipal.ConexaoDB.Commit;
       ShowMessage('Entrada de mercadoria gravada com sucesso.');
       lkpFornecedor.Enabled := True;
-
       QryListagem.Close;
       QryListagem.Open;
       dtmEntrada.cdsGridEntradaProdutoVirtual.EmptyDataSet;
@@ -534,7 +531,6 @@ end;
 
 
 
-
 function TfrmEntrada.GravarEntradaNota: string;
 var
   QryInsert: TZQuery;
@@ -545,7 +541,7 @@ begin
   try
     QryInsert.Connection := DtmPrincipal.ConexaoDB;
     QryInsert.SQL.Text := 'CALL sp_GravarEntrada(:entradaId, :dataentrada, :numnotafiscal, :numpedido, :fornecedorId, :valorTotalNota, @novoEntradaId)';
-    QryInsert.Params.ParamByName('entradaId').AsString := ''; // pEntradaId será verificado no SP
+    QryInsert.Params.ParamByName('entradaId').AsString := GerarNovoEntradaId(edtDataEntrada.Date, edtNumNota.Text, edtNumPedido.Text);
     QryInsert.Params.ParamByName('dataentrada').Value := edtDataEntrada.Date;
     QryInsert.Params.ParamByName('numnotafiscal').Value := edtNumNota.Text;
     QryInsert.Params.ParamByName('numpedido').Value := StrToIntDef(edtNumPedido.Text, 0);
@@ -563,11 +559,6 @@ begin
     QryInsert.Free;
   end;
 end;
-
-
-
-
-
 
 
 

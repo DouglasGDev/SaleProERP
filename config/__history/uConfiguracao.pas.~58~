@@ -59,7 +59,7 @@ end;
 procedure TfrmConfiguracao.btnSalvarConfiguracaoClick(Sender: TObject);
 var
 corPrincipal : TColor;
-CorFonte : TColor;
+TamanhoFonte : Extended;
 TempoHora : Integer;
 TempoMinuto : Integer;
 TempoSegundo : Integer;
@@ -68,7 +68,7 @@ Ini: TIniFile;
 FilePath: string;
 begin
      corPrincipal := ColorBoxPrincipal.Selected;
-     CorFonte := ColorBoxFonte.Selected;
+     TamanhoFonte := ColorBoxFonte.Selected;
      TempoHora := edtTempoNotificacao.Hours;
      TempoMinuto := edtTempoNotificacao.Minutes;
      TempoSegundo := edtTempoNotificacao.Seconds;
@@ -80,7 +80,7 @@ begin
   try
     // Salva os valores no arquivo INI
     Ini.WriteString('Configuracoes', 'CorPrincipal', ColorToString(corPrincipal));
-    Ini.WriteString('Configuracoes', 'CorFonte', ColorToString(CorFonte));
+    Ini.WriteFloat('Configuracoes', 'TamanhoFonte', TamanhoFonte);
     Ini.WriteInteger('Configuracoes', 'TempoHora', TempoHora);
     Ini.WriteInteger('Configuracoes', 'TempoMinuto', TempoMinuto);
     Ini.WriteInteger('Configuracoes', 'TempoSegundo', TempoSegundo);
@@ -99,7 +99,7 @@ SwitchState: Boolean;
   Ini: TIniFile;
   FilePath: string;
   corPrincipal: TColor;
-  CorFonte : TColor;
+  TamanhoFonte : Extended;
   TempoHora : Integer;
   TempoMinuto : Integer;
   TempoSegundo : Integer;
@@ -113,7 +113,7 @@ begin
   try
     // Lê os valores do arquivo INI
     corPrincipal := StringToColor(Ini.ReadString('Configuracoes', 'CorPrincipal', ''));
-    CorFonte := StringToColor(Ini.ReadString('Configuracoes', 'CorFonte', ''));
+    CorFonte := StrToFloat(Ini.ReadString('Configuracoes', 'CorFonte', ''));
     TempoHora := StrToInt(Ini.ReadString('Configuracoes', 'TempoHora', ''));
     TempoMinuto := StrToInt(Ini.ReadString('Configuracoes', 'TempoMinuto', ''));
     TempoSegundo := StrToInt(Ini.ReadString('Configuracoes', 'TempoSegundo', ''));

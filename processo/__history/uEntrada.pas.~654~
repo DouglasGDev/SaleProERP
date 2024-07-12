@@ -545,12 +545,16 @@ begin
   try
     QryInsert.Connection := DtmPrincipal.ConexaoDB;
     QryInsert.SQL.Text := 'CALL sp_GravarEntrada(:entradaId, :dataentrada, :numnotafiscal, :numpedido, :fornecedorId, :valorTotalNota, @novoEntradaId)';
-    QryInsert.Params.ParamByName('entradaId').AsString := ''; // pEntradaId será verificado no SP
-    QryInsert.Params.ParamByName('dataentrada').Value := edtDataEntrada.Date;
-    QryInsert.Params.ParamByName('numnotafiscal').Value := edtNumNota.Text;
-    QryInsert.Params.ParamByName('numpedido').Value := StrToIntDef(edtNumPedido.Text, 0);
-    QryInsert.Params.ParamByName('fornecedorId').Value := lkpFornecedor.KeyValue;
-    QryInsert.Params.ParamByName('valorTotalNota').Value := edtTotalNota.Text;
+
+    // Definir parâmetros de entrada
+    QryInsert.Params.ParamByName('entradaId').AsString := edtEntradaId.Text;
+    QryInsert.Params.ParamByName('dataentrada').AsDate := edtDataEntrada.Date;
+    QryInsert.Params.ParamByName('numnotafiscal').AsString := edtNumNota.Text;
+    QryInsert.Params.ParamByName('numpedido').AsInteger := StrToIntDef(edtNumPedido.Text, 0);
+    QryInsert.Params.ParamByName('fornecedorId').AsInteger := lkpFornecedor.KeyValue;
+    QryInsert.Params.ParamByName('valorTotalNota').AsFloat := edtTotalNota.Value;
+
+    // Executar o procedimento
     QryInsert.ExecSQL;
 
     // Capturar o valor da variável de saída
@@ -563,7 +567,6 @@ begin
     QryInsert.Free;
   end;
 end;
-
 
 
 

@@ -365,20 +365,15 @@ begin
   QrySequencia := TZQuery.Create(nil);
   try
     QrySequencia.Connection := DtmPrincipal.ConexaoDB;
-    QrySequencia.SQL.Text := 'INSERT INTO seq_entradanota () VALUES ()';
-    QrySequencia.ExecSQL;
-
-    QrySequencia.SQL.Text := 'SELECT LAST_INSERT_ID() AS seq_id';
+    QrySequencia.SQL.Text := 'SELECT NEXT VALUE FOR seq_entradanota';
     QrySequencia.Open;
-    sequencia := QrySequencia.FieldByName('seq_id').AsInteger;
+    sequencia := QrySequencia.FieldByName('NEXT VALUE FOR seq_entradanota').AsInteger;
   finally
     QrySequencia.Free;
   end;
 
   Result := 'Entrada' + FormatDateTime('yyyymmdd', data) + numNotaFiscal + numPedido + Format('%.*d', [5, sequencia]);
 end;
-
-
 
 function TfrmEntrada.GerarNovoEntradaIdCompleto(data: TDateTime; numNotaFiscal, numPedido: string): string;
 begin
@@ -470,6 +465,7 @@ begin
       begin
         if dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('Status').AsString = 'Deleted' then
         begin
+          // Remove o item do banco de dados
           QryDeleteItem := TZQuery.Create(nil);
           try
             QryDeleteItem.Connection := DtmPrincipal.ConexaoDB;
@@ -483,6 +479,7 @@ begin
         end
         else if dtmEntrada.cdsGridEntradaProdutoVirtual.FieldByName('Status').AsString = 'Modified' then
         begin
+          // Atualiza o item no banco de dados
           QryUpdateItem := TZQuery.Create(nil);
           try
             QryUpdateItem.Connection := DtmPrincipal.ConexaoDB;
@@ -497,6 +494,7 @@ begin
         end
         else
         begin
+          // Insere o novo item no banco de dados
           QryInsertItem := TZQuery.Create(nil);
           try
             QryInsertItem.Connection := DtmPrincipal.ConexaoDB;
@@ -513,13 +511,34 @@ begin
       end;
 
       DtmPrincipal.ConexaoDB.Commit;
+
       ShowMessage('Entrada de mercadoria gravada com sucesso.');
       lkpFornecedor.Enabled := True;
 
+
+
+
+     {frmRelEntradaNota:=frmRelEntradaNota.Create(self);
+     frmRelEntradaNota.QryEntradaNota.Close;
+     frmRelEntradaNota.QryEntradaNota.ParamByName('entradaId').AsInteger;
+     frmRelEntradaNota.QryEntradaNota.Open;
+
+     frmRelEntradaNota.QryEntradaNotaItens.Close;
+     frmRelEntradaNota.QryEntradaNotaItens.ParamByName('entradaId').AsInteger;
+     frmRelEntradaNota.QryEntradaNotaItens.Open;
+
+
+     frmRelEntradaNota.Relatorio.PreviewModal;
+     frmRelEntradaNota.Release;}
+
       QryListagem.Close;
       QryListagem.Open;
+
       dtmEntrada.cdsGridEntradaProdutoVirtual.EmptyDataSet;
       LimparCampos;
+
+      QryListagem.Close;
+      QryListagem.Open;
     except
       on E: Exception do
       begin
@@ -534,7 +553,6 @@ end;
 
 
 
-
 function TfrmEntrada.GravarEntradaNota: string;
 var
   QryInsert: TZQuery;
@@ -545,7 +563,7 @@ begin
   try
     QryInsert.Connection := DtmPrincipal.ConexaoDB;
     QryInsert.SQL.Text := 'CALL sp_GravarEntrada(:entradaId, :dataentrada, :numnotafiscal, :numpedido, :fornecedorId, :valorTotalNota, @novoEntradaId)';
-    QryInsert.Params.ParamByName('entradaId').AsString := ''; // pEntradaId será verificado no SP
+    QryInsert.Params.ParamByName('entradaId').AsString := GerarNovoEntradaId(edtDataEntrada.Date, edtNumNota.Text, edtNumPedido.Text);
     QryInsert.Params.ParamByName('dataentrada').Value := edtDataEntrada.Date;
     QryInsert.Params.ParamByName('numnotafiscal').Value := edtNumNota.Text;
     QryInsert.Params.ParamByName('numpedido').Value := StrToIntDef(edtNumPedido.Text, 0);
@@ -563,11 +581,6 @@ begin
     QryInsert.Free;
   end;
 end;
-
-
-
-
-
 
 
 

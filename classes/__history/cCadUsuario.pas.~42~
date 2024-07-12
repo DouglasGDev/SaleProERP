@@ -62,64 +62,36 @@ end;
 
 
 {$region 'CRUD'}
-function TUsuario.Apagar: Boolean;
-var
-  Qry: TZQuery;
+function TUsuario.Apagar : Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
 begin
-  Result := False; // Inicialmente assume que não será apagado até confirmado
-
-  // Mostra mensagem de confirmação para apagar o registro
-  if MessageDlg('Apagar o Registro: '+#13+#13+
-                'Codigo: '+IntToStr(F_usuarioId)+#13+
-                'Nome: '+F_nome,
-                TMsgDlgType.mtConfirmation,
-                [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0) = mrNo then
-  begin
-    Abort; // Aborta a operação se o usuário selecionar "No"
-  end;
-
-  // Inicia a transação para deletar na tabela usuariosacaoacesso
-  Qry := TZQuery.Create(nil);
-  try
-    Qry.Connection := ConexaoDB;
-    Qry.SQL.Clear;
-    Qry.SQL.Add('DELETE FROM usuariosacaoacesso WHERE usuarioId = :usuarioId');
-    Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
-    try
-      ConexaoDB.StartTransaction;
-      Qry.ExecSQL;
-      ConexaoDB.Commit;
-      Result := True; // Marca como sucesso
-    except
-      ConexaoDB.Rollback;
-      Result := False;
-    end;
-  finally
-    Qry.Free;
-  end;
-
-  // Inicia a transação para deletar na tabela usuarios
-  Qry := TZQuery.Create(nil);
-  try
-    Qry.Connection := ConexaoDB;
-    Qry.SQL.Clear;
-    Qry.SQL.Add('DELETE FROM usuarios WHERE usuarioId = :usuarioId');
-    Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
-    try
-      ConexaoDB.StartTransaction;
-      Qry.ExecSQL;
-      ConexaoDB.Commit;
-      Result := True; // Marca como sucesso
-    except
-      ConexaoDB.Rollback;
-      Result := False;
-    end;
-  finally
-    Qry.Free;
-  end;
+   if MessageDlg('Apagar o Registro: '+#13+#13+  // pergunta se quer apagar o registro selecionado e quebra em 2 linha
+                 'Codigo: '+IntToStr(F_usuarioId)+#13+
+                 'Nome: '+F_nome,TMsgDlgType.mtConfirmation,[TMsgDlgBtn.mbYes,TMsgDlgBtn.mbNo],0)=mrNo then begin
+                   Result:= False; // caso não ele da como false e aborta
+                   Abort;
+   end;
+   try
+     Result:= True;
+     Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+     Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+     Qry.SQL.Clear;// limpa pra evitar impureza
+     Qry.SQL.Add('DELETE FROM usuarios '+
+                 ' WHERE usuarioId =:usuarioId ');
+     Qry.ParamByName('usuarioId').AsInteger :=F_usuarioId;// aqui armazena a informação no parametro com o tipo permitido
+     Try
+       ConexaoDB.StartTransaction;
+       Qry.ExecSQL;
+       ConexaoDB.Commit;
+     Except
+       ConexaoDB.Rollback;
+       Result := False;
+     End;
+   finally
+     if Assigned(Qry) then
+        FreeAndNil(Qry);
+   end;
 end;
-
-
 function TUsuario.Atualizar: Boolean;
 var Qry:TZQuery;// criar a conexão em tempo de execução
 begin

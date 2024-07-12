@@ -215,9 +215,9 @@ object frmConfiguracao: TfrmConfiguracao
     object lblTamanhoFonte: TLabel
       Left = 0
       Top = 108
-      Width = 158
+      Width = 249
       Height = 30
-      Caption = 'COR DA FONTE:'
+      Caption = 'TAMANHO DAS FONTES:'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -21
@@ -258,16 +258,16 @@ object frmConfiguracao: TfrmConfiguracao
       TabOrder = 1
       UseDockManager = True
     end
+    object edtTamanhoFonte: TNumberBox
+      Left = 264
+      Top = 115
+      Width = 65
+      Height = 23
+      TabOrder = 2
+    end
     object edtFont: TFontComboBox
       Left = 432
       Top = 115
-      Width = 145
-      Height = 22
-      TabOrder = 2
-    end
-    object ColorBoxFonte: TColorBox
-      Left = 164
-      Top = 114
       Width = 145
       Height = 22
       TabOrder = 3

@@ -583,20 +583,20 @@ object frmRelVendaPorData: TfrmRelVendaPorData
     Connection = dtmPrincipal.ConexaoDB
     SQL.Strings = (
       'SELECT '
-      '     vendas.vendaId,'
-      '     vendas.clienteId,'
-      '     clientes.nome,'
-      '     vendasitens.produtoId,'
-      '     produtos.nome,'
-      '     vendasitens.valorUnitario,'
-      '     vendasitens.quantidade,'
-      '     vendasitens.totalProduto,'
-      '     CAST(vendas.totalVenda AS FLOAT) AS TotalVenda,'
-      '     vendas.dataVenda,'
-      '     CAST(vendas.pix AS FLOAT)  AS PPIX,'
-      '     CAST(vendas.credito AS FLOAT) AS CCREDITO,'
-      '     CAST(vendas.debito AS FLOAT) AS DDEBITO,'
-      '     CAST(vendas.dinheiro AS FLOAT) AS DDINHEIRO'
+      '      vendas.vendaId,'
+      '       vendas.clienteId,'
+      '       clientes.nome,'
+      '       vendasitens.produtoId,'
+      '       produtos.nome,'
+      '       vendasitens.valorUnitario,'
+      '       vendasitens.quantidade,'
+      '       vendasitens.totalProduto,'
+      '     vendas.totalVenda AS TotalVenda,'
+      '      vendas.dataVenda,'
+      '     vendas.pix  AS PPIX,'
+      '     vendas.credito AS CCREDITO,'
+      '     vendas.debito AS DDEBITO,'
+      '     vendas.dinheiro AS DDINHEIRO'
       'FROM vendas'
       'INNER JOIN clientes ON clientes.clienteId = vendas.clienteId'
       'INNER JOIN vendasitens ON vendasitens.vendaId = vendas.vendaId'
@@ -611,14 +611,12 @@ object frmRelVendaPorData: TfrmRelVendaPorData
         Name = 'DataInicio'
         ParamType = ptInput
         SQLType = stDate
-        Value = 45474d
       end
       item
         DataType = ftDate
         Name = 'DataFim'
         ParamType = ptInput
         SQLType = stDate
-        Value = 45484d
       end>
     Left = 464
     Top = 520
@@ -628,14 +626,12 @@ object frmRelVendaPorData: TfrmRelVendaPorData
         Name = 'DataInicio'
         ParamType = ptInput
         SQLType = stDate
-        Value = 45474d
       end
       item
         DataType = ftDate
         Name = 'DataFim'
         ParamType = ptInput
         SQLType = stDate
-        Value = 45484d
       end>
     object QryVendavendaId: TZIntegerField
       FieldName = 'vendaId'

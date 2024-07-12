@@ -139,6 +139,7 @@ begin
   if not ProcedureExiste('get_next_seq_entrada') then
   begin
     ExecutaDiretoBancoDeDados(
+      'DELIMITER //' +
       'CREATE PROCEDURE get_next_seq_entrada(OUT seq_value VARCHAR(50)) ' +
       'BEGIN ' +
       'DECLARE seq_id INT; ' +
@@ -147,13 +148,15 @@ begin
       'SET seq_id = LAST_INSERT_ID(); ' +
 
       'SET seq_value = LPAD(seq_id, 5, ''0''); ' +
-      'END;'
+      'END//' +
+      'DELIMITER ;'
     );
   end;
 
   if not ProcedureExiste('sp_GravarEntrada') then
   begin
     ExecutaDiretoBancoDeDados(
+      'DELIMITER //' +
       'CREATE PROCEDURE sp_GravarEntrada( ' +
       'IN pEntradaId VARCHAR(50), ' +
       'IN pDataEntrada DATE, ' +
@@ -188,7 +191,8 @@ begin
       '        valorTotalNota = pValorTotalNota ' +
       '    WHERE entradaId = pEntradaId; ' +
       'END IF; ' +
-      'END ;'
+      'END//' +
+      'DELIMITER ;'
     );
   end;
 
@@ -575,7 +579,7 @@ begin
       'log_id INT AUTO_INCREMENT PRIMARY KEY, ' +
       'tabela_nome VARCHAR(255), ' +
       'operacao VARCHAR(10), ' +
-      'registro_id VARCHAR(50), ' +
+      'registro_id INT, ' +
       'usuario VARCHAR(255), ' +
       'data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ' +
       'detalhes JSON);'

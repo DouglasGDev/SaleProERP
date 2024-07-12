@@ -78,47 +78,48 @@ begin
     Abort; // Aborta a operação se o usuário selecionar "No"
   end;
 
-  // Inicia a transação para deletar na tabela usuariosacaoacesso
-  Qry := TZQuery.Create(nil);
+  // Inicia a transação
+  ConexaoDB.StartTransaction;
   try
-    Qry.Connection := ConexaoDB;
-    Qry.SQL.Clear;
-    Qry.SQL.Add('DELETE FROM usuariosacaoacesso WHERE usuarioId = :usuarioId');
-    Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
     try
-      ConexaoDB.StartTransaction;
-      Qry.ExecSQL;
-      ConexaoDB.Commit;
-      Result := True; // Marca como sucesso
-    except
-      ConexaoDB.Rollback;
-      Result := False;
-    end;
-  finally
-    Qry.Free;
-  end;
+      // Deleta na tabela usuariosacaoacesso
+      Qry := TZQuery.Create(nil);
+      try
+        Qry.Connection := ConexaoDB;
+        Qry.SQL.Add ('DELETE FROM usuariosacaoacesso WHERE usuarioId = :usuarioId');
+        Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
+        Qry.ExecSQL;
+      finally
+        Qry.Free;
+      end;
 
-  // Inicia a transação para deletar na tabela usuarios
-  Qry := TZQuery.Create(nil);
-  try
-    Qry.Connection := ConexaoDB;
-    Qry.SQL.Clear;
-    Qry.SQL.Add('DELETE FROM usuarios WHERE usuarioId = :usuarioId');
-    Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
-    try
-      ConexaoDB.StartTransaction;
-      Qry.ExecSQL;
+      // Deleta na tabela usuarios
+      Qry := TZQuery.Create(nil);
+      try
+        Qry.Connection := ConexaoDB;
+        Qry.SQL.Add('DELETE FROM usuarios WHERE usuarioId = :usuarioId');
+        Qry.ParamByName('usuarioId').AsInteger := F_usuarioId;
+        Qry.ExecSQL;
+      finally
+        Qry.Free;
+      end;
+
+      // Confirma a transação se tudo ocorreu bem
       ConexaoDB.Commit;
       Result := True; // Marca como sucesso
     except
-      ConexaoDB.Rollback;
-      Result := False;
+      on E: Exception do
+      begin
+        // Em caso de erro, reverte a transação
+        ConexaoDB.Rollback;
+        // Pode exibir ou tratar o erro conforme necessário
+        ShowMessage('Erro ao apagar usuário: ' + E.Message);
+      end;
     end;
   finally
-    Qry.Free;
+    ConexaoDB.Rollback; // Garante que a transação seja revertida se não tiver sido confirmada
   end;
 end;
-
 
 function TUsuario.Atualizar: Boolean;
 var Qry:TZQuery;// criar a conexão em tempo de execução

@@ -545,7 +545,7 @@ begin
   try
     QryInsert.Connection := DtmPrincipal.ConexaoDB;
     QryInsert.SQL.Text := 'CALL sp_GravarEntrada(:entradaId, :dataentrada, :numnotafiscal, :numpedido, :fornecedorId, :valorTotalNota, @novoEntradaId)';
-    QryInsert.Params.ParamByName('entradaId').AsString := ''; // pEntradaId será verificado no SP
+    QryInsert.Params.ParamByName('entradaId').AsString := GerarNovoEntradaId(edtDataEntrada.Date, edtNumNota.Text, edtNumPedido.Text);
     QryInsert.Params.ParamByName('dataentrada').Value := edtDataEntrada.Date;
     QryInsert.Params.ParamByName('numnotafiscal').Value := edtNumNota.Text;
     QryInsert.Params.ParamByName('numpedido').Value := StrToIntDef(edtNumPedido.Text, 0);
@@ -563,9 +563,6 @@ begin
     QryInsert.Free;
   end;
 end;
-
-
-
 
 
 

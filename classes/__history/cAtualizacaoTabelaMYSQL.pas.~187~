@@ -136,49 +136,40 @@ end;
 
 procedure TAtualizacaoTableMYSQL.CriarProcedures;
 begin
-  if not ProcedureExiste('get_next_seq_entrada') then
-  begin
-    ExecutaDiretoBancoDeDados(
-      'CREATE PROCEDURE get_next_seq_entrada(OUT seq_value VARCHAR(50)) ' +
-      'BEGIN ' +
-      'DECLARE seq_id INT; ' +
-
-      'INSERT INTO seq_entradanota () VALUES (); ' +
-      'SET seq_id = LAST_INSERT_ID(); ' +
-
-      'SET seq_value = LPAD(seq_id, 5, ''0''); ' +
-      'END;'
-    );
-  end;
-
   if not ProcedureExiste('sp_GravarEntrada') then
   begin
     ExecutaDiretoBancoDeDados(
-      'CREATE PROCEDURE sp_GravarEntrada( ' +
-      'IN pEntradaId VARCHAR(50), ' +
-      'IN pDataEntrada DATE, ' +
-      'IN pNumNotaFiscal VARCHAR(50), ' +
-      'IN pNumPedido INT, ' +
-      'IN pFornecedorId INT, ' +
-      'IN pValorTotalNota DECIMAL(10,2), ' +
-      'OUT pNovoEntradaId VARCHAR(50) ' +
-      ') ' +
+      'CREATE PROCEDURE sp_GravarEntrada(' +
+      'IN pEntradaId VARCHAR(50),' +
+      'IN pDataEntrada DATE,' +
+      'IN pNumNotaFiscal VARCHAR(50),' +
+      'IN pNumPedido INT,' +
+      'IN pFornecedorId INT,' +
+      'IN pValorTotalNota DECIMAL(10,2),' + // Ajuste para precisão e escala do DECIMAL
+      'OUT pNovoEntradaId VARCHAR(50)' +
+      ')' +
       'BEGIN ' +
       'DECLARE vEntradaId VARCHAR(50); ' +
-      'DECLARE vSequencia VARCHAR(50); ' +
+      'DECLARE vSequencia INT; ' +
 
-      'CALL get_next_seq_entrada(vSequencia); ' +
+      //Incrementar e obter o próximo valor da sequência
+      'INSERT INTO seq_entradanota (seq_value) VALUES (NULL); ' +
+      'SET vSequencia = LAST_INSERT_ID(); ' +
 
-      'SET pNovoEntradaId = CONCAT(''Entrada'', DATE_FORMAT(pDataEntrada, ''%Y%m%d''), pNumNotaFiscal, pNumPedido, vSequencia); ' +
+      // Construir o novo ID de entrada
+      'SET pNovoEntradaId = CONCAT(''Entrada'', DATE_FORMAT(pDataEntrada, ''%Y%m%d''), pNumNotaFiscal, pNumPedido, LPAD(vSequencia, 5, ''0'')); ' +
 
+      // Verificar se a entrada já existe
       'SELECT entradaId INTO vEntradaId ' +
       'FROM entradanota ' +
       'WHERE entradaId = pEntradaId; ' +
 
       'IF vEntradaId IS NULL THEN ' +
+      // Inserir nova entrada
       '    INSERT INTO entradanota (entradaId, dataentrada, numnotafiscal, numpedido, fornecedorId, valorTotalNota) ' +
       '    VALUES (pNovoEntradaId, pDataEntrada, pNumNotaFiscal, pNumPedido, pFornecedorId, pValorTotalNota); ' +
       'ELSE ' +
+      // Atualizar entrada existente
       '    SET pNovoEntradaId = pEntradaId; ' +
       '    UPDATE entradanota ' +
       '    SET dataentrada = pDataEntrada, ' +
@@ -188,10 +179,9 @@ begin
       '        valorTotalNota = pValorTotalNota ' +
       '    WHERE entradaId = pEntradaId; ' +
       'END IF; ' +
-      'END ;'
+      'END;'
     );
   end;
-
 
   if not ProcedureExiste('sp_GravarItensEntrada') then
   begin
@@ -554,7 +544,8 @@ begin
   begin
     ExecutaDiretoBancoDeDados(
       'CREATE TABLE seq_entradanota (' +
-      'seq_id INT AUTO_INCREMENT PRIMARY KEY'+
+      'seq_id INT AUTO_INCREMENT PRIMARY KEY, ' +
+      'seq_value INT NOT NULL AUTO_INCREMENT ' +
       ')'
     );
   end;
@@ -575,7 +566,7 @@ begin
       'log_id INT AUTO_INCREMENT PRIMARY KEY, ' +
       'tabela_nome VARCHAR(255), ' +
       'operacao VARCHAR(10), ' +
-      'registro_id VARCHAR(50), ' +
+      'registro_id INT, ' +
       'usuario VARCHAR(255), ' +
       'data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ' +
       'detalhes JSON);'
