@@ -19,10 +19,10 @@ type
     lblTempoNotificacao: TLabel;
     edtTempoNotificacao: TRxTimeEdit;
     lblTamanhoFonte: TLabel;
-    edtTamanhoFonte: TNumberBox;
     edtFont: TFontComboBox;
     lblTipoFonte: TLabel;
     btnSalvarConfiguracao: TBitBtn;
+    ColorBoxFonte: TColorBox;
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnPadraoClick(Sender: TObject);
@@ -41,6 +41,10 @@ implementation
 
 {$R *.dfm}
 
+uses UPrincipal;
+
+
+
 procedure TfrmConfiguracao.btnFecharClick(Sender: TObject);
 begin
     Close;
@@ -49,7 +53,7 @@ end;
 procedure TfrmConfiguracao.btnPadraoClick(Sender: TObject);
 begin
      ColorBoxPrincipal.Selected := clTeal;
-     edtTamanhoFonte.Value := 15;
+     ColorBoxFonte.Selected := clWhite;
      edtTempoNotificacao.Hours := 0;
      edtTempoNotificacao.Minutes := 1;
      edtTempoNotificacao.Seconds := 0;
@@ -58,8 +62,9 @@ end;
 
 procedure TfrmConfiguracao.btnSalvarConfiguracaoClick(Sender: TObject);
 var
+SwitchState: Boolean;
 corPrincipal : TColor;
-TamanhoFonte : Extended;
+CorFonte : TColor;
 TempoHora : Integer;
 TempoMinuto : Integer;
 TempoSegundo : Integer;
@@ -68,20 +73,19 @@ Ini: TIniFile;
 FilePath: string;
 begin
      corPrincipal := ColorBoxPrincipal.Selected;
-     TamanhoFonte := edtTamanhoFonte.Value;
+     CorFonte := ColorBoxFonte.Selected;
      TempoHora := edtTempoNotificacao.Hours;
      TempoMinuto := edtTempoNotificacao.Minutes;
      TempoSegundo := edtTempoNotificacao.Seconds;
      Fonte := edtFont.FontName;
 // Define o caminho do arquivo INI
   FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
-
   // Cria a instância de TIniFile
   Ini := TIniFile.Create(FilePath);
   try
     // Salva os valores no arquivo INI
     Ini.WriteString('Configuracoes', 'CorPrincipal', ColorToString(corPrincipal));
-    Ini.WriteFloat('Configuracoes', 'TamanhoFonte', TamanhoFonte);
+    Ini.WriteString('Configuracoes', 'CorFonte', ColorToString(CorFonte));
     Ini.WriteInteger('Configuracoes', 'TempoHora', TempoHora);
     Ini.WriteInteger('Configuracoes', 'TempoMinuto', TempoMinuto);
     Ini.WriteInteger('Configuracoes', 'TempoSegundo', TempoSegundo);
@@ -90,9 +94,17 @@ begin
     // Libera a instância de TIniFile
     Ini.Free;
   end;
-
   // Exibe uma mensagem de confirmação
   MessageDlg('Configurações salvas com sucesso!', mtInformation, [mbOK], 0);
+  frmPrincipal.switchDarkClick(Self);
+  frmPrincipal.switchDarkClick(Self);
+
+     SwitchState := LoadSwitchState;
+    if SwitchState.ToInteger = 0 then
+    begin
+        pnlHeader.Color := corPrincipal;
+        pnlFooter.Color := corPrincipal;
+    end;
 end;
 
 procedure TfrmConfiguracao.FormShow(Sender: TObject);
@@ -101,7 +113,7 @@ SwitchState: Boolean;
   Ini: TIniFile;
   FilePath: string;
   corPrincipal: TColor;
-  TamanhoFonte : Extended;
+  CorFonte : TColor;
   TempoHora : Integer;
   TempoMinuto : Integer;
   TempoSegundo : Integer;
@@ -110,13 +122,12 @@ begin
 
 // Define o caminho do arquivo INI
   FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
-
   // Cria a instância de TIniFile
   Ini := TIniFile.Create(FilePath);
   try
     // Lê os valores do arquivo INI
     corPrincipal := StringToColor(Ini.ReadString('Configuracoes', 'CorPrincipal', ''));
-    TamanhoFonte := StrToFloat(Ini.ReadString('Configuracoes', 'TamanhoFonte', ''));
+    CorFonte := StringToColor(Ini.ReadString('Configuracoes', 'CorFonte', ''));
     TempoHora := StrToInt(Ini.ReadString('Configuracoes', 'TempoHora', ''));
     TempoMinuto := StrToInt(Ini.ReadString('Configuracoes', 'TempoMinuto', ''));
     TempoSegundo := StrToInt(Ini.ReadString('Configuracoes', 'TempoSegundo', ''));
@@ -127,11 +138,11 @@ begin
   end;
 
      ColorBoxPrincipal.Selected :=  corPrincipal;
-     edtTamanhoFonte.Value  :=  TamanhoFonte;
+     ColorBoxFonte.Selected  :=  CorFonte;
      edtTempoNotificacao.Hours := TempoHora;
-     TempoMinuto := edtTempoNotificacao.Minutes;
-     TempoSegundo := edtTempoNotificacao.Seconds;
-     Fonte := edtFont.FontName;
+     edtTempoNotificacao.Minutes := TempoMinuto;
+     edtTempoNotificacao.Seconds := TempoSegundo ;
+     edtFont.FontName := Fonte;
 
      SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then

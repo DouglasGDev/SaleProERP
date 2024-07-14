@@ -41,6 +41,10 @@ implementation
 
 {$R *.dfm}
 
+uses UPrincipal;
+
+
+
 procedure TfrmConfiguracao.btnFecharClick(Sender: TObject);
 begin
     Close;
@@ -59,7 +63,7 @@ end;
 procedure TfrmConfiguracao.btnSalvarConfiguracaoClick(Sender: TObject);
 var
 corPrincipal : TColor;
-TamanhoFonte : Extended;
+CorFonte : TColor;
 TempoHora : Integer;
 TempoMinuto : Integer;
 TempoSegundo : Integer;
@@ -68,7 +72,7 @@ Ini: TIniFile;
 FilePath: string;
 begin
      corPrincipal := ColorBoxPrincipal.Selected;
-     TamanhoFonte := ColorBoxFonte.Selected;
+     CorFonte := ColorBoxFonte.Selected;
      TempoHora := edtTempoNotificacao.Hours;
      TempoMinuto := edtTempoNotificacao.Minutes;
      TempoSegundo := edtTempoNotificacao.Seconds;
@@ -80,7 +84,7 @@ begin
   try
     // Salva os valores no arquivo INI
     Ini.WriteString('Configuracoes', 'CorPrincipal', ColorToString(corPrincipal));
-    Ini.WriteFloat('Configuracoes', 'TamanhoFonte', TamanhoFonte);
+    Ini.WriteString('Configuracoes', 'CorFonte', ColorToString(CorFonte));
     Ini.WriteInteger('Configuracoes', 'TempoHora', TempoHora);
     Ini.WriteInteger('Configuracoes', 'TempoMinuto', TempoMinuto);
     Ini.WriteInteger('Configuracoes', 'TempoSegundo', TempoSegundo);
@@ -91,6 +95,8 @@ begin
   end;
   // Exibe uma mensagem de confirmação
   MessageDlg('Configurações salvas com sucesso!', mtInformation, [mbOK], 0);
+  frmPrincipal.switchDark.IsOn;
+  frmPrincipal.switchDark.DisposeOf;
 end;
 
 procedure TfrmConfiguracao.FormShow(Sender: TObject);

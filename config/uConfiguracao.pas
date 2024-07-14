@@ -41,6 +41,10 @@ implementation
 
 {$R *.dfm}
 
+uses UPrincipal;
+
+
+
 procedure TfrmConfiguracao.btnFecharClick(Sender: TObject);
 begin
     Close;
@@ -58,6 +62,7 @@ end;
 
 procedure TfrmConfiguracao.btnSalvarConfiguracaoClick(Sender: TObject);
 var
+SwitchState: Boolean;
 corPrincipal : TColor;
 CorFonte : TColor;
 TempoHora : Integer;
@@ -91,6 +96,21 @@ begin
   end;
   // Exibe uma mensagem de confirmação
   MessageDlg('Configurações salvas com sucesso!', mtInformation, [mbOK], 0);
+  frmPrincipal.switchDarkClick(Self);
+  frmPrincipal.switchDarkClick(Self);
+
+     SwitchState := LoadSwitchState;
+    if SwitchState.ToInteger = 0 then
+    begin
+        pnlHeader.Color := corPrincipal;
+        pnlFooter.Color := corPrincipal;
+    end
+        else if SwitchState.ToInteger = 1 then
+    begin
+        pnlHeader.Color := $001E1E1E;
+        pnlFooter.Color :=$001E1E1E;
+    end;
+
 end;
 
 procedure TfrmConfiguracao.FormShow(Sender: TObject);

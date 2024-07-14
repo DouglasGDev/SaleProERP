@@ -43,7 +43,7 @@ type
 implementation
 
 
-
+{$region 'limpar imagem e procedure gigante para ler e transformar imagens'}
 class procedure TFuncao.LimparImagem(var aImage: TImage);// pra tirar a imagem do campo imagem do cadastro de produto ou quaquer outro campo
 begin
   aImage.Picture.Assign(nil);
@@ -62,19 +62,77 @@ begin
 try
   iWidth:= 160;// tamanho que vai gravar no banco de dados
   iHeight:= 130;// tamanho que vai gravar no banco de dados
-  opdSelecionar:=TOpenPictureDialog.Create(nil);
-  opdSelecionar.Filter:= 'All (*.bmp; *.jpg; *.jpeg; *.png) | *.jpg; *.jpeg; *.bmp; *.png|Bitmaps '+
+  opdSelecionar:=TOpenPictureDialog.Create(nil);// cria o componente de dialog
+  opdSelecionar.Filter:= 'All (*.bmp; *.jpg; *.jpeg; *.png) | *.jpg; *.jpeg; *.bmp; *.png|Bitmaps '+  //filtros de imagem
                          ' (*.bmp) | *.bmp|JPEG Image File (*.jpg; *.jpeg) |*.jpg; *.jpeg| '+
                          'PNG(*.png)| *.png';
-  opdSelecionar.Title:='Selecione a imagem';
-  opdSelecionar.Execute;
+  opdSelecionar.Title:='Selecione a imagem'; // titulo do dialog
+  opdSelecionar.Execute;// executa a seleção
+
+  if opdSelecionar.FileName<>EmptyStr then begin
+    if (POS('.JPG', UpperCase(opdSelecionar.FileName))>0) or ( POS('.JPEG',UpperCase(opdSelecionar.FileName))>0) then begin  //jpg
+      Bmp := TBitmap.Create;
+      Jpg := TJPEGImage.Create;
+      Pic := TPicture.Create;
+      try
+        Pic.LoadFromFile(opdSelecionar.FileName);
+        Jpg.Assign(Pic);
+        Jpg.CompressionQuality := 7;
+        Bmp.Width := iWidth;
+        Bmp.Height := iHeight;
+        Bmp.Canvas.StretchDraw(Rect(0,0,Bmp.Width, Bmp.Height), Jpg);
+        aImage.Picture.Bitmap := Bmp;
+      finally
+        Pic.Free;
+        Jpg.Free;
+        Bmp.Free;
+      end
+    end
+    else if (POS('.PNG', UpperCase(opdSelecionar.FileName))>0) then begin  //png
+      Bmp := TBitmap.Create;
+      png := TPngImage.Create;
+      Pic := TPicture.Create;
+      try
+        Pic.LoadFromFile(opdSelecionar.FileName);
+        png.Assign(Pic);
+        Bmp.Width := iWidth;
+        Bmp.Height := iHeight;
+        Bmp.Canvas.StretchDraw(Rect(0,0,Bmp.Width, Bmp.Height), png);
+        aImage.Picture.Bitmap := Bmp;
+      finally
+        Pic.Free;
+        Png.Free;
+        Bmp.Free;
+      end
+    end
+    else begin
+      try
+        Bmp := TBitmap.Create;   //bmp de transição
+        BmpTrans := TBitmap.Create;
+        Pic := TPicture.Create;
+
+        Pic.LoadFromFile(opdSelecionar.FileName);
+        png.Assign(Pic.Bitmap);
+        Bmp.Width := iWidth;
+        Bmp.Height := iHeight;
+        Bmp.Canvas.StretchDraw(Rect(0,0,Bmp.Width, Bmp.Height), BmpTrans);
+        aImage.Picture.Bitmap := Bmp;
+      finally
+        Pic.Free;
+        BmpTrans.Free;
+        Bmp.Free;
+      end;
+    end;
+  end;
 
 finally
 
 end;
 
 end;
+{$endregion}
 
+{$region 'formularios'}
 
 class procedure TFuncao.CriarForm(aNomeForm: TFormClass; oUsuarioLogado: TUsuarioLogado; aConexao:TZConnection);// pra criar os formularios quando chamamos na tela principal
 var form: TForm;
@@ -157,8 +215,7 @@ begin
     frmSelecionarData.Release;
   end;
 end;
-
-
+{$endregion}
 
 
 end.

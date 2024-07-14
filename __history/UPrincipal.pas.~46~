@@ -91,6 +91,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure CalendarViewDateChange(Sender: TObject);
     function ISO8601ToDate(const AISO8601: string): TDate;
+
   public
     { Public declarations }
   end;
@@ -341,6 +342,12 @@ begin
     TArquivoIni.AtualizarIni('SERVER', 'User', 'root'); // o usuário
     TArquivoIni.AtualizarIni('SERVER', 'Password', ''); // senha
     TArquivoIni.AtualizarIni('SERVER', 'Database', 'vendas'); // e qual banco de dados vai utilizar
+    TArquivoIni.AtualizarIni('Configuracoes', 'CorPrincipal', 'clTeal');
+    TArquivoIni.AtualizarIni('Configuracoes', 'CorFonte', 'clWhite');
+    TArquivoIni.AtualizarIni('Configuracoes', 'TempoHora', '0');
+    TArquivoIni.AtualizarIni('Configuracoes', 'TempoMinuto', '1');
+    TArquivoIni.AtualizarIni('Configuracoes', 'TempoSegundo', '0');
+    TArquivoIni.AtualizarIni('Configuracoes', 'Fonte','Segoe UI');
     if MessageDlg('Arquivo ' + TArquivoIni.ArquivoIni + ' criado com sucesso' + #13 +
                   'Configure o arquivo antes de inicializar a aplicação', mtInformation, [mbOK], 0) = mrOk then
     begin
@@ -557,7 +564,8 @@ begin
     frmNotificacao := TfrmNotificacao.Create(Application);
 
     // Criar e iniciar o verificador de estoque
-    VerificarEstoque := TVerificarEstoque.Create(DtmPrincipal.ConexaoDB, frmNotificacao, 60000); // Intervalo de 1 minuto (60000 ms)
+    TempoTotal := (TempoHora * 3600000) + (TempoMinuto * 60000) + (TempoSegundo * 1000);
+    VerificarEstoque := TVerificarEstoque.Create(DtmPrincipal.ConexaoDB, frmNotificacao, TempoTotal); // Intervalo de 1 minuto (60000 ms)
     VerificarEstoque.Iniciar;
 
     lblBemVindo.Caption :='Bem vindo(a) '+ oUsuarioLogado.nome +' !';
@@ -670,28 +678,31 @@ begin
 end;
 
 {$region 'Tema'}
+
+
 procedure TfrmPrincipal.switchDarkClick(Sender: TObject);
 var
   i: Integer;
   Ini: TIniFile;
   FilePath: string;
   corPrincipal: TColor;
+  Fonte : String;
+  corFonte : TColor;
 begin
   // Define o caminho do arquivo INI
   FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
-
   // Cria a instância de TIniFile
   Ini := TIniFile.Create(FilePath);
   try
     // Lê os valores do arquivo INI
     corPrincipal := StringToColor(Ini.ReadString('Configuracoes', 'CorPrincipal', 'clTeal'));
+    Fonte := Ini.ReadString('Configuracoes', 'Fonte', 'Segoe UI');
+    corFonte := StringToColor(Ini.ReadString('Configuracoes', 'CorFonte', 'clWhite'));
   finally
     // Libera a instância de TIniFile
     Ini.Free;
   end;
-
   SaveSwitchState(switchDark.State = tssOn);
-
   if switchDark.State = tssoff then
   begin
     for i := 0 to ComponentCount - 1 do
@@ -709,6 +720,13 @@ begin
         CalendarView.HeaderInfo.FontColor := clBlack;
         CalendarView.Font.Color := clWindowText;
         CalendarView.FocusedColor := clGray;
+        lblBemVindo.Font.Name := Fonte;
+        lblBemVindo.Font.Color := corFonte;
+        CategoryButtonsPrincipal.Font.Name := Fonte;
+        CategoryButtonsPrincipal.Font.Color := corFonte;
+        CategoryButtonsSair.Font.Name := Fonte;
+        CategoryButtonsSair.Font.Color := corFonte;
+        SVMenu.Font.Name := Fonte;
       end;
     end;
   end
@@ -727,6 +745,12 @@ begin
       CalendarView.HeaderInfo.FontColor := clWhite;
       CalendarView.Font.Color := clWhite;
       CalendarView.FocusedColor := clSilver;
+      lblBemVindo.Font.Name := Fonte;
+      lblBemVindo.Font.Color := clWhite;
+      CategoryButtonsPrincipal.Font.Name := Fonte;
+      CategoryButtonsPrincipal.Font.Color := clWhite;
+      CategoryButtonsSair.Font.Name := Fonte;
+      CategoryButtonsSair.Font.Color := clWhite;
     end;
   end;
 end;

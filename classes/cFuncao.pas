@@ -137,6 +137,10 @@ end;
 class procedure TFuncao.CriarForm(aNomeForm: TFormClass; oUsuarioLogado: TUsuarioLogado; aConexao:TZConnection);// pra criar os formularios quando chamamos na tela principal
 var form: TForm;
 begin
+
+   if(oUsuarioLogado.codigo <= 0) or (oUsuarioLogado.nome = EmptyStr) or (oUsuarioLogado.senha = EmptyStr) then
+   exit;
+
   try
     form := aNomeForm.Create(Application);
     if TUsuarioLogado.TenhoAcesso(oUsuarioLogado.codigo, form.Name, aConexao) then

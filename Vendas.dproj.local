@@ -2,10 +2,10 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2024/06/24 22:35:49.000.371,=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.pas</Transaction>
-    <Transaction>2024/06/24 22:37:04.000.791,E:\ADS\quinto_semestre\projetos4\Estoque\consulta\uConsultaExtratoProduto.dfm=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.dfm</Transaction>
-    <Transaction>2024/06/24 22:37:04.000.791,E:\ADS\quinto_semestre\projetos4\Estoque\consulta\uConsultaExtratoProduto.pas=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.pas</Transaction>
+    <Transaction>2024/06/24 22:37:04.000.791,E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.pas=E:\ADS\quinto_semestre\projetos4\Estoque\consulta\uConsultaExtratoProduto.pas</Transaction>
+    <Transaction>2024/06/24 22:37:04.000.791,E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.dfm=E:\ADS\quinto_semestre\projetos4\Estoque\consulta\uConsultaExtratoProduto.dfm</Transaction>
     <Transaction>2024/07/10 12:21:44.000.129,=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.pas</Transaction>
-    <Transaction>2024/07/10 12:24:47.000.242,E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.pas=E:\ADS\quinto_semestre\projetos4\Estoque\config\uConfiguracao.pas</Transaction>
-    <Transaction>2024/07/10 12:24:47.000.242,E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.dfm=E:\ADS\quinto_semestre\projetos4\Estoque\config\uConfiguracao.dfm</Transaction>
+    <Transaction>2024/07/10 12:24:47.000.242,E:\ADS\quinto_semestre\projetos4\Estoque\config\uConfiguracao.dfm=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.dfm</Transaction>
+    <Transaction>2024/07/10 12:24:47.000.242,E:\ADS\quinto_semestre\projetos4\Estoque\config\uConfiguracao.pas=E:\ADS\quinto_semestre\projetos4\Estoque\Unit1.pas</Transaction>
   </Transactions>
 </BorlandProject>

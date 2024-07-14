@@ -91,6 +91,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure CalendarViewDateChange(Sender: TObject);
     function ISO8601ToDate(const AISO8601: string): TDate;
+
   public
     { Public declarations }
   end;
@@ -677,12 +678,16 @@ begin
 end;
 
 {$region 'Tema'}
+
+
 procedure TfrmPrincipal.switchDarkClick(Sender: TObject);
 var
   i: Integer;
   Ini: TIniFile;
   FilePath: string;
   corPrincipal: TColor;
+  Fonte : String;
+  corFonte : TColor;
 begin
   // Define o caminho do arquivo INI
   FilePath := ExtractFilePath(ParamStr(0)) + 'vendas.ini';
@@ -691,6 +696,8 @@ begin
   try
     // Lê os valores do arquivo INI
     corPrincipal := StringToColor(Ini.ReadString('Configuracoes', 'CorPrincipal', 'clTeal'));
+    Fonte := Ini.ReadString('Configuracoes', 'Fonte', 'Segoe UI');
+    corFonte := StringToColor(Ini.ReadString('Configuracoes', 'CorFonte', 'clWhite'));
   finally
     // Libera a instância de TIniFile
     Ini.Free;
@@ -713,6 +720,20 @@ begin
         CalendarView.HeaderInfo.FontColor := clBlack;
         CalendarView.Font.Color := clWindowText;
         CalendarView.FocusedColor := clGray;
+        lblBemVindo.Font.Name := Fonte;
+        lblBemVindo.Font.Color := corFonte;
+        CategoryButtonsPrincipal.Font.Name := Fonte;
+        CategoryButtonsPrincipal.Font.Color := corFonte;
+        CategoryButtonsSair.Font.Name := Fonte;
+        CategoryButtonsSair.Font.Color := corFonte;
+        CategoryButtonsCadastro.Font.Name := Fonte;
+        CategoryButtonsCadastro.Font.Color := corFonte;
+        CategoryButtonsMovimentacao.Font.Name := Fonte;
+        CategoryButtonsMovimentacao.Font.Color := corFonte;
+        CategoryButtonsRelatorios.Font.Name := Fonte;
+        CategoryButtonsRelatorios.Font.Color := corFonte;
+        CategoryButtonsPermissoes.Font.Name := Fonte;
+        CategoryButtonsPermissoes.Font.Color := corFonte;
       end;
     end;
   end
@@ -731,6 +752,20 @@ begin
       CalendarView.HeaderInfo.FontColor := clWhite;
       CalendarView.Font.Color := clWhite;
       CalendarView.FocusedColor := clSilver;
+      lblBemVindo.Font.Name := Fonte;
+      lblBemVindo.Font.Color := clWhite;
+      CategoryButtonsPrincipal.Font.Name := Fonte;
+      CategoryButtonsPrincipal.Font.Color := clWhite;
+      CategoryButtonsSair.Font.Name := Fonte;
+      CategoryButtonsSair.Font.Color := clWhite;
+      CategoryButtonsCadastro.Font.Name := Fonte;
+      CategoryButtonsCadastro.Font.Color := clWhite;
+      CategoryButtonsMovimentacao.Font.Name := Fonte;
+      CategoryButtonsMovimentacao.Font.Color := clWhite;
+      CategoryButtonsRelatorios.Font.Name := Fonte;
+      CategoryButtonsRelatorios.Font.Color := clWhite;
+      CategoryButtonsPermissoes.Font.Name := Fonte;
+      CategoryButtonsPermissoes.Font.Color := clWhite;
     end;
   end;
 end;
