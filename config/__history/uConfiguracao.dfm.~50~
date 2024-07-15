@@ -24,7 +24,6 @@ object frmConfiguracao: TfrmConfiguracao
     Color = clTeal
     ParentBackground = False
     TabOrder = 0
-    ExplicitTop = -6
   end
   object pnlFooter: TPanel
     Left = 0

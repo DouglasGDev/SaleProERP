@@ -25,7 +25,6 @@ type
     ColorBoxFonte: TColorBox;
     lblJanela: TLabel;
     cmbflJanela: TComboFlat;
-    lblAviso: TLabel;
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnPadraoClick(Sender: TObject);

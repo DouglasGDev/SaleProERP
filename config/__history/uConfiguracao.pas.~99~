@@ -25,7 +25,6 @@ type
     ColorBoxFonte: TColorBox;
     lblJanela: TLabel;
     cmbflJanela: TComboFlat;
-    lblAviso: TLabel;
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnPadraoClick(Sender: TObject);
@@ -105,6 +104,18 @@ begin
   MessageDlg('Configurações salvas com sucesso!', mtInformation, [mbOK], 0);
   frmPrincipal.switchDarkClick(Self);
   frmPrincipal.switchDarkClick(Self);
+  Janela := Ini.ReadString('Configuracoes', 'Janela','');
+
+    if Janela = '0' then
+    begin
+      frmPrincipal.BorderStyle := bsNone;
+      frmPrincipal.WindowState := wsMaximized;
+    end
+    else begin
+      frmPrincipal.BorderStyle := bsSizeable;
+      frmPrincipal.WindowState := wsNormal;
+      frmPrincipal.Position := poScreenCenter;
+    end;
 
      SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then

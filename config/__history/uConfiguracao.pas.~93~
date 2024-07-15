@@ -25,7 +25,6 @@ type
     ColorBoxFonte: TColorBox;
     lblJanela: TLabel;
     cmbflJanela: TComboFlat;
-    lblAviso: TLabel;
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnPadraoClick(Sender: TObject);
@@ -131,7 +130,7 @@ SwitchState: Boolean;
   TempoMinuto : Integer;
   TempoSegundo : Integer;
   Fonte : String;
-  Janela : Integer;
+  Janela : String;
 begin
 
 // Define o caminho do arquivo INI
@@ -146,7 +145,7 @@ begin
     TempoMinuto := StrToInt(Ini.ReadString('Configuracoes', 'TempoMinuto', ''));
     TempoSegundo := StrToInt(Ini.ReadString('Configuracoes', 'TempoSegundo', ''));
     Fonte := Ini.ReadString('Configuracoes', 'Fonte', '');
-    Janela := StrToInt(Ini.ReadString('Configuracoes', 'Janela', ''));
+    Janela := Ini.ReadString('Configuracoes', 'Janela', '');
   finally
     // Libera a instância de TIniFile
     Ini.Free;
@@ -158,7 +157,6 @@ begin
      edtTempoNotificacao.Minutes := TempoMinuto;
      edtTempoNotificacao.Seconds := TempoSegundo ;
      edtFont.FontName := Fonte;
-     cmbflJanela.ItemIndex := Janela;
 
      SwitchState := LoadSwitchState;
     if SwitchState.ToInteger = 0 then

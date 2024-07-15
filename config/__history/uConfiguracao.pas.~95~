@@ -25,7 +25,6 @@ type
     ColorBoxFonte: TColorBox;
     lblJanela: TLabel;
     cmbflJanela: TComboFlat;
-    lblAviso: TLabel;
     procedure btnFecharClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnPadraoClick(Sender: TObject);
@@ -73,7 +72,7 @@ TempoHora : Integer;
 TempoMinuto : Integer;
 TempoSegundo : Integer;
 Fonte : String;
-Janela : String;
+Janela : Integer;
 Ini: TIniFile;
 FilePath: string;
 begin

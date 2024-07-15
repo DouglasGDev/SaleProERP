@@ -88,6 +88,7 @@ type
     procedure SaveSwitchState(AState: Boolean);
     function LoadSwitchState: Boolean;
     procedure CarregarFeriados(Ano: Integer);
+    procedure FormDestroy(Sender: TObject);
     procedure CalendarViewDateChange(Sender: TObject);
     function ISO8601ToDate(const AISO8601: string): TDate;
 
@@ -303,9 +304,6 @@ begin
 
   if Assigned(oUsuarioLogado) then
      FreeAndNil(oUsuarioLogado);
-
-  Feriados.Free;
-
 end;
 
 
@@ -515,7 +513,10 @@ begin
   end;
   ShowMessage('Não há feriado nesta data.');
 end;
-
+procedure TfrmPrincipal.FormDestroy(Sender: TObject);
+begin
+  Feriados.Free;
+end;
 
 {$endregion}
 
