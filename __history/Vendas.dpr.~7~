@@ -60,8 +60,7 @@ uses
   uDashboard in 'dashboard\uDashboard.pas' {frmDashboard},
   uConsultaExtratoProduto in 'consulta\uConsultaExtratoProduto.pas' {frmConsultaExtratoProduto},
   uConfiguracao in 'config\uConfiguracao.pas' {frmConfiguracao},
-  uCadFornecedor in 'cadastro\uCadFornecedor.pas' {frmCadFornecedor},
-  cCadFilial in 'classes\cCadFilial.pas';
+  uCadFornecedor in 'cadastro\uCadFornecedor.pas' {frmCadFornecedor};
 
 {$R *.res}
 begin

@@ -59,9 +59,7 @@ uses
   uRelVenda in 'relatorio\uRelVenda.pas' {frmRelVenda},
   uDashboard in 'dashboard\uDashboard.pas' {frmDashboard},
   uConsultaExtratoProduto in 'consulta\uConsultaExtratoProduto.pas' {frmConsultaExtratoProduto},
-  uConfiguracao in 'config\uConfiguracao.pas' {frmConfiguracao},
-  uCadFornecedor in 'cadastro\uCadFornecedor.pas' {frmCadFornecedor},
-  cCadFilial in 'classes\cCadFilial.pas';
+  uConfiguracao in 'config\uConfiguracao.pas' {frmConfiguracao};
 
 {$R *.res}
 begin

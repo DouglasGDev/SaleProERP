@@ -26,6 +26,7 @@ inherited frmCadFornecedor: TfrmCadFornecedor
       end
       inherited pnlTitulo: TPanel
         Caption = 'Cadastro de fornecedores'
+        ExplicitTop = 0
       end
     end
     inherited tabManutencao: TTabSheet

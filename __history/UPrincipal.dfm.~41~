@@ -593,7 +593,7 @@ object frmPrincipal: TfrmPrincipal
   object SVSubMenu: TSplitView
     Left = 60
     Top = 73
-    Width = 0
+    Width = 250
     Height = 836
     AnimationDelay = 5
     AnimationStep = 50
@@ -604,13 +604,12 @@ object frmPrincipal: TfrmPrincipal
     Font.Height = -19
     Font.Name = 'Segoe UI'
     Font.Style = []
-    Opened = False
     OpenedWidth = 250
     ParentFont = False
     Placement = svpLeft
     TabOrder = 2
     DesignSize = (
-      0
+      250
       836)
     object CategoryButtonsPermissoes: TCategoryButtons
       Left = -32
@@ -794,7 +793,6 @@ object frmPrincipal: TfrmPrincipal
             end
             item
               Caption = ' FILIAIS'
-              OnClick = CategoryButtonsCadastroCategories0Items6Click
             end>
         end>
       Enabled = False

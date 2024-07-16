@@ -238,8 +238,8 @@
             <Form>frmConsultaProduto</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="cadastro\uCadFornecedor.pas">
-            <Form>frmCadFornecedor</Form>
+        <DCCReference Include="cadastro\uCadFilial.pas">
+            <Form>frmCadFilial</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="consulta\uConsultaFornecedor.pas">
@@ -285,6 +285,11 @@
             <Form>frmConfiguracao</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="cadastro\uCadFornecedor.pas">
+            <Form>frmCadFornecedor</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="classes\cCadFilial.pas"/>
         <None Include="Vendas.todo"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

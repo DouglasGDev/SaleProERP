@@ -391,7 +391,7 @@ begin
       '`email` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
       '`ramo` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
       '`observacao` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
-      'PRIMARY KEY (`filialId`) USING BTREE)'
+      'PRIMARY KEY (`fornecedorId`) USING BTREE)'
     );
   end;
 end;

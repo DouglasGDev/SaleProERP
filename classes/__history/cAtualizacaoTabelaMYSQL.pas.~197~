@@ -46,7 +46,6 @@ begin
   Categoria;
   Cliente;
   Fornecedor;
-  Filial;
   Produto;
   seq_entrada;
   EntradaNota;
@@ -370,8 +369,8 @@ begin
   if not TabelaExiste('filiais') then
   begin
     ExecutaDiretoBancoDeDados(
-      'CREATE TABLE `filiais` ( ' +
-      '`filialId` INT(11) NOT NULL AUTO_INCREMENT, ' +
+      'CREATE TABLE `fornecedores` ( ' +
+      '`fornecedorId` INT(11) NOT NULL AUTO_INCREMENT, ' +
       '`numfilial` INT(11) NOT NULL, ' +
       '`razaosocial` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
       '`fantasia` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
@@ -391,7 +390,7 @@ begin
       '`email` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
       '`ramo` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
       '`observacao` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
-      'PRIMARY KEY (`filialId`) USING BTREE)'
+      'PRIMARY KEY (`fornecedorId`) USING BTREE)'
     );
   end;
 end;

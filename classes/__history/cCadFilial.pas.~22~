@@ -1,0 +1,322 @@
+unit cCadFilial;
+
+interface
+uses System.Classes,
+     System.SysUtils,
+     Vcl.Controls,
+     Vcl.ExtCtrls,
+     Vcl.Dialogs,
+     ZAbstractConnection,
+     ZConnection,
+     ZAbstractRODataset,
+     ZAbstractDataset,
+     ZDataset,
+     System.StrUtils,
+     Vcl.Imaging.jpeg,
+     Vcl.Graphics;// lista de Units
+type
+  TFilial = class // Declaração do tipo de Classe
+  private
+      // Variaveis Privada somente dentro da classe
+      ConexaoDB : TZConnection;
+      F_filialId : Integer; // no banco é int
+      F_numfilial : Integer;
+      F_razaosocial : String;
+      F_fantasia : String;
+      F_cnpj : String;
+      F_endereco : String;
+      F_bairro : String;
+      F_cep : String;
+      F_cidade : String;
+      F_estado : String;
+      F_complemento : String;
+      F_inscricaoestadual : String;
+      F_inscricaostatus : String;
+      F_telefone1 : String;
+      F_telefone2 : String;
+      F_situacaocadastral : String;
+      F_motivoscad : String;
+      F_email : String;
+      F_ramo : String;
+      F_observacao : String;
+  public
+    constructor Create(aConexao:TZConnection); //Construtor de Classe
+    destructor Destroy; override; //Destroi a Classe usar o override por causa
+                                  // de Sobrescrever
+    function Inserir : Boolean;
+    function Atualizar : Boolean;
+    function Apagar : Boolean;
+    function Selecionar(id:Integer) : Boolean;
+      // Variaveis Publicas que pode ser trabalhadas fora da classe
+  published
+      // Variaveis Publicas utilizadas para propriedade da classe
+      // para fornecer informações runtime
+      property  codigo     : Integer   read F_filialId       write F_filialId;
+      property  numfilial  : Integer   read F_numfilial      write F_numfilial;
+      property  razaosocial: string    read F_razaosocial    write F_razaosocial;
+      property  fantasia   : string    read F_fantasia       write F_fantasia;
+      property  cnpj       : string    read F_cnpj           write F_cnpj;
+      property  endereco   : string    read F_endereco       write F_endereco;
+      property  bairro     : string    read F_bairro         write F_bairro;
+      property  cep        : string    read F_cep            write F_cep;
+      property  cidade     : string    read F_cidade         write F_cidade;
+      property  estado     : string    read F_estado         write F_estado;
+      property  complemento: string    read F_complemento    write F_complemento;
+      property  inscricaoestadual: string    read F_inscricaoestadual  write F_inscricaoestadual;
+      property  inscricaostatus: string    read F_inscricaostatus      write F_inscricaostatus;
+      property  telefone1  : string    read F_telefone1      write F_telefone1;
+      property  telefone2  : string    read F_telefone2      write F_telefone2;
+      property  situacaocadastral: string    read F_situacaocadastral  write F_situacaocadastral;
+      property  motivoscad : string    read F_motivoscad     write F_motivoscad;
+      property  email      : string    read F_email          write F_email;
+      property  ramo       : string    read F_ramo           write F_ramo;
+      property  observacao : string    read F_observacao     write F_observacao;
+
+  end;
+
+implementation
+{$region 'Construtor e Destruidor'}
+constructor TFilial.Create(aConexao:TZConnection);
+begin
+   ConexaoDB := aConexao;
+end;
+destructor TFilial.Destroy;
+begin
+  inherited;
+end;
+{$endregion}
+{$region 'CRUD'}
+function TFilial.Apagar : Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
+begin
+   if MessageDlg('Apagar o Registro: '+#13+#13+  // pergunta se quer apagar o registro selecionado e quebra em 2 linha
+                 'Codigo: '+IntToStr(F_filialId)+#13+
+                 'Nome: '+F_razaosocial,TMsgDlgType.mtConfirmation,[TMsgDlgBtn.mbYes,TMsgDlgBtn.mbNo],0)=mrNo then begin
+                   Result:= False; // caso não ele da como false e aborta
+                   Abort;
+   end;
+   try
+     Result:= True;
+     Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+     Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+     Qry.SQL.Clear;// limpa pra evitar impureza
+     Qry.SQL.Add('DELETE FROM filiais '+
+                 ' WHERE filialId =:filialId ');
+     Qry.ParamByName('filialId').AsInteger :=F_filialId;// aqui armazena a informação no parametro com o tipo permitido
+     Try
+       ConexaoDB.StartTransaction;
+       Qry.ExecSQL;
+       ConexaoDB.Commit;
+     Except
+       ConexaoDB.Rollback;
+       Result := False;
+     End;
+   finally
+     if Assigned(Qry) then
+        FreeAndNil(Qry);
+   end;
+end;
+function TFilial.Atualizar: Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
+begin
+  try
+    Result:= True;
+    Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+    Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+    Qry.SQL.Clear;// limpa pra evitar impureza
+    Qry.SQL.Add('UPDATE filiais ' +
+                 ' SET numfilial =:numfilial ' +
+                 ' razaosocial  =:razaosocial ' +
+                 '    ,fantasia  =:fantasia ' +
+                 '    ,cnpj =:cnpj '+
+                 '    ,endereco  =:endereco ' +
+                 '    ,bairro  =:bairro ' +
+                 '    ,cep  =:cep ' +
+                 '    ,cidade  =:cidade ' +
+                 '    ,estado =:estado ' +
+                 '    ,complemento  =:complemento ' +
+                 '    ,inscricaoestadual =:inscricaoestadual ' +
+                 '    ,inscricaostatus =:inscricaostatus ' +
+                 '    ,telefone1 =:telefone1 '+
+                 '    ,telefone2 =:telefone2 '+
+                 '    ,situacaocadastral =:situacaocadastral ' +
+                 '    ,motivoscad =:motivoscad '+
+                 '    ,email =:email '+
+                 '    ,ramo =:ramo '+
+                 '    ,observacao =:observacao '+
+                 ' WHERE filialId =:filialId ');// recebe os campos com o parametro :filialId
+    Qry.ParamByName('numfilial').AsInteger       :=Self.F_numfilial;
+    Qry.ParamByName('razaosocial').AsString      :=Self.F_razaosocial;
+    Qry.ParamByName('fantasia').AsString         :=Self.F_fantasia;
+    Qry.ParamByName('cnpj').AsString             :=Self.F_cnpj;
+    Qry.ParamByName('endereco').AsString         :=Self.F_endereco;
+    Qry.ParamByName('bairro').AsString           :=Self.F_bairro;
+    Qry.ParamByName('cep').AsString              :=Self.F_cep;
+    Qry.ParamByName('cidade').AsString           :=Self.F_cidade;
+    Qry.ParamByName('estado').AsString           :=Self.F_estado;
+    Qry.ParamByName('complemento').AsString      :=Self.F_complemento;
+    Qry.ParamByName('inscricaoestadual').AsString:=Self.F_inscricaoestadual;
+    Qry.ParamByName('inscricaostatus').AsString  :=Self.F_inscricaostatus;
+    Qry.ParamByName('telefone1').AsString        :=Self.F_telefone1;
+    Qry.ParamByName('telefone2').AsString        :=Self.F_telefone2;
+    Qry.ParamByName('situacaocadastral').AsString:=Self.F_situacaocadastral;
+    Qry.ParamByName('motivoscad').AsString       :=Self.F_motivoscad;
+    Qry.ParamByName('email').AsString            :=Self.F_email;
+    Qry.ParamByName('ramo').AsString             :=Self.F_ramo;
+    Qry.ParamByName('observacao').AsString       :=Self.F_observacao;
+     Try
+       ConexaoDB.StartTransaction;
+       Qry.ExecSQL;
+       ConexaoDB.Commit;
+     Except
+       ConexaoDB.Rollback;
+       Result := False;
+     End;
+  finally
+     if Assigned(Qry) then
+        FreeAndNil(Qry);
+  end;
+end;
+function TFilial.Inserir: Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
+begin
+  try
+    Result:= True;
+    Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+    Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+    Qry.SQL.Clear;// limpa pra evitar impureza
+    Qry.SQL.Add('INSERT INTO filiais (numfilial ' +
+                 '    ,razaosocial ' +
+                 '    ,fantasia ' +
+                 '    ,cnpj '+
+                 '    ,endereco ' +
+                 '    ,bairro   ' +
+                 '    ,cep   ' +
+                 '    ,cidade   ' +
+                 '    ,estado ' +
+                 '    ,complemento  ' +
+                 '    ,inscricaoestadual ' +
+                 '    ,inscricaostatus  ' +
+                 '    ,telefone1  '+
+                 '    ,telefone2  '+
+                 '    ,situacaocadastral ' +
+                 '    ,motivoscad  '+
+                 '    ,email  '+
+                 '    ,ramo  '+
+                 '    ,observacao  )' +
+                 ' VALUES            (:numfilial, ' +
+                 '                    :razaosocial, '     +
+                 '                    :fantasia, ' +
+                 '                    :cnpj, '   +
+                 '                    :endereco, '   +
+                 '                    :bairro, '   +
+                 '                    :cep, '   +
+                 '                    :cidade, '      +
+                 '                    :estado, ' +
+                 '                    :complemento,' +
+                 '                    :inscricaoestadual, ' +
+                 '                    :inscricaostatus, ' +
+                 '                    :telefone1, ' +
+                 '                    :telefone2, ' +
+                 '                    :situacaocadastral, '+
+                 '                    :motivoscad, '+
+                 '                    :email, '+
+                 '                    :ramo, '+
+                 '                    :observacao) ' );
+    Qry.ParamByName('filialId').AsInteger        :=Self.F_filialId;
+    Qry.ParamByName('razaosocial').AsString      :=Self.F_razaosocial;
+    Qry.ParamByName('fantasia').AsString         :=Self.F_fantasia;
+    Qry.ParamByName('cnpj').AsString             :=Self.F_cnpj;
+    Qry.ParamByName('endereco').AsString         :=Self.F_endereco;
+    Qry.ParamByName('bairro').AsString           :=Self.F_bairro;
+    Qry.ParamByName('cep').AsString              :=Self.F_cep;
+    Qry.ParamByName('cidade').AsString           :=Self.F_cidade;
+    Qry.ParamByName('estado').AsString           :=Self.F_estado;
+    Qry.ParamByName('complemento').AsString      :=Self.F_complemento;
+    Qry.ParamByName('inscricaoestadual').AsString:=Self.F_inscricaoestadual;
+    Qry.ParamByName('inscricaostatus').AsString  :=Self.F_inscricaostatus;
+    Qry.ParamByName('telefone1').AsString        :=Self.F_telefone1;
+    Qry.ParamByName('telefone2').AsString        :=Self.F_telefone2;
+    Qry.ParamByName('situacaocadastral').AsString:=Self.F_situacaocadastral;
+    Qry.ParamByName('motivoscad').AsString       :=Self.F_motivoscad;
+    Qry.ParamByName('email').AsString            :=Self.F_email;
+    Qry.ParamByName('ramo').AsString             :=Self.F_ramo;
+    Qry.ParamByName('observacao').AsString       :=Self.F_observacao;
+     Try
+       ConexaoDB.StartTransaction;
+       Qry.ExecSQL;
+       ConexaoDB.Commit;
+     Except
+       ConexaoDB.Rollback;
+       Result := False;
+     End;
+  finally
+     if Assigned(Qry) then
+        FreeAndNil(Qry);
+  end;
+end;
+function TFilial.Selecionar(id: Integer): Boolean;
+var Qry:TZQuery;// criar a conexão em tempo de execução
+begin
+  try
+    Result:= True;
+    Qry:=TZQuery.Create(nil);// aqui diz que cria algo mas não é de ninguém a criação da query
+    Qry.Connection:=ConexaoDB;// aqui recebe a conexão
+    Qry.SQL.Clear;// limpa pra evitar impureza
+    Qry.SQL.Add('SELECT filialId '+
+                 '    ,numfilial ' +
+                 '    ,razaosocial ' +
+                 '    ,fantasia ' +
+                 '    ,cnpj '+
+                 '    ,endereco ' +
+                 '    ,bairro   ' +
+                 '    ,cep   ' +
+                 '    ,cidade   ' +
+                 '    ,estado ' +
+                 '    ,complemento  ' +
+                 '    ,inscricaoestadual ' +
+                 '    ,inscricaostatus  ' +
+                 '    ,telefone1  '+
+                 '    ,telefone2  '+
+                 '    ,situacaocadastral ' +
+                 '    ,motivoscad  '+
+                 '    ,email  '+
+                 '    ,ramo  '+
+                 '    ,observacao ' +
+    ' FROM filiais '+
+    ' WHERE filialId =:filialId');// recebe os campos com o parametro :produtoId
+    Qry.ParamByName('filialId').AsInteger:=id;// aqui armazena a informação no parametro que pega do id la encima do selecionar
+    try
+      Qry.Open;// tenta abrir a conexão
+      Self.F_filialId           := Qry.FieldByName('filialId').AsInteger;// pega o id do campo(interface) e atribui a query com o campo fornecedorid e com o tipo em inteiro
+      Self.F_numfilial          := Qry.FieldByName('numfilial').AsInteger;
+      Self.F_razaosocial        := Qry.FieldByName('razaosocial').AsString;
+      Self.F_fantasia           := Qry.FieldByName('fantasia').AsString;
+      Self.F_cnpj               := Qry.FieldByName('cnpj').AsString;
+      Self.F_endereco           := Qry.FieldByName('endereco').AsString;
+      Self.F_bairro             := Qry.FieldByName('bairro').AsString;
+      Self.F_cep                := Qry.FieldByName('cep').AsString;
+      Self.F_cidade             := Qry.FieldByName('cidade').AsString;
+      Self.F_estado             := Qry.FieldByName('estado').AsString;;
+      Self.F_complemento        := Qry.FieldByName('complemento').AsString;;
+      Self.F_inscricaoestadual  := Qry.FieldByName('inscricaoestadual').AsString;;
+      Self.F_inscricaostatus    := Qry.FieldByName('inscricaostatus').AsString;
+      Self.F_telefone1          := Qry.FieldByName('telefone1').AsString;
+      Self.F_telefone2          := Qry.FieldByName('telefone2').AsString;
+      Self.F_situacaocadastral  := Qry.FieldByName('situacaocadastral').AsString;
+      Self.F_motivoscad         := Qry.FieldByName('motivoscad').AsString;
+      Self.F_email              := Qry.FieldByName('email').AsString;
+      Self.F_ramo               := Qry.FieldByName('ramo').AsString;
+      Self.F_observacao         := Qry.FieldByName('observacao').AsString;
+    Except
+      Result:= False; // se não der vai retornar false, vai dar erro
+    end;
+  finally
+     if Assigned(Qry) then // destroi a query da memoria e limpa
+        FreeAndNil(Qry);
+     end;
+  end;
+{$endregion}
+end.
+implementation
+end.

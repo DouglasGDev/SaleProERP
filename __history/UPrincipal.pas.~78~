@@ -168,7 +168,7 @@ end;
 procedure TfrmPrincipal.CategoryButtonsCadastroCategories0Items6Click(
   Sender: TObject);
 begin// ações de usuários
-  TFuncao.CriarForm(TfrmCadFilial, oUsuarioLogado, dtmPrincipal.ConexaoDB);
+  TFuncao.CriarForm(TfrmUsuarioVsAcoes, oUsuarioLogado, dtmPrincipal.ConexaoDB);
 end;
 
 procedure TfrmPrincipal.CategoryButtonsCadastroCategories0Items7Click(

@@ -168,7 +168,7 @@ end;
 procedure TfrmPrincipal.CategoryButtonsCadastroCategories0Items6Click(
   Sender: TObject);
 begin// ações de usuários
-  TFuncao.CriarForm(TfrmCadFilial, oUsuarioLogado, dtmPrincipal.ConexaoDB);
+  TFuncao.CriarForm(TfrmUsuarioVsAcoes, oUsuarioLogado, dtmPrincipal.ConexaoDB);
 end;
 
 procedure TfrmPrincipal.CategoryButtonsCadastroCategories0Items7Click(
@@ -404,7 +404,6 @@ begin
     TAcaoAcesso.CriarAcoes(TfrmConsultarCEP, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmDashboard, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmCadFornecedor, dtmPrincipal.ConexaoDB);
-    TAcaoAcesso.CriarAcoes(TfrmCadFilial, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmConsultaExtratoProduto, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmConfiguracao, dtmPrincipal.ConexaoDB);
 

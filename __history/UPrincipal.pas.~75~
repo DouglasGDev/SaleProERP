@@ -13,7 +13,8 @@ uses
   uCEFWinControl, uCEFLinkedWinControlBase, uCEFChromiumWindow, uCEFApplication,
   uDashboard, Vcl.WinXCalendars, IdTCPConnection, IdTCPClient, IdTime,
   REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,System.JSON,
-  Vcl.Grids, uConsultaProduto, Vcl.Mask, IniFiles, Vcl.JumpList;
+  Vcl.Grids, uConsultaProduto, Vcl.Mask, IniFiles, Vcl.JumpList,
+  uConsultaExtratoProduto, uConfiguracao;
 type
   TfrmPrincipal = class(TForm)
     pnlTopMenu: TPanel;
@@ -108,8 +109,7 @@ uses cArquivoIni, uCadCategoria,
   uCadCliente, uCadProduto, uProVenda, uRelCategoria, uRelCadClientes, uRelCadClienteFicha,
   uRelCadProduto, uRelCadProdutoComGrupoCategoria, uSelecionarData,
   uRelVendaPorData, uCadUsuario, uLogin, cAcaoAcesso, uCadAcaoAcesso,
-  uUsuarioVsAcoes, uTelaHeranca, uDTMGrafico, uConsultarCEP, uConsultaExtratoProduto,
-  uConfiguracao, uCadFilial;
+  uUsuarioVsAcoes, uTelaHeranca, uDTMGrafico, uConsultarCEP;
 
 
 
@@ -168,7 +168,7 @@ end;
 procedure TfrmPrincipal.CategoryButtonsCadastroCategories0Items6Click(
   Sender: TObject);
 begin// ações de usuários
-  TFuncao.CriarForm(TfrmCadFilial, oUsuarioLogado, dtmPrincipal.ConexaoDB);
+  TFuncao.CriarForm(TfrmUsuarioVsAcoes, oUsuarioLogado, dtmPrincipal.ConexaoDB);
 end;
 
 procedure TfrmPrincipal.CategoryButtonsCadastroCategories0Items7Click(
@@ -404,7 +404,6 @@ begin
     TAcaoAcesso.CriarAcoes(TfrmConsultarCEP, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmDashboard, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmCadFornecedor, dtmPrincipal.ConexaoDB);
-    TAcaoAcesso.CriarAcoes(TfrmCadFilial, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmConsultaExtratoProduto, dtmPrincipal.ConexaoDB);
     TAcaoAcesso.CriarAcoes(TfrmConfiguracao, dtmPrincipal.ConexaoDB);
 

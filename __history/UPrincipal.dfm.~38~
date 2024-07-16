@@ -752,7 +752,7 @@ object frmPrincipal: TfrmPrincipal
     end
     object CategoryButtonsCadastro: TCategoryButtons
       Left = -32
-      Top = -11
+      Top = -2
       Width = 292
       Height = 413
       Cursor = crHandPoint
@@ -794,7 +794,6 @@ object frmPrincipal: TfrmPrincipal
             end
             item
               Caption = ' FILIAIS'
-              OnClick = CategoryButtonsCadastroCategories0Items6Click
             end>
         end>
       Enabled = False
