@@ -1,0 +1,20 @@
+inherited frmConsultaFilial: TfrmConsultaFilial
+  Caption = 'CONSULTAR FILIAL'
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    inherited lblTitulo: TLabel
+      Width = 1041
+      Caption = 'CONSULTAR FILIAL'
+      ExplicitWidth = 170
+    end
+  end
+  inherited QryListagem: TZQuery
+    SQL.Strings = (
+      'SELECT filialId,'
+      '             numfilial,'
+      '             fantasia,'
+      '             cnpj'
+      'FROM filiais'
+      '            ')
+  end
+end

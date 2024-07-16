@@ -186,7 +186,7 @@ begin
     Qry.ParamByName('codbarras').AsString           :=Self.F_codbarras;
     Qry.ParamByName('validade').AsDateTime :=Self.F_validade;
     Qry.ParamByName('categoriaId').AsInteger :=Self.F_categoriaId;
-    Qry.ParamByName('filialId').AsInteger :=Self.F_filialId;
+    Qry.ParamByName('filialId').AsInteger :=Self.F_categoriaId;
     if Self.F_foto.Empty then
       Qry.ParamByName('foto').Clear
     else

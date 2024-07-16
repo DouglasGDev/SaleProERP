@@ -1,0 +1,11 @@
+inherited frmTelaHerancaConsulta1: TfrmTelaHerancaConsulta1
+  Caption = 'frmTelaHerancaConsulta1'
+  TextHeight = 15
+  inherited pnlHeader: TPanel
+    inherited lblTitulo: TLabel
+      Width = 1041
+      Caption = 'CONSULTA FILIAL'
+      ExplicitWidth = 158
+    end
+  end
+end

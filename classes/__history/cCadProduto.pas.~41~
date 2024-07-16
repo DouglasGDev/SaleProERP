@@ -166,8 +166,7 @@ begin
                  '                     codbarras, '   +
                  '                     validade, '      +
                  '                     foto, ' +
-                 '                     categoriaId, ' +
-                 '                     filialId)' +
+                 '                     categoriaId )' +
                  ' VALUES            (:nome, '     +
                  '                    :descricao, ' +
                  '                    :custo, '   +
@@ -176,8 +175,7 @@ begin
                  '                    :codbarras, '   +
                  '                    :validade, '      +
                  '                    :foto, ' +
-                 '                    :categoriaId, ' +
-                 '                    :filialId) ' );
+                 '                    :categoriaId ) ' );
     Qry.ParamByName('nome').AsString             :=Self.F_nome;
     Qry.ParamByName('descricao').AsString        :=Self.F_descricao;
     Qry.ParamByName('custo').AsDouble            :=Self.F_custo;
@@ -186,7 +184,6 @@ begin
     Qry.ParamByName('codbarras').AsString           :=Self.F_codbarras;
     Qry.ParamByName('validade').AsDateTime :=Self.F_validade;
     Qry.ParamByName('categoriaId').AsInteger :=Self.F_categoriaId;
-    Qry.ParamByName('filialId').AsInteger :=Self.F_filialId;
     if Self.F_foto.Empty then
       Qry.ParamByName('foto').Clear
     else
@@ -221,8 +218,7 @@ begin
                  '      codbarras, '   +
                  '      validade, '      +
                  '      foto, ' +
-                 '      categoriaId, ' +
-                 '      filialId ' +
+                 '      categoriaId ' +
     ' FROM produtos '+
     ' WHERE produtoId =:produtoId');// recebe os campos com o parametro :produtoId
     Qry.ParamByName('produtoId').AsInteger:=id;// aqui armazena a informação no parametro que pega do id la encima do selecionar
@@ -238,7 +234,6 @@ begin
       Self.F_validade  := Qry.FieldByName('validade').AsDateTime;
       Self.F_foto.Assign(Qry.FieldByName('foto'));
       Self.F_categoriaId := Qry.FieldByName('categoriaId').AsInteger;
-      Self.F_filialId := Qry.FieldByName('filialId').AsInteger;
     Except
       Result:= False; // se não der vai retornar false, vai dar erro
     end;

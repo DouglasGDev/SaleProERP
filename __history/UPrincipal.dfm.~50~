@@ -477,7 +477,7 @@ object frmPrincipal: TfrmPrincipal
   object SVMenu: TSplitView
     Left = 0
     Top = 71
-    Width = 60
+    Width = 220
     Height = 836
     AnimationDelay = 5
     AnimationStep = 50
@@ -486,12 +486,11 @@ object frmPrincipal: TfrmPrincipal
     CompactWidth = 60
     DisplayMode = svmOverlay
     DockSite = True
-    Opened = False
     OpenedWidth = 220
     Placement = svpLeft
     TabOrder = 1
     DesignSize = (
-      60
+      220
       836)
     object CategoryButtonsSair: TCategoryButtons
       Left = -37

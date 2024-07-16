@@ -3,7 +3,6 @@ inherited frmConsultaProduto: TfrmConsultaProduto
   TextHeight = 15
   inherited pnlHeader: TPanel
     inherited lblTitulo: TLabel
-      Width = 1041
       Caption = 'CONSULTA DE PRODUTOS'
       ExplicitWidth = 233
     end

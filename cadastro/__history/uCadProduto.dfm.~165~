@@ -8,7 +8,6 @@ inherited frmCadProduto: TfrmCadProduto
   inherited pgcPrincipal: TPageControl
     Width = 929
     Height = 397
-    ActivePage = tabManutencao
     ExplicitWidth = 929
     ExplicitHeight = 397
     inherited tabListagem: TTabSheet
@@ -25,13 +24,12 @@ inherited frmCadProduto: TfrmCadProduto
           item
             Expanded = False
             FieldName = 'produtoId'
-            Width = 98
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'nome'
-            Width = 573
+            Width = 64
             Visible = True
           end>
       end
@@ -147,7 +145,7 @@ inherited frmCadProduto: TfrmCadProduto
         Height = 17
         Caption = 'Custo'
       end
-      object lblCategoria: TLabel
+      object Label1: TLabel
         Left = 291
         Top = 78
         Width = 57
@@ -385,12 +383,10 @@ inherited frmCadProduto: TfrmCadProduto
     Left = 124
     Top = 346
     object QryListagemprodutoId: TZIntegerField
-      DisplayLabel = 'Cod. Produto'
       FieldName = 'produtoId'
       Required = True
     end
     object QryListagemnome: TZUnicodeStringField
-      DisplayLabel = 'Nome'
       FieldName = 'nome'
       Size = 60
     end

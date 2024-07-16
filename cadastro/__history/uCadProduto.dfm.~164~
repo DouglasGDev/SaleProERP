@@ -8,7 +8,6 @@ inherited frmCadProduto: TfrmCadProduto
   inherited pgcPrincipal: TPageControl
     Width = 929
     Height = 397
-    ActivePage = tabManutencao
     ExplicitWidth = 929
     ExplicitHeight = 397
     inherited tabListagem: TTabSheet
@@ -25,13 +24,12 @@ inherited frmCadProduto: TfrmCadProduto
           item
             Expanded = False
             FieldName = 'produtoId'
-            Width = 98
+            Width = 101
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'nome'
-            Width = 573
             Visible = True
           end>
       end
@@ -147,7 +145,7 @@ inherited frmCadProduto: TfrmCadProduto
         Height = 17
         Caption = 'Custo'
       end
-      object lblCategoria: TLabel
+      object Label1: TLabel
         Left = 291
         Top = 78
         Width = 57
@@ -407,10 +405,12 @@ inherited frmCadProduto: TfrmCadProduto
     Left = 178
     Top = 200
     object QryCategoriacategoriaId: TZIntegerField
+      DisplayLabel = 'C'#243'digo'
       FieldName = 'categoriaId'
       Required = True
     end
     object QryCategoriadescricao: TZUnicodeStringField
+      DisplayLabel = 'Descri'#231#227'o'
       FieldName = 'descricao'
       Size = 100
     end
@@ -444,14 +444,17 @@ inherited frmCadProduto: TfrmCadProduto
     Left = 343
     Top = 199
     object QryFilialfilialId: TZIntegerField
+      DisplayLabel = 'Cod. Filial'
       FieldName = 'filialId'
       Required = True
     end
     object QryFilialnumfilial: TZIntegerField
+      DisplayLabel = 'N'#186' Filial'
       FieldName = 'numfilial'
       Required = True
     end
     object QryFilialrazaosocial: TZUnicodeStringField
+      DisplayLabel = 'Raz'#227'o Social'
       FieldName = 'razaosocial'
       Size = 255
     end

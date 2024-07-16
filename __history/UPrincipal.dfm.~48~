@@ -494,7 +494,7 @@ object frmPrincipal: TfrmPrincipal
       60
       836)
     object CategoryButtonsSair: TCategoryButtons
-      Left = -37
+      Left = -29
       Top = 639
       Width = 257
       Height = 202

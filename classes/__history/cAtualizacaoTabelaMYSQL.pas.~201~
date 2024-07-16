@@ -413,12 +413,9 @@ begin
       '`validade` DATETIME NULL DEFAULT NULL, ' +
       '`foto` LONGBLOB NULL DEFAULT NULL, ' +
       '`categoriaId` INT(11) NULL DEFAULT NULL, ' +
-      '`filialId` INT(11) NULL DEFAULT NULL, ' +
       'PRIMARY KEY (`produtoId`) USING BTREE, ' +
       'INDEX `FK_ProdutosCategorias` (`categoriaId`) USING BTREE, ' +
-      'INDEX `FK_ProdutosFilial` (`filialId`) USING BTREE, ' +
-      'CONSTRAINT `FK_ProdutosCategorias` FOREIGN KEY (`categoriaId`) REFERENCES `vendas`.`categorias` (`categoriaId`) ' +
-      'CONSTRAINT `FK_ProdutosFilial` FOREIGN KEY (`filialId`) REFERENCES `vendas`.`filiais` (`filialId`)) '
+      'CONSTRAINT `FK_ProdutosCategorias` FOREIGN KEY (`categoriaId`) REFERENCES `vendas`.`categorias` (`categoriaId`)) '
     );
   end;
 end;

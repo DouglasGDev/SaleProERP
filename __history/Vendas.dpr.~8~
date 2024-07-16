@@ -61,8 +61,7 @@ uses
   uConsultaExtratoProduto in 'consulta\uConsultaExtratoProduto.pas' {frmConsultaExtratoProduto},
   uConfiguracao in 'config\uConfiguracao.pas' {frmConfiguracao},
   uCadFornecedor in 'cadastro\uCadFornecedor.pas' {frmCadFornecedor},
-  cCadFilial in 'classes\cCadFilial.pas',
-  uConsultaFilial in 'consulta\uConsultaFilial.pas' {frmConsultaFilial};
+  cCadFilial in 'classes\cCadFilial.pas';
 
 {$R *.res}
 begin

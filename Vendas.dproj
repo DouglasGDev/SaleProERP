@@ -290,6 +290,10 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="classes\cCadFilial.pas"/>
+        <DCCReference Include="consulta\uConsultaFilial.pas">
+            <Form>frmConsultaFilial</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <None Include="Vendas.todo"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

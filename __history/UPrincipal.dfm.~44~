@@ -1227,19 +1227,19 @@ object frmPrincipal: TfrmPrincipal
     Params = <>
     SynchronizedEvents = False
     Left = 157
-    Top = 74
+    Top = 98
   end
   object RESTRequest: TRESTRequest
     Client = RESTClient
     Params = <>
     Response = RESTResponse
     SynchronizedEvents = False
-    Left = 325
-    Top = 74
+    Left = 333
+    Top = 98
   end
   object RESTResponse: TRESTResponse
     Left = 237
-    Top = 74
+    Top = 98
   end
   object imageCollectionBotao: TImageCollection
     Images = <
@@ -1464,17 +1464,17 @@ object frmPrincipal: TfrmPrincipal
   object RESTClientFeriado: TRESTClient
     Params = <>
     SynchronizedEvents = False
-    Left = 156
-    Top = 129
+    Left = 148
+    Top = 257
   end
   object RESTResponseFeriado: TRESTResponse
-    Left = 268
-    Top = 129
+    Left = 260
+    Top = 257
   end
   object RESTRequestFeriado: TRESTRequest
     Params = <>
     SynchronizedEvents = False
-    Left = 388
-    Top = 129
+    Left = 380
+    Top = 257
   end
 end

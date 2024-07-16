@@ -32,7 +32,7 @@ type
     ppmImagem: TPopupMenu;
     CarregarImagem1: TMenuItem;
     LimparImagem1: TMenuItem;
-    lblCategoria: TLabel;
+    Label1: TLabel;
     lkpFilial: TDBLookupComboBox;
     lblFilial: TLabel;
     QryFilial: TZQuery;
@@ -119,7 +119,6 @@ begin
         oProduto.foto.Assign(nil)
      else
         oProduto.foto.Assign(imgImagem.Picture);
-
 
      oProduto.categoriaId:= lkpCategoria.KeyValue;
      oProduto.filialId:= lkpFilial.KeyValue;

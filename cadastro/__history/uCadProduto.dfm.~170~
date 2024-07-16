@@ -25,13 +25,12 @@ inherited frmCadProduto: TfrmCadProduto
           item
             Expanded = False
             FieldName = 'produtoId'
-            Width = 98
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'nome'
-            Width = 573
+            Width = 64
             Visible = True
           end>
       end
@@ -147,7 +146,7 @@ inherited frmCadProduto: TfrmCadProduto
         Height = 17
         Caption = 'Custo'
       end
-      object lblCategoria: TLabel
+      object Label1: TLabel
         Left = 291
         Top = 78
         Width = 57

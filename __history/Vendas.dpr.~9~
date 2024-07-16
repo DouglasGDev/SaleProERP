@@ -62,12 +62,13 @@ uses
   uConfiguracao in 'config\uConfiguracao.pas' {frmConfiguracao},
   uCadFornecedor in 'cadastro\uCadFornecedor.pas' {frmCadFornecedor},
   cCadFilial in 'classes\cCadFilial.pas',
-  uConsultaFilial in 'consulta\uConsultaFilial.pas' {frmConsultaFilial};
+  uConsultaFilial in 'consulta\uConsultaFilial.pas' {frmTelaHerancaConsulta1};
 
 {$R *.res}
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
+  Application.CreateForm(TfrmTelaHerancaConsulta1, frmTelaHerancaConsulta1);
   Application.Run;
 end.

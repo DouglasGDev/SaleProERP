@@ -6,7 +6,7 @@ uses
   ZAbstractRODataset, ZAbstractDataset, ZDataset, Vcl.DBCtrls, Vcl.Grids,
   Vcl.DBGrids, Vcl.StdCtrls, Vcl.Buttons, Vcl.Mask, Vcl.ExtCtrls, Vcl.ComCtrls,
   RxToolEdit, RxCurrEdit, cCadProduto, uEnum, uDTMConexao, uCadCategoria, cFuncao, uConsultaCategoria,
-  Vcl.Menus, uConsultaFilial, uCadFilial;
+  Vcl.Menus, uConsultaFilial;
 type
   TfrmCadProduto = class(TfrmTelaHeranca)
     edtProdutoId: TLabeledEdit;
@@ -20,6 +20,8 @@ type
     lkpCategoria: TDBLookupComboBox;
     QryCategoria: TZQuery;
     dtsCategoria: TDataSource;
+    QryCategoriacategoriaId: TZIntegerField;
+    QryCategoriadescricao: TZUnicodeStringField;
     edtValidade: TDateEdit;
     lblValidade: TLabel;
     edtCodBarras: TLabeledEdit;
@@ -32,20 +34,18 @@ type
     ppmImagem: TPopupMenu;
     CarregarImagem1: TMenuItem;
     LimparImagem1: TMenuItem;
-    lblCategoria: TLabel;
+    Label1: TLabel;
+    QryListagemprodutoId: TZIntegerField;
+    QryListagemnome: TZUnicodeStringField;
     lkpFilial: TDBLookupComboBox;
     lblFilial: TLabel;
     QryFilial: TZQuery;
     dtsFilial: TDataSource;
-    btnIncluirFilial: TSpeedButton;
-    btnPesquisarFilial: TSpeedButton;
-    QryCategoriacategoriaId: TZIntegerField;
-    QryCategoriadescricao: TZUnicodeStringField;
     QryFilialfilialId: TZIntegerField;
     QryFilialnumfilial: TZIntegerField;
+    btnIncluirFilial: TSpeedButton;
+    btnPesquisarFilial: TSpeedButton;
     QryFilialrazaosocial: TZUnicodeStringField;
-    QryListagemprodutoId: TZIntegerField;
-    QryListagemnome: TZUnicodeStringField;
     procedure FormCreate(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btnNovoClick(Sender: TObject);
@@ -120,9 +120,8 @@ begin
      else
         oProduto.foto.Assign(imgImagem.Picture);
 
-
      oProduto.categoriaId:= lkpCategoria.KeyValue;
-     oProduto.filialId:= lkpFilial.KeyValue;
+     //oProduto.fornecedorId:= lkpFornecedor.KeyValue;
 
     if (EstadoDoCadastro=ecInserir) then
         Result := oProduto.Inserir
@@ -147,7 +146,7 @@ end;
 procedure TfrmCadProduto.btnIncluirFilialClick(Sender: TObject);
 begin
   inherited;
-  TFuncao.CriarForm(TfrmCadFilial, oUsuarioLogado, DtmPrincipal.ConexaoDB);
+    TFuncao.CriarForm(TfrmCadCategoria, oUsuarioLogado, DtmPrincipal.ConexaoDB);
   QryFilial.Refresh;
 end;
 
@@ -171,7 +170,6 @@ begin
     edtValidade.Date := oProduto.validade;
     imgImagem.Picture.Assign(oProduto.foto);
     lkpCategoria.KeyValue := oProduto.categoriaId;
-    lkpFilial.KeyValue := oProduto.filialId;
   end
   else begin
     btnCancelar.Click;
