@@ -77,7 +77,6 @@ var
   QryListagem_old: TStringList;
 begin
   QryListagem_old := TStringList.Create;
-  lkpFilial_old :=  lkpFilial.KeyValue;
   try
     QryListagem_old.Text := QryListagem.SQL.Text;
 
@@ -87,13 +86,13 @@ begin
       QryListagem.SQL.Clear;
       QryListagem.SQL.Add('SELECT produtoId, nome, descricao, valor, codbarras, foto, quantidade FROM produtos WHERE filialId = :filialId AND ' + lblIndice.Caption + ' = :Pesquisa');
       QryListagem.Params.ParamByName('filialId').AsInteger := lkpFilial.KeyValue;
+      lkpFilial_old :=  lkpFilial.KeyValue;
       QryListagem.Params.ParamByName('Pesquisa').AsString := Trim(mskPesquisar.Text);
       QryListagem.Open;
       mskPesquisar.Clear;
     end
-    else if Trim(mskPesquisar.Text) = '' then
+    else
     begin
-      lkpFilial_old :=  lkpFilial.KeyValue;
       QryListagem.Close;
       QryListagem.SQL.Text := QryListagem_old.Text;
       QryListagem.Params.ParamByName('filialId').AsInteger := lkpFilial.KeyValue;
@@ -108,8 +107,6 @@ begin
   end
   else
     btnAlterar.Enabled := True;
-
-    mskPesquisar.Clear;
 
 end;
 

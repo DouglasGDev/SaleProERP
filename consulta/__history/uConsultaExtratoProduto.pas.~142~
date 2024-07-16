@@ -91,7 +91,7 @@ begin
       QryListagem.Open;
       mskPesquisar.Clear;
     end
-    else if Trim(mskPesquisar.Text) = '' then
+    else
     begin
       lkpFilial_old :=  lkpFilial.KeyValue;
       QryListagem.Close;
@@ -101,6 +101,7 @@ begin
     end;
   finally
     QryListagem_old.Free;
+    mskPesquisar.Clear;
   end;
   if QryListagem.IsEmpty then
   begin
@@ -108,8 +109,6 @@ begin
   end
   else
     btnAlterar.Enabled := True;
-
-    mskPesquisar.Clear;
 
 end;
 

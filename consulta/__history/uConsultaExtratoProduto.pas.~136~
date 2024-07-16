@@ -67,7 +67,6 @@ implementation
 procedure TfrmConsultaExtratoProduto.btnCancelarClick(Sender: TObject);
 begin
   inherited;
-  if not VarIsNull(lkpFilial.KeyValue) then
   lkpFilial_old := lkpFilial.KeyValue;
   lkpFilial.KeyValue := lkpFilial_old
 end;
@@ -77,7 +76,6 @@ var
   QryListagem_old: TStringList;
 begin
   QryListagem_old := TStringList.Create;
-  lkpFilial_old :=  lkpFilial.KeyValue;
   try
     QryListagem_old.Text := QryListagem.SQL.Text;
 
@@ -91,9 +89,8 @@ begin
       QryListagem.Open;
       mskPesquisar.Clear;
     end
-    else if Trim(mskPesquisar.Text) = '' then
+    else
     begin
-      lkpFilial_old :=  lkpFilial.KeyValue;
       QryListagem.Close;
       QryListagem.SQL.Text := QryListagem_old.Text;
       QryListagem.Params.ParamByName('filialId').AsInteger := lkpFilial.KeyValue;
@@ -108,8 +105,6 @@ begin
   end
   else
     btnAlterar.Enabled := True;
-
-    mskPesquisar.Clear;
 
 end;
 

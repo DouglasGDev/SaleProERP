@@ -3,21 +3,68 @@ inherited frmConsultaExtratoProduto: TfrmConsultaExtratoProduto
   TextHeight = 15
   inherited pgcPrincipal: TPageControl
     inherited tabListagem: TTabSheet
+      inherited pnlListagemTopo: TPanel
+        inherited lblIndice: TLabel
+          Left = 144
+          ExplicitLeft = 144
+        end
+        object lblFilial: TLabel [1]
+          Left = 56
+          Top = 1
+          Width = 30
+          Height = 17
+          Caption = 'Filial'
+          Color = clTeal
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWhite
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = [fsBold]
+          ParentColor = False
+          ParentFont = False
+        end
+        inherited mskPesquisar: TMaskEdit
+          Left = 144
+          ExplicitLeft = 144
+        end
+        inherited btnPesquisar: TBitBtn
+          Left = 511
+          Top = 22
+          TabOrder = 2
+          ExplicitLeft = 511
+          ExplicitTop = 22
+        end
+        object lkpFilial: TDBLookupComboBox
+          Left = 56
+          Top = 22
+          Width = 76
+          Height = 25
+          KeyField = 'filialId'
+          ListField = 'numfilial'
+          ListFieldIndex = 1
+          ListSource = dtsFilial
+          TabOrder = 1
+          OnExit = lkpFilialExit
+        end
+      end
       inherited grdListagem: TDBGrid
         Columns = <
           item
             Expanded = False
             FieldName = 'produtoId'
+            Width = 181
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'nome'
+            Width = 586
             Visible = True
           end
           item
             Expanded = False
             FieldName = 'codbarras'
+            Width = 64
             Visible = True
           end>
       end
@@ -241,41 +288,49 @@ inherited frmConsultaExtratoProduto: TfrmConsultaExtratoProduto
       ' codbarras,'
       ' foto,'
       ' quantidade'
-      'FROM produtos')
+      'FROM produtos'
+      'WHERE filialId =:filialId')
+    Params = <
+      item
+        DataType = ftWideString
+        Name = 'filialId'
+        SQLType = stUnicodeString
+        Value = Null
+      end>
     Left = 676
     Top = 42
+    ParamData = <
+      item
+        DataType = ftWideString
+        Name = 'filialId'
+        SQLType = stUnicodeString
+        Value = Null
+      end>
     object QryListagemprodutoId: TZIntegerField
-      DisplayLabel = 'Cod.Prod'
       FieldName = 'produtoId'
       Required = True
     end
     object QryListagemnome: TZUnicodeStringField
-      DisplayLabel = 'Nome'
       FieldName = 'nome'
       Size = 60
     end
     object QryListagemdescricao: TZUnicodeStringField
-      DisplayLabel = 'Descri'#231#227'o'
       FieldName = 'descricao'
       Size = 255
     end
     object QryListagemvalor: TZFMTBCDField
-      DisplayLabel = 'Valor'
       FieldName = 'valor'
       Precision = 18
       Size = 5
     end
     object QryListagemcodbarras: TZUnicodeStringField
-      DisplayLabel = 'Cod.barras'
       FieldName = 'codbarras'
       Size = 13
     end
     object QryListagemfoto: TZBlobField
-      DisplayLabel = 'Foto'
       FieldName = 'foto'
     end
     object QryListagemquantidade: TZFMTBCDField
-      DisplayLabel = 'Quantidade'
       FieldName = 'quantidade'
       Precision = 18
       Size = 5
@@ -284,5 +339,39 @@ inherited frmConsultaExtratoProduto: TfrmConsultaExtratoProduto
   inherited dtsListagem: TDataSource
     Left = 764
     Top = 42
+  end
+  object dtsFilial: TDataSource
+    DataSet = QryFilial
+    Left = 764
+    Top = 101
+  end
+  object QryFilial: TZQuery
+    Connection = dtmPrincipal.ConexaoDB
+    SQL.Strings = (
+      'SELECT '
+      ' filialId,'
+      ' numfilial,'
+      ' fantasia,'
+      ' cnpj'
+      'FROM filiais')
+    Params = <>
+    Left = 678
+    Top = 100
+    object QryFilialfilialId: TZIntegerField
+      FieldName = 'filialId'
+      Required = True
+    end
+    object QryFilialnumfilial: TZIntegerField
+      FieldName = 'numfilial'
+      Required = True
+    end
+    object QryFilialfantasia: TZUnicodeStringField
+      FieldName = 'fantasia'
+      Size = 255
+    end
+    object QryFilialcnpj: TZUnicodeStringField
+      FieldName = 'cnpj'
+      Size = 18
+    end
   end
 end

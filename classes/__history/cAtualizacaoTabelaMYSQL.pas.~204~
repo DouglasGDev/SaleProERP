@@ -14,6 +14,7 @@ type
     function ProcedureExiste(aNomeProcedure: String): Boolean;
     procedure Categoria;
     procedure Cliente;
+    procedure Filial;
     procedure Produto;
     procedure Vendas;
     procedure VendasItens;
@@ -45,6 +46,7 @@ begin
   Categoria;
   Cliente;
   Fornecedor;
+  Filial;
   Produto;
   seq_entrada;
   EntradaNota;
@@ -139,24 +141,18 @@ begin
   if not ProcedureExiste('get_next_seq_entrada') then
   begin
     ExecutaDiretoBancoDeDados(
-      'DELIMITER //' +
       'CREATE PROCEDURE get_next_seq_entrada(OUT seq_value VARCHAR(50)) ' +
       'BEGIN ' +
       'DECLARE seq_id INT; ' +
-
       'INSERT INTO seq_entradanota () VALUES (); ' +
       'SET seq_id = LAST_INSERT_ID(); ' +
-
       'SET seq_value = LPAD(seq_id, 5, ''0''); ' +
-      'END//' +
-      'DELIMITER ;'
+      'END;'
     );
   end;
-
   if not ProcedureExiste('sp_GravarEntrada') then
   begin
     ExecutaDiretoBancoDeDados(
-      'DELIMITER //' +
       'CREATE PROCEDURE sp_GravarEntrada( ' +
       'IN pEntradaId VARCHAR(50), ' +
       'IN pDataEntrada DATE, ' +
@@ -169,15 +165,11 @@ begin
       'BEGIN ' +
       'DECLARE vEntradaId VARCHAR(50); ' +
       'DECLARE vSequencia VARCHAR(50); ' +
-
       'CALL get_next_seq_entrada(vSequencia); ' +
-
       'SET pNovoEntradaId = CONCAT(''Entrada'', DATE_FORMAT(pDataEntrada, ''%Y%m%d''), pNumNotaFiscal, pNumPedido, vSequencia); ' +
-
       'SELECT entradaId INTO vEntradaId ' +
       'FROM entradanota ' +
       'WHERE entradaId = pEntradaId; ' +
-
       'IF vEntradaId IS NULL THEN ' +
       '    INSERT INTO entradanota (entradaId, dataentrada, numnotafiscal, numpedido, fornecedorId, valorTotalNota) ' +
       '    VALUES (pNovoEntradaId, pDataEntrada, pNumNotaFiscal, pNumPedido, pFornecedorId, pValorTotalNota); ' +
@@ -191,8 +183,7 @@ begin
       '        valorTotalNota = pValorTotalNota ' +
       '    WHERE entradaId = pEntradaId; ' +
       'END IF; ' +
-      'END//' +
-      'DELIMITER ;'
+      'END ;'
     );
   end;
 
@@ -374,6 +365,37 @@ begin
   end;
 end;
 
+procedure TAtualizacaoTableMYSQL.Filial;
+begin
+  if not TabelaExiste('filiais') then
+  begin
+    ExecutaDiretoBancoDeDados(
+      'CREATE TABLE `filiais` ( ' +
+      '`filialId` INT(11) NOT NULL AUTO_INCREMENT, ' +
+      '`numfilial` INT(11) NOT NULL, ' +
+      '`razaosocial` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`fantasia` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`cnpj` VARCHAR(18) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`endereco` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`bairro` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`cep` VARCHAR(10) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`cidade` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`estado` VARCHAR(2) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`complemento` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`inscricaoestadual` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`inscricaostatus` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`telefone1` VARCHAR(15) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`telefone2` VARCHAR(15) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`situacaocadastral` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`motivoscad` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`email` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`ramo` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      '`observacao` VARCHAR(255) NULL DEFAULT NULL COLLATE ''utf8mb4_general_ci'', ' +
+      'PRIMARY KEY (`filialId`) USING BTREE)'
+    );
+  end;
+end;
+
 procedure TAtualizacaoTableMYSQL.Produto;
 begin
   if not TabelaExiste('produtos') then
@@ -391,9 +413,12 @@ begin
       '`validade` DATETIME NULL DEFAULT NULL, ' +
       '`foto` LONGBLOB NULL DEFAULT NULL, ' +
       '`categoriaId` INT(11) NULL DEFAULT NULL, ' +
+      '`filialId` INT(11) NULL DEFAULT NULL, ' +
       'PRIMARY KEY (`produtoId`) USING BTREE, ' +
       'INDEX `FK_ProdutosCategorias` (`categoriaId`) USING BTREE, ' +
-      'CONSTRAINT `FK_ProdutosCategorias` FOREIGN KEY (`categoriaId`) REFERENCES `vendas`.`categorias` (`categoriaId`)) '
+      'INDEX `FK_ProdutosFilial` (`filialId`) USING BTREE, ' +
+      'CONSTRAINT `FK_ProdutosCategorias` FOREIGN KEY (`categoriaId`) REFERENCES `vendas`.`categorias` (`categoriaId`) ' +
+      'CONSTRAINT `FK_ProdutosFilial` FOREIGN KEY (`filialId`) REFERENCES `vendas`.`filiais` (`filialId`)) '
     );
   end;
 end;
@@ -579,7 +604,7 @@ begin
       'log_id INT AUTO_INCREMENT PRIMARY KEY, ' +
       'tabela_nome VARCHAR(255), ' +
       'operacao VARCHAR(10), ' +
-      'registro_id INT, ' +
+      'registro_id VARCHAR(50), ' +
       'usuario VARCHAR(255), ' +
       'data_hora TIMESTAMP DEFAULT CURRENT_TIMESTAMP, ' +
       'detalhes JSON);'

@@ -76,6 +76,7 @@ procedure TfrmConsultaExtratoProduto.btnPesquisarClick(Sender: TObject);
 var
   QryListagem_old: TStringList;
 begin
+  mskPesquisar.Clear;
   QryListagem_old := TStringList.Create;
   lkpFilial_old :=  lkpFilial.KeyValue;
   try
@@ -91,7 +92,7 @@ begin
       QryListagem.Open;
       mskPesquisar.Clear;
     end
-    else if Trim(mskPesquisar.Text) = '' then
+    else
     begin
       lkpFilial_old :=  lkpFilial.KeyValue;
       QryListagem.Close;
@@ -108,8 +109,6 @@ begin
   end
   else
     btnAlterar.Enabled := True;
-
-    mskPesquisar.Clear;
 
 end;
 

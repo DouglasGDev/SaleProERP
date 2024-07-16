@@ -700,7 +700,7 @@ begin
       'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
       'VALUES (''produtos'', ''INSERT'', NEW.produtoId, @logged_in_user, JSON_OBJECT(''novo_valor'', ' +
       'JSON_OBJECT(''nome'', NEW.nome, ''descricao'', NEW.descricao, ''custo'', NEW.custo, ''valor'', NEW.valor, ' +
-      '''quantidade'', NEW.quantidade, ''qtminima'', NEW.qtminima, ''codbarras'', NEW.codbarras, ''validade'', NEW.validade, ''foto'', NEW.foto, ''categoriaId'', NEW.categoriaId))); ' +
+      '''quantidade'', NEW.quantidade, ''qtminima'', NEW.qtminima, ''codbarras'', NEW.codbarras, ''validade'', NEW.validade, ''foto'', NEW.foto, ''categoriaId'', NEW.categoriaId, ''filialId'', NEW.filialId))); ' +
       'END;'
     );
   end;
@@ -714,9 +714,9 @@ begin
       'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
       'VALUES (''produtos'', ''UPDATE'', NEW.produtoId, @logged_in_user, ' +
       'JSON_OBJECT(''antigo_valor'', JSON_OBJECT(''nome'', OLD.nome, ''descricao'', OLD.descricao, ''custo'', OLD.custo, ''valor'', OLD.valor, ' +
-      '''quantidade'', OLD.quantidade, ''qtminima'', OLD.qtminima, ''codbarras'', OLD.codbarras, ''validade'', OLD.validade, ''foto'', OLD.foto, ''categoriaId'', OLD.categoriaId), ' +
+      '''quantidade'', OLD.quantidade, ''qtminima'', OLD.qtminima, ''codbarras'', OLD.codbarras, ''validade'', OLD.validade, ''foto'', OLD.foto, ''categoriaId'', OLD.categoriaId, ''filialId'', OLD.filialId), ' +
       '''novo_valor'', JSON_OBJECT(''nome'', NEW.nome, ''descricao'', NEW.descricao, ''custo'', NEW.custo, ''valor'', NEW.valor, ''quantidade'', NEW.quantidade, ''qtminima'', NEW.qtminima, ' +
-      '''codbarras'', NEW.codbarras, ''validade'', NEW.validade, ''foto'', NEW.foto, ''categoriaId'', NEW.categoriaId))); ' +
+      '''codbarras'', NEW.codbarras, ''validade'', NEW.validade, ''foto'', NEW.foto, ''categoriaId'', NEW.categoriaId, ''filialId'', NEW.filialId))); ' +
       'END;'
     );
   end;
@@ -730,7 +730,7 @@ begin
       'INSERT INTO alteracao_log (tabela_nome, operacao, registro_id, usuario, detalhes) ' +
       'VALUES (''produtos'', ''DELETE'', OLD.produtoId, @logged_in_user, JSON_OBJECT(''valor_deletado'', ' +
       'JSON_OBJECT(''nome'', OLD.nome, ''descricao'', OLD.descricao, ''custo'', OLD.custo, ''valor'', OLD.valor, ''quantidade'', OLD.quantidade, ' +
-      '''qtminima'', OLD.qtminima, ''codbarras'', OLD.codbarras, ''validade'', OLD.validade, ''foto'', OLD.foto, ''categoriaId'', OLD.categoriaId))); ' +
+      '''qtminima'', OLD.qtminima, ''codbarras'', OLD.codbarras, ''validade'', OLD.validade, ''foto'', OLD.foto, ''categoriaId'', OLD.categoriaId, ''filialId'', OLD.filialId))); ' +
       'END;'
     );
   end;

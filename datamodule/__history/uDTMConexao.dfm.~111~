@@ -7,13 +7,12 @@ object dtmPrincipal: TdtmPrincipal
     Properties.Strings = (
       'RawStringEncoding=DB_CP')
     TransactIsolationLevel = tiReadCommitted
-    Connected = True
     DesignConnection = True
-    HostName = 'localhost'
+    HostName = '10.0.0.181'
     Port = 3306
     Database = 'vendas'
-    User = 'root'
-    Password = ''
+    User = 'douglas'
+    Password = '0927'
     Protocol = 'mysql'
     LibraryLocation = 'E:\ADS\quinto_semestre\projetos4\Estoque\libmysql.dll'
     Left = 56
